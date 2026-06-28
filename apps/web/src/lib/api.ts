@@ -1,4 +1,6 @@
 // API Client for fetching data
+import * as mockData from '@hello-oman-sheba/database/mock-data';
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
 
 interface ApiResponse<T> {
@@ -17,21 +19,62 @@ async function fetchApi<T>(endpoint: string, params?: Record<string, string>): P
     });
   }
   
-  const response = await fetch(url.toString(), {
-    next: { revalidate: 60 }, // Cache for 60 seconds
-  });
-  
-  if (!response.ok) {
-    throw new Error(`API Error: ${response.statusText}`);
+  try {
+    const response = await fetch(url.toString(), {
+      next: { revalidate: 60 }, // Cache for 60 seconds
+    });
+    
+    if (!response.ok) {
+      throw new Error(`API Error: ${response.statusText}`);
+    }
+    
+    const result: ApiResponse<T> = await response.json();
+    
+    if (!result.success) {
+      throw new Error(result.error || 'Unknown API error');
+    }
+    
+    return result.data;
+  } catch (error) {
+    console.warn(`Fetch to ${endpoint} failed, falling back to local mock data.`, error);
+    
+    // Fallback based on endpoint using the same methods from mock-data
+    if (endpoint === '/jobs') {
+      const city = params?.city || undefined;
+      const type = params?.type || undefined;
+      const limit = params?.limit ? parseInt(params.limit) : undefined;
+      return mockData.getJobs({ city, type, limit }) as unknown as T;
+    }
+    if (endpoint === '/properties') {
+      const city = params?.city || undefined;
+      const purpose = params?.purpose || undefined;
+      const limit = params?.limit ? parseInt(params.limit) : undefined;
+      return mockData.getProperties({ city, purpose, limit }) as unknown as T;
+    }
+    if (endpoint === '/vehicles') {
+      const city = params?.city || undefined;
+      const type = params?.type || undefined;
+      const limit = params?.limit ? parseInt(params.limit) : undefined;
+      return mockData.getVehicles({ city, type, limit }) as unknown as T;
+    }
+    if (endpoint === '/services') {
+      const city = params?.city || undefined;
+      const category = params?.category || undefined;
+      const limit = params?.limit ? parseInt(params.limit) : undefined;
+      return mockData.getServices({ city, category, limit }) as unknown as T;
+    }
+    if (endpoint === '/news') {
+      const type = params?.type || undefined;
+      const featured = params?.featured === 'true' ? true : params?.featured === 'false' ? false : undefined;
+      const limit = params?.limit ? parseInt(params.limit) : undefined;
+      return mockData.getNews({ type, featured, limit }) as unknown as T;
+    }
+    if (endpoint === '/emergency') {
+      return mockData.getEmergencyContacts() as unknown as T;
+    }
+    
+    throw error;
   }
-  
-  const result: ApiResponse<T> = await response.json();
-  
-  if (!result.success) {
-    throw new Error(result.error || 'Unknown API error');
-  }
-  
-  return result.data;
 }
 
 // Jobs API
