@@ -43,20 +43,31 @@ export function Header() {
 
         {/* Right Actions */}
         <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="icon" className="hidden md:flex">
-            <Search className="h-5 w-5" />
+          <Button variant="ghost" size="icon" className="hidden md:flex" asChild>
+            <Link href="/search">
+              <Search className="h-5 w-5" />
+            </Link>
           </Button>
-          <Button variant="ghost" size="icon" className="hidden md:flex">
-            <Heart className="h-5 w-5" />
+          <Button variant="ghost" size="icon" className="hidden md:flex" asChild>
+            <Link href="/favorites">
+              <Heart className="h-5 w-5" />
+            </Link>
           </Button>
-          <Button variant="ghost" size="icon" className="hidden md:flex">
-            <Bell className="h-5 w-5" />
+          <Button variant="ghost" size="icon" className="hidden md:flex relative" asChild>
+            <Link href="/notifications">
+              <Bell className="h-5 w-5" />
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
+                3
+              </span>
+            </Link>
           </Button>
-          <Button variant="ghost" size="icon" className="hidden md:flex">
-            <User className="h-5 w-5" />
+          <Button variant="ghost" size="icon" className="hidden md:flex" asChild>
+            <Link href="/profile">
+              <User className="h-5 w-5" />
+            </Link>
           </Button>
-          <Button className="hidden md:flex">
-            পোস্ট করুন
+          <Button className="hidden md:flex" asChild>
+            <Link href="/post/create">পোস্ট করুন</Link>
           </Button>
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             <Menu className="h-5 w-5" />
@@ -74,7 +85,23 @@ export function Header() {
             <Link href="/services" className="text-sm font-medium hover:text-primary">সেবা</Link>
             <Link href="/community" className="text-sm font-medium hover:text-primary">কমিউনিটি</Link>
             <Link href="/classifieds" className="text-sm font-medium hover:text-primary">ক্লাসিফাইড</Link>
-            <Button className="w-full mt-4">পোস্ট করুন</Button>
+            <div className="border-t pt-3 space-y-2">
+              <Link href="/search" className="flex items-center gap-2 text-sm font-medium hover:text-primary">
+                <Search className="h-4 w-4" /> সার্চ
+              </Link>
+              <Link href="/favorites" className="flex items-center gap-2 text-sm font-medium hover:text-primary">
+                <Heart className="h-4 w-4" /> পছন্দের তালিকা
+              </Link>
+              <Link href="/notifications" className="flex items-center gap-2 text-sm font-medium hover:text-primary">
+                <Bell className="h-4 w-4" /> নোটিফিকেশন
+              </Link>
+              <Link href="/profile" className="flex items-center gap-2 text-sm font-medium hover:text-primary">
+                <User className="h-4 w-4" /> প্রোফাইল
+              </Link>
+            </div>
+            <Button className="w-full mt-4" asChild>
+              <Link href="/post/create">পোস্ট করুন</Link>
+            </Button>
           </nav>
         </div>
       )}

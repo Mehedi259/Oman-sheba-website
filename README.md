@@ -1,330 +1,396 @@
-# Hello Oman Sheba
-## ওমান বাংলাদেশীদের বিশ্বস্ত সেবা প্ল্যাটফর্ম
+# 🌟 Hello Oman Sheba
 
-**Hello Oman Sheba** হলো ওমানে বসবাসরত বাংলাদেশীদের জন্য একটি সম্পূর্ণ ডিজিটাল সেবা প্ল্যাটফর্ম। এই প্ল্যাটফর্মে আপনি পাবেন চাকরি, বাসা ভাড়া, গাড়ি, স্বাস্থ্যসেবা, আইনগত সহায়তা এবং আরো অনেক কিছু - সবকিছু এক জায়গায়।
+**বাংলাদেশী প্রবাসীদের জন্য ওমানের সবচেয়ে বড় ডিজিটাল সেবা প্ল্যাটফর্ম**
 
-## 🎯 লক্ষ্য
+একটি সম্পূর্ণ enterprise-level, high-performance, fully responsive ওয়েব অ্যাপ্লিকেশন যা বাংলাদেশী প্রবাসীদের ওমানে সকল প্রয়োজনীয় সেবা এক জায়গায় প্রদান করে।
 
-ওমানে বসবাসরত ৫ লক্ষ+ বাংলাদেশীদের জন্য #1 ডিজিটাল সেবা প্ল্যাটফর্ম হওয়া।
+![Next.js](https://img.shields.io/badge/Next.js-15-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-cyan)
+![License](https://img.shields.io/badge/License-Proprietary-red)
 
-## ✨ Key Features
+---
 
-### Core Modules
-- 🏢 **Job Portal** - Complete recruitment platform with CV builder, applications, and recruiter dashboard
-- 🏠 **Property Listings** - Rent/buy houses, flats, rooms, bed spaces with maps and filters
-- 🚗 **Vehicle Marketplace** - Buy, sell, rent cars and motorcycles
-- 🛂 **Passport & Visa Services** - Document tracking, appointments, renewal guides
-- 🏥 **Healthcare Directory** - Hospitals, doctors, clinics, emergency services
-- 🛡️ **Insurance Hub** - Compare medical, travel, life, and vehicle insurance
-- ✈️ **Travel Services** - Flights, hotels, visa packages, travel agencies
-- ⚖️ **Legal Services** - Lawyers, documentation, translation, notary
-- 🎓 **Education** - Schools, training centers, online courses
-- 👥 **Community Forum** - Q&A, events, announcements, networking
-- 🛒 **Classifieds** - Buy/sell electronics, furniture, and more
-- 📰 **News Portal** - Latest Oman, Bangladesh, Embassy updates
-- 🚨 **Emergency Services** - Quick access to police, embassy, ambulance
+## ✨ মূল বৈশিষ্ট্য
 
-### Advanced Features
-- 🤖 AI Chat Assistant with smart search and recommendations
-- 🔍 Powerful global search with dynamic filtering
-- 📱 Progressive Web App (PWA) with offline support
-- 🌐 Multilingual ready (Bengali primary, English/Arabic future)
-- 💳 Payment gateway integration (Stripe, SSLCommerz, Oman gateways)
-- 🔔 Multi-channel notifications (Email, SMS, WhatsApp, Push)
-- 📊 Enterprise analytics and reporting
-- ✅ Service provider verification system
-- ⭐ Ratings and reviews
-- 🗺️ Google Maps integration
-- 💬 Real-time messaging with Socket.io
+### 🎯 সম্পূর্ণ বাংলা ভাষায়
+- ১০০% বাংলা UI/UX
+- সম্পূর্ণ RTL support ready
+- Multilingual capability (English & Arabic coming soon)
 
-## 🏗️ Architecture
+### 🚀 Core Modules
 
-### Tech Stack
+#### 1. চাকরি পোর্টাল (Job Portal)
+- Job posting এবং searching
+- Company profiles
+- CV upload
+- Job application tracking
+- Recruiter dashboard
 
-#### Frontend
-- **Framework**: Next.js 15 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS + Shadcn UI
-- **Animation**: Framer Motion
-- **State Management**: React Query (TanStack Query)
-- **Forms**: React Hook Form + Zod Validation
-- **Icons**: Lucide Icons
+#### 2. প্রপার্টি (Property)
+- House rent / Flat rent
+- Room sharing / Bed space
+- Buy & Sell properties
+- Property details with maps
+- Owner contact system
 
-#### Backend
-- **Framework**: Next.js API Routes + tRPC
-- **Runtime**: Node.js
-- **API Type**: RESTful + tRPC
+#### 3. গাড়ি (Vehicles)
+- Buy / Sell / Rent vehicles
+- Detailed specifications
+- Insurance tracking
+- Condition verification
 
-#### Database
-- **Primary DB**: PostgreSQL
-- **ORM**: Prisma
-- **Cache**: Redis
-- **Search**: Meilisearch
+#### 4. সেবা প্রদানকারী (Service Providers)
+- Medical services
+- Visa services
+- Travel agencies
+- Legal services
+- Educational institutions
+- Verified providers with ratings
 
-#### Authentication
-- **Auth Provider**: Better Auth / Auth.js
-- **Strategy**: JWT + OAuth
-- **Features**: Role-based access control (RBAC)
+#### 5. কমিউনিটি ফোরাম (Community Forum)
+- Q&A discussions
+- Category-based topics
+- Trending discussions
+- Community statistics
 
-#### Storage & Media
-- **File Storage**: Cloudflare R2 / AWS S3
-- **Image Optimization**: Next.js Image + Sharp
-- **CDN**: Cloudflare
+#### 6. ক্লাসিফাইড (Classifieds)
+- Buy & Sell anything
+- Electronics, Furniture, Clothing
+- Negotiable pricing
+- Condition badges
 
-#### Real-time & Notifications
-- **WebSocket**: Socket.io
-- **Email**: Resend / SendGrid
-- **SMS**: Twilio
-- **WhatsApp**: WhatsApp Business API
-- **Push**: Firebase Cloud Messaging
+#### 7. সংবাদ (News)
+- Latest Oman & Bangladesh news
+- Embassy updates
+- Visa news
+- Job market news
 
-#### Payment
-- **International**: Stripe
-- **Bangladesh**: SSLCommerz
-- **Oman**: Thawani / OmanNet (future)
+#### 8. ইউজার ফিচার (User Features)
+- User profiles
+- Favorites list
+- Notifications system
+- Search functionality
+- Post creation
 
-#### DevOps & Deployment
-- **Containerization**: Docker + Docker Compose
-- **CI/CD**: GitHub Actions
-- **Hosting**: Vercel (Frontend) + Railway/AWS (Backend)
-- **Monitoring**: Sentry + LogRocket
-- **Analytics**: Google Analytics + Microsoft Clarity
+---
 
-#### SEO & Performance
-- **Meta Framework**: Next.js SEO
-- **Schema**: JSON-LD structured data
-- **Lighthouse Score**: 95+
-- **Core Web Vitals**: Optimized
+## 🛠️ Tech Stack
+
+### Frontend
+- **Framework:** Next.js 15 (App Router)
+- **Language:** TypeScript 5.3
+- **Styling:** Tailwind CSS 3.4
+- **UI Components:** Shadcn UI
+- **Icons:** Lucide React
+- **State Management:** React Query (TanStack Query)
+
+### Backend
+- **API:** Next.js API Routes
+- **Database ORM:** Prisma
+- **Database:** PostgreSQL 16 (ready)
+- **Caching:** Redis (ready)
+- **Search:** Meilisearch (ready)
+
+### DevOps
+- **Containerization:** Docker & Docker Compose
+- **CI/CD:** GitHub Actions
+- **Deployment:** Vercel (configured)
+- **Package Manager:** pnpm
+- **Monorepo:** Turborepo
+
+---
 
 ## 📁 Project Structure
 
 ```
 hello-oman-sheba/
 ├── apps/
-│   ├── web/                    # Next.js frontend application
-│   ├── admin/                  # Admin dashboard
-│   └── api/                    # Backend API (if separate)
+│   └── web/                    # Main Next.js application
+│       ├── src/
+│       │   ├── app/           # App Router pages
+│       │   │   ├── page.tsx           # Homepage
+│       │   │   ├── jobs/              # Jobs module
+│       │   │   ├── properties/        # Properties module
+│       │   │   ├── vehicles/          # Vehicles module
+│       │   │   ├── services/          # Services module
+│       │   │   ├── community/         # Community forum
+│       │   │   ├── classifieds/       # Classifieds
+│       │   │   ├── news/              # News portal
+│       │   │   ├── profile/           # User profile
+│       │   │   ├── notifications/     # Notifications
+│       │   │   ├── search/            # Search page
+│       │   │   ├── favorites/         # Favorites
+│       │   │   └── post/create/       # Post creation
+│       │   ├── components/    # React components
+│       │   │   ├── layout/           # Header, Footer
+│       │   │   ├── home/             # Homepage sections
+│       │   │   └── ui/               # Shadcn UI components
+│       │   ├── lib/           # Utilities
+│       │   └── styles/        # Global styles
+│       └── public/            # Static assets
 ├── packages/
-│   ├── ui/                     # Shared UI components (Shadcn)
-│   ├── database/               # Prisma schema and migrations
-│   ├── auth/                   # Authentication logic
-│   ├── config/                 # Shared configuration
-│   └── types/                  # Shared TypeScript types
-├── docs/                       # Documentation
-├── docker/                     # Docker configurations
-└── scripts/                    # Utility scripts
+│   ├── database/              # Prisma schema & migrations
+│   ├── ui/                    # Shared UI components
+│   ├── auth/                  # Authentication (ready)
+│   ├── config/                # Shared configuration
+│   └── types/                 # TypeScript types
+├── docker/                    # Docker configurations
+└── .github/workflows/         # CI/CD pipelines
 ```
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js 20+ and pnpm
-- PostgreSQL 16+
-- Redis 7+
-- Docker & Docker Compose (optional)
-
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/your-org/hello-oman-sheba.git
-cd hello-oman-sheba
-
-# Install dependencies
-pnpm install
-
-# Set up environment variables
-cp .env.example .env.local
-# Edit .env.local with your configuration
-
-# Run database migrations
-pnpm db:migrate
-
-# Seed the database
-pnpm db:seed
-
-# Start development server
-pnpm dev
-```
-
-### Docker Setup
-
-```bash
-# Start all services
-docker-compose up -d
-
-# Run migrations
-docker-compose exec web pnpm db:migrate
-
-# View logs
-docker-compose logs -f
-```
-
-## 🔧 Development
-
-```bash
-# Development mode
-pnpm dev
-
-# Build for production
-pnpm build
-
-# Start production server
-pnpm start
-
-# Run tests
-pnpm test
-
-# Run linting
-pnpm lint
-
-# Type check
-pnpm type-check
-
-# Format code
-pnpm format
-```
-
-## 📊 Database Schema
-
-See [Database Schema Documentation](./docs/database-schema.md) for complete ER diagrams and table structures.
-
-## 🔐 Security Features
-
-- JWT-based authentication
-- OAuth 2.0 integration
-- CSRF protection
-- XSS prevention
-- Rate limiting
-- SQL injection prevention via Prisma
-- File upload validation
-- Role-based access control (RBAC)
-- Audit logging
-- Data encryption at rest and in transit
-
-## ♿ Accessibility
-
-- WCAG 2.1 AA compliant
-- Keyboard navigation
-- ARIA labels
-- Screen reader support
-- High contrast mode
-- RTL support (for Arabic)
-
-## 🌍 Internationalization
-
-Primary language is **Bengali (বাংলা)**, with architecture supporting:
-- English (planned)
-- Arabic (planned)
-
-All text uses i18n keys for easy translation.
-
-## 📈 Performance
-
-- Lighthouse Score: 95+
-- First Contentful Paint: <1.5s
-- Time to Interactive: <3.5s
-- Cumulative Layout Shift: <0.1
-- Image optimization with Next.js Image
-- Code splitting and lazy loading
-- Server-side rendering (SSR)
-- Static generation where applicable
-- Edge caching with Cloudflare
-
-## 🧪 Testing Strategy
-
-- Unit Tests: Jest + React Testing Library
-- Integration Tests: Playwright
-- E2E Tests: Cypress
-- API Tests: Supertest
-- Load Tests: k6
-- Coverage Target: 80%+
-
-## 📱 Mobile Experience
-
-- Mobile-first responsive design
-- Progressive Web App (PWA)
-- Installable on mobile devices
-- Offline functionality
-- Fast load times
-- Touch-optimized interactions
-
-## 🗺️ Roadmap
-
-### Phase 1 (Current) - Core Platform
-- ✅ Project setup and architecture
-- ✅ Database design
-- ⏳ Authentication system
-- ⏳ Core modules (Jobs, Property, Vehicles)
-- ⏳ Homepage and navigation
-- ⏳ Search functionality
-
-### Phase 2 - Service Expansion
-- 📋 Passport/Visa services
-- 📋 Healthcare directory
-- 📋 Insurance hub
-- 📋 Travel services
-- 📋 Legal services
-- 📋 Education directory
-
-### Phase 3 - Community & Content
-- 📋 Community forum
-- 📋 News portal
-- 📋 Classifieds marketplace
-- 📋 Events calendar
-- 📋 Service provider profiles
-
-### Phase 4 - Advanced Features
-- 📋 AI chat assistant
-- 📋 Mobile apps (Flutter)
-- 📋 Payment integration
-- 📋 Appointment booking
-- 📋 Video consultation
-- 📋 Digital wallet
-
-### Phase 5 - Scale & Monetization
-- 📋 Subscription tiers
-- 📋 Advertisement system
-- 📋 Affiliate program
-- 📋 Referral system
-- 📋 Loyalty points
-- 📋 API marketplace
-
-## 👥 Team Roles
-
-- Product Owner
-- Senior Software Architect
-- Full Stack Engineers
-- UI/UX Designer
-- DevOps Engineer
-- QA Engineers
-- Content Manager
-- Community Manager
-
-## 📞 Support
-
-- **Email**: support@helloomansheba.com
-- **WhatsApp**: +968 1234 5678
-- **Emergency**: 9999 (Oman)
-- **Embassy**: 8007 (Bangladesh Embassy)
-
-## 📄 License
-
-Proprietary - All rights reserved
-
-## 🙏 Acknowledgments
-
-Built with modern best practices inspired by:
-- Google's Material Design
-- Vercel's design system
-- Linear's UI excellence
-- Airbnb's architecture
-- Stripe's developer experience
-- Notion's user experience
 
 ---
 
-**Built with ❤️ for the Bangladeshi community in Oman**
+## 🚀 Quick Start
 
-🇧🇩 Made for Bangladesh | 🇴🇲 Serving Oman
+### Prerequisites
+- **Node.js** 20+ (LTS recommended)
+- **pnpm** 8+ (`npm install -g pnpm`)
+- **Docker** (optional, for database)
+
+### Installation
+
+1. **Clone the repository:**
+```bash
+git clone https://github.com/Mehedi259/Oman-sheba-website.git
+cd Oman-sheba-website
+```
+
+2. **Install dependencies:**
+```bash
+pnpm install
+```
+
+3. **Set up environment variables:**
+```bash
+cp .env.example apps/web/.env.local
+```
+
+4. **Start development server:**
+```bash
+pnpm dev
+```
+
+5. **Open browser:**
+```
+http://localhost:3000
+```
+
+---
+
+## 🐳 Docker Setup (Optional)
+
+### Start all services:
+```bash
+docker-compose up -d
+```
+
+### Run database migrations:
+```bash
+pnpm db:generate
+pnpm db:migrate
+pnpm db:seed
+```
+
+### Stop services:
+```bash
+docker-compose down
+```
+
+---
+
+## 📊 Available Scripts
+
+```bash
+# Development
+pnpm dev              # Start development server
+pnpm build            # Build for production
+pnpm start            # Start production server
+pnpm lint             # Run ESLint
+pnpm type-check       # Run TypeScript check
+
+# Database
+pnpm db:migrate       # Run database migrations
+pnpm db:seed          # Seed database with sample data
+pnpm db:studio        # Open Prisma Studio
+
+# Docker
+pnpm docker:up        # Start Docker services
+pnpm docker:down      # Stop Docker services
+pnpm docker:logs      # View Docker logs
+```
+
+---
+
+## 🌐 Pages & Routes
+
+### Main Pages
+- `/` - Homepage
+- `/jobs` - Job listings
+- `/properties` - Property listings
+- `/vehicles` - Vehicle listings
+- `/services` - Service providers
+
+### Community & Content
+- `/community` - Community forum
+- `/classifieds` - Classified ads
+- `/news` - News portal
+
+### User Features
+- `/profile` - User profile
+- `/notifications` - Notifications
+- `/favorites` - Saved items
+- `/search` - Global search
+- `/post/create` - Create new post
+
+---
+
+## 🎨 Design System
+
+### Colors
+- **Primary:** Blue (`#3B82F6`)
+- **Secondary:** Purple (`#8B5CF6`)
+- **Accent:** Green (`#10B981`)
+- **Error:** Red (`#EF4444`)
+
+### Typography
+- **Font:** Noto Sans Bengali
+- **Weights:** 400 (Regular), 500 (Medium), 700 (Bold)
+
+### Components
+- Glassmorphism effects
+- Soft shadows
+- Rounded corners (8px, 12px)
+- Smooth animations (200-300ms)
+- Gradient backgrounds
+
+---
+
+## 📱 Responsive Breakpoints
+
+- **Mobile:** < 768px
+- **Tablet:** 768px - 1024px
+- **Desktop:** > 1024px
+- **Large Desktop:** > 1280px
+
+---
+
+## 🔒 Environment Variables
+
+```env
+# App
+NODE_ENV=development
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/hello_oman_sheba"
+
+# Redis
+REDIS_URL="redis://localhost:6379"
+
+# Search
+MEILISEARCH_HOST="http://localhost:7700"
+MEILISEARCH_MASTER_KEY="your-master-key"
+
+# Auth
+AUTH_SECRET="your-secret-key"
+
+# Maps
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="your-api-key"
+```
+
+---
+
+## 🚢 Deployment
+
+### Vercel (Recommended)
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel
+```
+
+### Docker
+```bash
+# Build production image
+docker build -f docker/Dockerfile.prod -t hello-oman-sheba .
+
+# Run container
+docker run -p 3000:3000 hello-oman-sheba
+```
+
+---
+
+## 🤝 Contributing
+
+This is a proprietary project. For contribution guidelines, please contact the project maintainers.
+
+---
+
+## 📄 License
+
+**Proprietary License** - All rights reserved.
+
+This software and associated documentation files are proprietary and confidential. Unauthorized copying, distribution, modification, or use of this software is strictly prohibited.
+
+---
+
+## 👨‍💻 Team
+
+- **Developer:** Hello Oman Sheba Team
+- **GitHub:** [@Mehedi259](https://github.com/Mehedi259)
+- **Repository:** [Oman-sheba-website](https://github.com/Mehedi259/Oman-sheba-website)
+
+---
+
+## 📞 Support
+
+For support, questions, or feedback:
+- **Website:** http://localhost:3000 (Development)
+- **Repository Issues:** [GitHub Issues](https://github.com/Mehedi259/Oman-sheba-website/issues)
+
+---
+
+## 🎯 Roadmap
+
+### Phase 1 (Current) ✅
+- [x] Core pages and modules
+- [x] Responsive UI/UX
+- [x] Mock data integration
+- [x] Navigation system
+
+### Phase 2 (Next)
+- [ ] Authentication system
+- [ ] Database integration
+- [ ] File upload system
+- [ ] Real-time notifications
+
+### Phase 3 (Future)
+- [ ] Mobile apps (Flutter)
+- [ ] Payment integration
+- [ ] AI features
+- [ ] Multi-language support
+
+---
+
+## ⚡ Performance
+
+- **Lighthouse Score:** 95+ (Target)
+- **First Contentful Paint:** < 1.5s
+- **Time to Interactive:** < 3s
+- **Core Web Vitals:** Optimized
+
+---
+
+## 🙏 Acknowledgments
+
+Built with modern technologies and best practices to serve the Bangladeshi expatriate community in Oman.
+
+---
+
+**Made with ❤️ for Bangladeshi expatriates in Oman**
+
+**🌟 একসাথে গড়ি, উন্নত ওমান প্রবাসী জীবন! 🌟**

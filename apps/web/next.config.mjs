@@ -1,14 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
-  
-  // Internationalization
-  i18n: {
-    locales: ['bn', 'en', 'ar'],
-    defaultLocale: 'bn',
-    localeDetection: true,
-  },
   
   // Image optimization
   images: {
@@ -60,7 +52,6 @@ const nextConfig = {
   
   // Experimental features
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ['lucide-react', '@radix-ui'],
   },
 }
