@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import { 
-  Briefcase, Home, Car, Heart, FileText, Shield, 
-  Plane, GraduationCap, Scale, Building, Users, 
-  ShoppingBag, Wrench, Phone, MessageSquare, Newspaper 
+import {
+  Briefcase, Home, Car, Heart, FileText, Shield,
+  Plane, GraduationCap, Scale, Building, Users,
+  ShoppingBag, Wrench, Phone, MessageSquare, Newspaper
 } from 'lucide-react'
 
 const categories = [
@@ -24,6 +24,23 @@ const categories = [
   { name: 'ফোরাম', nameBn: 'ফোরাম', href: '/forum', icon: MessageSquare, color: 'bg-violet-500' },
 ]
 
+type Category = (typeof categories)[number]
+
+function CategoryCard({ category }: { category: Category }) {
+  const Icon = category.icon
+  return (
+    <Link
+      href={category.href}
+      className="group flex w-36 shrink-0 flex-col items-center rounded-xl border bg-card p-6 transition-all hover:-translate-y-1 hover:shadow-lg"
+    >
+      <div className={`${category.color} mb-3 rounded-lg p-4 transition-transform group-hover:scale-110`}>
+        <Icon className="h-6 w-6 text-white" />
+      </div>
+      <span className="text-center text-sm font-medium">{category.nameBn}</span>
+    </Link>
+  )
+}
+
 export function CategoryGrid() {
   return (
     <section className="py-16 bg-background">
@@ -32,23 +49,18 @@ export function CategoryGrid() {
           <h2 className="text-3xl md:text-4xl font-bold mb-4">আমাদের সেবাসমূহ</h2>
           <p className="text-muted-foreground text-lg">যা প্রয়োজন সবকিছু এক জায়গায়</p>
         </div>
+      </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
-          {categories.map((category) => {
-            const Icon = category.icon
-            return (
-              <Link
-                key={category.href}
-                href={category.href}
-                className="group flex flex-col items-center p-6 rounded-xl border bg-card hover:shadow-lg transition-all hover:-translate-y-1"
-              >
-                <div className={`${category.color} p-4 rounded-lg mb-3 group-hover:scale-110 transition-transform`}>
-                  <Icon className="h-6 w-6 text-white" />
-                </div>
-                <span className="text-sm font-medium text-center">{category.nameBn}</span>
-              </Link>
-            )
-          })}
+      {/* Continuous left -> right marquee (pauses on hover) */}
+      <div className="marquee-pause marquee-mask overflow-hidden">
+        <div
+          className="marquee flex w-max gap-4"
+          style={{ ['--marquee-duration' as string]: '45s' }}
+        >
+          {/* Two identical copies for a seamless loop */}
+          {[...categories, ...categories].map((category, i) => (
+            <CategoryCard key={`${category.href}-${i}`} category={category} />
+          ))}
         </div>
       </div>
     </section>

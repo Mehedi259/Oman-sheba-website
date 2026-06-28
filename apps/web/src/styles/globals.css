@@ -122,6 +122,34 @@
   .animate-scale-in {
     animation: scaleIn 0.4s ease-out;
   }
+
+  /* Continuous marquee (left -> right) */
+  .marquee {
+    animation: marqueeRight var(--marquee-duration, 40s) linear infinite;
+  }
+
+  /* Pause on hover so users can read/click */
+  .marquee-pause:hover .marquee {
+    animation-play-state: paused;
+  }
+
+  /* Edge fade mask for marquee containers */
+  .marquee-mask {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 8%,
+      #000 92%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 8%,
+      #000 92%,
+      transparent
+    );
+  }
 }
 
 @keyframes fadeIn {
@@ -163,6 +191,24 @@
   to {
     transform: scale(1);
     opacity: 1;
+  }
+}
+
+/* Items appear to move from left towards the right.
+   The track holds two identical copies, so starting at -50%
+   and ending at 0% loops seamlessly. */
+@keyframes marqueeRight {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    animation: none;
   }
 }
 
