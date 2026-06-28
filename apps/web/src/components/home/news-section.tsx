@@ -27,7 +27,16 @@ export async function NewsSection() {
           {news.map((article: any) => (
             <Card key={article.id} className="hover:shadow-lg transition-shadow hover-lift overflow-hidden">
               <div className="relative h-48 bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
-                <div className="text-6xl">📰</div>
+                {article.featuredImage ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={article.featuredImage}
+                    alt={article.titleBn}
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="text-6xl">📰</div>
+                )}
                 {article.featured && (
                   <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 font-medium">
                     <TrendingUp className="h-3 w-3" />

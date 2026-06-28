@@ -1,13 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Phone, Shield, Heart, Building, AlertCircle } from 'lucide-react'
+import { Phone } from 'lucide-react'
 import { getEmergencyContacts } from '@/lib/api'
 
-const iconMap: Record<string, any> = {
-  'Police': Shield,
-  'Medical': Heart,
-  'Fire': AlertCircle,
-  'Embassy': Building,
+// Colorful flat icon per emergency category
+const iconMap: Record<string, string> = {
+  'Police': '/icons/emergency/police.svg',
+  'Medical': '/icons/emergency/medical.svg',
+  'Fire': '/icons/emergency/fire.svg',
+  'Embassy': '/icons/emergency/embassy.svg',
 };
 
 export async function EmergencyContacts() {
@@ -22,17 +23,18 @@ export async function EmergencyContacts() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {contacts.map((contact: any) => {
-            const Icon = iconMap[contact.category] || Phone;
-            const colorClass = contact.category === 'Police' ? 'text-blue-600' :
-                             contact.category === 'Medical' ? 'text-red-600' :
-                             contact.category === 'Fire' ? 'text-orange-600' :
-                             'text-green-600';
-            
+            const iconSrc = iconMap[contact.category];
+
             return (
               <Card key={contact.id} className="bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow">
                 <CardHeader className="text-center">
-                  <div className={`mx-auto mb-2 ${colorClass}`}>
-                    <Icon className="h-12 w-12" />
+                  <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center">
+                    {iconSrc ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={iconSrc} alt="" className="h-12 w-12" />
+                    ) : (
+                      <Phone className="h-12 w-12 text-red-600" />
+                    )}
                   </div>
                   <CardTitle className="text-lg">{contact.nameBn}</CardTitle>
                 </CardHeader>

@@ -5,6 +5,16 @@ import { MapPin, Briefcase, Clock, ArrowRight, CheckCircle2 } from 'lucide-react
 import { getFeaturedJobs } from '@/lib/api'
 import { formatCurrency, formatRelativeTime } from '@/lib/utils'
 
+// Colorful flat icon per job industry (falls back to a briefcase)
+const jobIcons: Record<string, string> = {
+  'তথ্য প্রযুক্তি': '/icons/jobs/it.svg',
+  'প্রকৌশল': '/icons/jobs/engineering.svg',
+  'আতিথেয়তা': '/icons/restaurant.svg',
+}
+
+const getJobIcon = (job: any) =>
+  jobIcons[job.category?.nameBn] || '/icons/jobs.svg'
+
 export async function FeaturedJobs() {
   const jobs = await getFeaturedJobs(3);
   return (
@@ -29,8 +39,9 @@ export async function FeaturedJobs() {
               <CardHeader>
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
-                      {job.company.name.charAt(0)}
+                    <div className="w-12 h-12 rounded-lg bg-muted/50 flex items-center justify-center p-2">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={getJobIcon(job)} alt="" className="h-8 w-8" />
                     </div>
                     {job.company.verified && (
                       <CheckCircle2 className="h-4 w-4 text-blue-500" />

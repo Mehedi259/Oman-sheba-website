@@ -4,6 +4,18 @@ import { Button } from '@/components/ui/button'
 import { MapPin, Star, Phone, ArrowRight, Shield, CheckCircle2 } from 'lucide-react'
 import { getFeaturedServices } from '@/lib/api'
 
+// Colorful flat icon per service category (reuses the approved grid icons)
+const serviceIcons: Record<string, string> = {
+  'চিকিৎসা': '/icons/healthcare.svg',
+  'ভিসা সেবা': '/icons/visa.svg',
+  'ট্রাভেল এজেন্সি': '/icons/travel.svg',
+  'আইনি সেবা': '/icons/legal.svg',
+  'শিক্ষা': '/icons/education.svg',
+}
+
+const getServiceIcon = (service: any) =>
+  serviceIcons[service.category?.nameBn] || '/icons/provider.svg'
+
 export async function FeaturedServices() {
   const services = await getFeaturedServices(3);
   return (
@@ -27,8 +39,9 @@ export async function FeaturedServices() {
             <Card key={service.id} className="hover:shadow-lg transition-shadow hover-lift">
               <CardHeader>
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
-                    {service.nameBn.charAt(0)}
+                  <div className="w-14 h-14 rounded-lg bg-muted/50 flex items-center justify-center p-2.5">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={getServiceIcon(service)} alt="" className="h-9 w-9" />
                   </div>
                   {service.verified && (
                     <div className="bg-green-100 text-green-700 px-2 py-1 rounded-full flex items-center text-xs font-medium">
