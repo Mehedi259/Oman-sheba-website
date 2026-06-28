@@ -50,9 +50,18 @@ export async function FeaturedProperties() {
                     যাচাইকৃত
                   </div>
                 )}
-                <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                  <Home className="h-16 w-16 text-muted-foreground/30" />
-                </div>
+                {property.images?.[0] ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={property.images[0]}
+                    alt={property.titleBn}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+                    <Home className="h-16 w-16 text-muted-foreground/30" />
+                  </div>
+                )}
               </div>
               <CardHeader className="pb-3">
                 <h3 className="font-bold text-lg line-clamp-1">{property.titleBn}</h3>

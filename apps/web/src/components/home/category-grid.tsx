@@ -1,54 +1,52 @@
 import Link from 'next/link'
-import {
-  Briefcase, Home, Car, Heart, FileText, Shield,
-  Plane, GraduationCap, Scale, Building, Users,
-  ShoppingBag, Wrench, Phone, MessageSquare, Newspaper
-} from 'lucide-react'
 
 const categories = [
-  { name: 'চাকরি', nameBn: 'চাকরি', href: '/jobs', icon: Briefcase, color: 'bg-blue-500' },
-  { name: 'বাসা ভাড়া', nameBn: 'বাসা ভাড়া', href: '/properties', icon: Home, color: 'bg-green-500' },
-  { name: 'গাড়ি', nameBn: 'গাড়ি', href: '/vehicles', icon: Car, color: 'bg-orange-500' },
-  { name: 'স্বাস্থ্যসেবা', nameBn: 'স্বাস্থ্যসেবা', href: '/services/healthcare', icon: Heart, color: 'bg-red-500' },
-  { name: 'পাসপোর্ট', nameBn: 'পাসপোর্ট', href: '/services/passport', icon: FileText, color: 'bg-purple-500' },
-  { name: 'ভিসা', nameBn: 'ভিসা', href: '/services/visa', icon: Shield, color: 'bg-indigo-500' },
-  { name: 'ভ্রমণ', nameBn: 'ভ্রমণ', href: '/services/travel', icon: Plane, color: 'bg-cyan-500' },
-  { name: 'শিক্ষা', nameBn: 'শিক্ষা', href: '/services/education', icon: GraduationCap, color: 'bg-yellow-500' },
-  { name: 'আইনগত সহায়তা', nameBn: 'আইনগত সহায়তা', href: '/services/legal', icon: Scale, color: 'bg-gray-700' },
-  { name: 'ব্যবসা', nameBn: 'ব্যবসা', href: '/services/business', icon: Building, color: 'bg-teal-500' },
-  { name: 'কমিউনিটি', nameBn: 'কমিউনিটি', href: '/community', icon: Users, color: 'bg-pink-500' },
-  { name: 'ক্লাসিফাইড', nameBn: 'ক্লাসিফাইড', href: '/classifieds', icon: ShoppingBag, color: 'bg-lime-500' },
-  { name: 'রেস্টুরেন্ট', nameBn: 'রেস্টুরেন্ট', href: '/services/restaurant', icon: Wrench, color: 'bg-amber-500' },
-  { name: 'জরুরী নম্বর', nameBn: 'জরুরী নম্বর', href: '/emergency', icon: Phone, color: 'bg-rose-500' },
-  { name: 'সংবাদ', nameBn: 'সংবাদ', href: '/news', icon: Newspaper, color: 'bg-slate-600' },
-  { name: 'ফোরাম', nameBn: 'ফোরাম', href: '/forum', icon: MessageSquare, color: 'bg-violet-500' },
+  { nameBn: 'চাকরি', href: '/jobs', icon: '/icons/jobs.svg' },
+  { nameBn: 'বাসা ভাড়া', href: '/properties', icon: '/icons/properties.svg' },
+  { nameBn: 'গাড়ি', href: '/vehicles', icon: '/icons/vehicles.svg' },
+  { nameBn: 'স্বাস্থ্যসেবা', href: '/services/healthcare', icon: '/icons/healthcare.svg' },
+  { nameBn: 'পাসপোর্ট', href: '/services/passport', icon: '/icons/passport.svg' },
+  { nameBn: 'ভিসা', href: '/services/visa', icon: '/icons/visa.svg' },
+  { nameBn: 'ভ্রমণ', href: '/services/travel', icon: '/icons/travel.svg' },
+  { nameBn: 'শিক্ষা', href: '/services/education', icon: '/icons/education.svg' },
+  { nameBn: 'আইনগত সহায়তা', href: '/services/legal', icon: '/icons/legal.svg' },
+  { nameBn: 'ব্যবসা', href: '/services/business', icon: '/icons/business.svg' },
+  { nameBn: 'কমিউনিটি', href: '/community', icon: '/icons/community.svg' },
+  { nameBn: 'ক্লাসিফাইড', href: '/classifieds', icon: '/icons/classifieds.svg' },
+  { nameBn: 'রেস্টুরেন্ট', href: '/services/restaurant', icon: '/icons/restaurant.svg' },
+  { nameBn: 'জরুরী নম্বর', href: '/emergency', icon: '/icons/emergency.svg' },
+  { nameBn: 'সংবাদ', href: '/news', icon: '/icons/news.svg' },
+  { nameBn: 'ফোরাম', href: '/forum', icon: '/icons/forum.svg' },
 ]
 
 export function CategoryGrid() {
   return (
-    <section className="py-16 bg-background">
+    <section className="py-6 sm:py-8 bg-background">
       <div className="container">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">আমাদের সেবাসমূহ</h2>
-          <p className="text-muted-foreground text-lg">যা প্রয়োজন সবকিছু এক জায়গায়</p>
+        <div className="text-center mb-5 sm:mb-6">
+          <h2 className="text-2xl md:text-4xl font-bold">আমাদের সেবাসমূহ</h2>
         </div>
 
-        <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-2 sm:gap-4">
-          {categories.map((category) => {
-            const Icon = category.icon
-            return (
-              <Link
-                key={category.href}
-                href={category.href}
-                className="group flex flex-col items-center p-3 sm:p-6 rounded-xl border bg-card hover:shadow-lg transition-all hover:-translate-y-1"
-              >
-                <div className={`${category.color} p-2.5 sm:p-4 rounded-lg mb-2 sm:mb-3 group-hover:scale-110 transition-transform`}>
-                  <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                </div>
-                <span className="text-xs sm:text-sm font-medium text-center leading-tight">{category.nameBn}</span>
-              </Link>
-            )
-          })}
+        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-2 sm:gap-4">
+          {categories.map((category) => (
+            <Link
+              key={category.href}
+              href={category.href}
+              className="group flex flex-col items-center p-3 sm:p-6 rounded-xl border bg-card hover:shadow-lg transition-all hover:-translate-y-1"
+            >
+              <div className="mb-2 sm:mb-3 rounded-xl bg-muted/50 p-2.5 sm:p-3 group-hover:scale-110 transition-transform">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={category.icon}
+                  alt=""
+                  className="h-8 w-8 sm:h-10 sm:w-10"
+                />
+              </div>
+              <span className="text-xs sm:text-sm font-medium text-center leading-tight">
+                {category.nameBn}
+              </span>
+            </Link>
+          ))}
         </div>
       </div>
     </section>
