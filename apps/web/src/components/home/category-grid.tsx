@@ -33,19 +33,19 @@ export function CategoryGrid() {
           <p className="text-muted-foreground text-lg">যা প্রয়োজন সবকিছু এক জায়গায়</p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+        <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-2 sm:gap-4">
           {categories.map((category) => {
             const Icon = category.icon
             return (
               <Link
                 key={category.href}
                 href={category.href}
-                className="group flex flex-col items-center p-6 rounded-xl border bg-card hover:shadow-lg transition-all hover:-translate-y-1"
+                className="group flex flex-col items-center p-3 sm:p-6 rounded-xl border bg-card hover:shadow-lg transition-all hover:-translate-y-1"
               >
-                <div className={`${category.color} p-4 rounded-lg mb-3 group-hover:scale-110 transition-transform`}>
-                  <Icon className="h-6 w-6 text-white" />
+                <div className={`${category.color} p-2.5 sm:p-4 rounded-lg mb-2 sm:mb-3 group-hover:scale-110 transition-transform`}>
+                  <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <span className="text-sm font-medium text-center">{category.nameBn}</span>
+                <span className="text-xs sm:text-sm font-medium text-center leading-tight">{category.nameBn}</span>
               </Link>
             )
           })}
