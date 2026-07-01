@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Search, Menu, User, Bell, Heart } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
+import { cn } from '@/lib/utils'
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -21,6 +22,8 @@ export function Header() {
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [mobileMenuOpen])
+
+  const closeMenu = () => setMobileMenuOpen(false)
 
   return (
     <header
@@ -93,35 +96,42 @@ export function Header() {
       </div>
 
       {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden border-t">
+      <div
+        className={cn(
+          'md:hidden grid origin-top-right transition-all duration-300 ease-in-out',
+          mobileMenuOpen
+            ? 'grid-rows-[1fr] opacity-100 scale-100 border-t'
+            : 'grid-rows-[0fr] opacity-0 scale-90 -translate-y-1 pointer-events-none'
+        )}
+      >
+        <div className="overflow-hidden">
           <nav className="container py-4 flex flex-col space-y-3">
-            <Link href="/jobs" className="text-sm font-medium hover:text-primary">চাকরি</Link>
-            <Link href="/properties" className="text-sm font-medium hover:text-primary">বাসা ভাড়া</Link>
-            <Link href="/vehicles" className="text-sm font-medium hover:text-primary">গাড়ি</Link>
-            <Link href="/services" className="text-sm font-medium hover:text-primary">সেবা</Link>
-            <Link href="/community" className="text-sm font-medium hover:text-primary">কমিউনিটি</Link>
-            <Link href="/classifieds" className="text-sm font-medium hover:text-primary">ক্লাসিফাইড</Link>
+            <Link href="/jobs" onClick={closeMenu} className="text-sm font-medium hover:text-primary">চাকরি</Link>
+            <Link href="/properties" onClick={closeMenu} className="text-sm font-medium hover:text-primary">বাসা ভাড়া</Link>
+            <Link href="/vehicles" onClick={closeMenu} className="text-sm font-medium hover:text-primary">গাড়ি</Link>
+            <Link href="/services" onClick={closeMenu} className="text-sm font-medium hover:text-primary">সেবা</Link>
+            <Link href="/community" onClick={closeMenu} className="text-sm font-medium hover:text-primary">কমিউনিটি</Link>
+            <Link href="/classifieds" onClick={closeMenu} className="text-sm font-medium hover:text-primary">ক্লাসিফাইড</Link>
             <div className="border-t pt-3 space-y-2">
-              <Link href="/search" className="flex items-center gap-2 text-sm font-medium hover:text-primary">
+              <Link href="/search" onClick={closeMenu} className="flex items-center gap-2 text-sm font-medium hover:text-primary">
                 <Search className="h-4 w-4" /> সার্চ
               </Link>
-              <Link href="/favorites" className="flex items-center gap-2 text-sm font-medium hover:text-primary">
+              <Link href="/favorites" onClick={closeMenu} className="flex items-center gap-2 text-sm font-medium hover:text-primary">
                 <Heart className="h-4 w-4" /> পছন্দের তালিকা
               </Link>
-              <Link href="/notifications" className="flex items-center gap-2 text-sm font-medium hover:text-primary">
+              <Link href="/notifications" onClick={closeMenu} className="flex items-center gap-2 text-sm font-medium hover:text-primary">
                 <Bell className="h-4 w-4" /> নোটিফিকেশন
               </Link>
-              <Link href="/profile" className="flex items-center gap-2 text-sm font-medium hover:text-primary">
+              <Link href="/profile" onClick={closeMenu} className="flex items-center gap-2 text-sm font-medium hover:text-primary">
                 <User className="h-4 w-4" /> প্রোফাইল
               </Link>
             </div>
             <Button className="w-full mt-4" asChild>
-              <Link href="/post/create">পোস্ট করুন</Link>
+              <Link href="/post/create" onClick={closeMenu}>পোস্ট করুন</Link>
             </Button>
           </nav>
         </div>
-      )}
+      </div>
     </header>
   )
 }
