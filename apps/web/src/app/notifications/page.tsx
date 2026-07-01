@@ -119,8 +119,8 @@ export default function NotificationsPage() {
           {/* Action Buttons */}
           <Card className="mb-6">
             <CardContent className="p-4">
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="flex gap-2">
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-wrap gap-2">
                   <Button variant="outline" size="sm">
                     সব
                   </Button>
@@ -134,7 +134,7 @@ export default function NotificationsPage() {
                     মেসেজ
                   </Button>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   <Button variant="outline" size="sm">
                     <Check className="h-4 w-4 mr-2" />
                     সব পড়া হিসেবে চিহ্নিত করুন
