@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [everOpened, setEverOpened] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -24,6 +25,10 @@ export function Header() {
   }, [mobileMenuOpen])
 
   const closeMenu = () => setMobileMenuOpen(false)
+  const toggleMenu = () => {
+    setEverOpened(true)
+    setMobileMenuOpen((open) => !open)
+  }
 
   return (
     <header
@@ -89,7 +94,7 @@ export function Header() {
           <Button className="hidden md:flex" asChild>
             <Link href="/post/create">পোস্ট করুন</Link>
           </Button>
-          <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <Button variant="ghost" size="icon" className="md:hidden" onClick={toggleMenu}>
             <Menu className="h-5 w-5" />
           </Button>
         </div>
@@ -98,14 +103,19 @@ export function Header() {
       {/* Mobile Menu */}
       <div
         className={cn(
-          'md:hidden grid origin-top-right transition-all duration-300 ease-in-out',
-          mobileMenuOpen
-            ? 'grid-rows-[1fr] opacity-100 scale-100 border-t'
-            : 'grid-rows-[0fr] opacity-0 scale-90 -translate-y-1 pointer-events-none'
+          'md:hidden grid transition-[grid-template-rows] duration-[400ms] ease-in-out',
+          mobileMenuOpen ? 'grid-rows-[1fr] border-t' : 'grid-rows-[0fr]',
+          !mobileMenuOpen && 'pointer-events-none'
         )}
       >
         <div className="overflow-hidden">
-          <nav className="container py-4 flex flex-col space-y-3">
+          <nav
+            className={cn(
+              'container py-4 flex flex-col space-y-3 origin-top-right',
+              !everOpened && 'opacity-0',
+              everOpened && (mobileMenuOpen ? 'animate-genie-open' : 'animate-genie-close')
+            )}
+          >
             <Link href="/jobs" onClick={closeMenu} className="text-sm font-medium hover:text-primary">চাকরি</Link>
             <Link href="/properties" onClick={closeMenu} className="text-sm font-medium hover:text-primary">বাসা ভাড়া</Link>
             <Link href="/vehicles" onClick={closeMenu} className="text-sm font-medium hover:text-primary">গাড়ি</Link>

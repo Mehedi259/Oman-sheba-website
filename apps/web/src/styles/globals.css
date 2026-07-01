@@ -123,6 +123,15 @@
     animation: scaleIn 0.4s ease-out;
   }
 
+  /* macOS-style genie minimize/restore, funneling toward the top-right corner */
+  .animate-genie-open {
+    animation: genieOpen 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .animate-genie-close {
+    animation: genieClose 0.4s cubic-bezier(0.5, 0, 0.75, 0) forwards;
+  }
+
   /* Continuous marquee (left -> right) */
   .marquee {
     animation: marqueeRight var(--marquee-duration, 40s) linear infinite;
@@ -190,6 +199,54 @@
   }
   to {
     transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Genie effect: necks the shape down into the top-right corner (hamburger button),
+   mimicking macOS's dock-minimize warp using clip-path instead of true mesh distortion. */
+@keyframes genieClose {
+  0% {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    transform: scale(1) translate(0, 0);
+    opacity: 1;
+  }
+  35% {
+    clip-path: polygon(4% 0%, 96% 0%, 78% 55%, 22% 55%);
+    transform: scale(0.9, 0.8) translate(2%, -1%);
+    opacity: 1;
+  }
+  70% {
+    clip-path: polygon(35% 0%, 65% 0%, 58% 80%, 42% 80%);
+    transform: scale(0.4, 0.25) translate(20%, -4%);
+    opacity: 0.7;
+  }
+  100% {
+    clip-path: polygon(47% 0%, 53% 0%, 51% 100%, 49% 100%);
+    transform: scale(0.04, 0.02) translate(46%, -8%);
+    opacity: 0;
+  }
+}
+
+@keyframes genieOpen {
+  0% {
+    clip-path: polygon(47% 0%, 53% 0%, 51% 100%, 49% 100%);
+    transform: scale(0.04, 0.02) translate(46%, -8%);
+    opacity: 0;
+  }
+  30% {
+    clip-path: polygon(35% 0%, 65% 0%, 58% 80%, 42% 80%);
+    transform: scale(0.4, 0.25) translate(20%, -4%);
+    opacity: 0.7;
+  }
+  65% {
+    clip-path: polygon(4% 0%, 96% 0%, 78% 55%, 22% 55%);
+    transform: scale(0.9, 0.8) translate(2%, -1%);
+    opacity: 1;
+  }
+  100% {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    transform: scale(1) translate(0, 0);
     opacity: 1;
   }
 }
