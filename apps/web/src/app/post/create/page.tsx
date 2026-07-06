@@ -3,17 +3,19 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { 
   Briefcase, 
   Home, 
   Car, 
   Tag, 
   MessageSquare,
-  Upload,
-  MapPin,
-  DollarSign
+  ArrowLeft
 } from 'lucide-react';
+import { JobPostForm } from '@/components/forms/job-post-form';
+import { PropertyPostForm } from '@/components/forms/property-post-form';
+import { VehiclePostForm } from '@/components/forms/vehicle-post-form';
+import { ClassifiedPostForm } from '@/components/forms/classified-post-form';
+import { DiscussionPostForm } from '@/components/forms/discussion-post-form';
 
 const categories = [
   { id: 'job', name: 'চাকরি পোস্ট', icon: Briefcase, color: 'bg-blue-500' },
@@ -65,83 +67,47 @@ export default function CreatePostPage() {
             </>
           ) : (
             <Card>
-              <CardHeader>
-                <CardTitle>
-                  {categories.find((c) => c.id === selectedCategory)?.name} পোস্ট তৈরি করুন
-                </CardTitle>
+              <CardHeader className="border-b">
+                <div className="flex items-center gap-4">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSelectedCategory('')}
+                    className="gap-2"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                    পেছনে যান
+                  </Button>
+                  <div>
+                    <CardTitle>
+                      {categories.find((c) => c.id === selectedCategory)?.name}
+                    </CardTitle>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      সকল তথ্য সঠিকভাবে পূরণ করুন
+                    </p>
+                  </div>
+                </div>
               </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Title */}
-                <div>
-                  <label className="text-sm font-medium mb-2 block">শিরোনাম *</label>
-                  <Input placeholder="আপনার পোস্টের শিরোনাম লিখুন" />
-                </div>
-
-                {/* Description */}
-                <div>
-                  <label className="text-sm font-medium mb-2 block">বিস্তারিত বিবরণ *</label>
-                  <textarea
-                    className="w-full min-h-32 p-3 border rounded-md"
-                    placeholder="বিস্তারিত তথ্য লিখুন..."
-                  />
-                </div>
-
-                {/* Location */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">শহর *</label>
-                    <Input placeholder="যেমন: মাস্কাট" />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">এলাকা</label>
-                    <Input placeholder="যেমন: আল খুয়াইর" />
-                  </div>
-                </div>
-
-                {/* Price */}
-                {selectedCategory !== 'discussion' && (
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">মূল্য (OMR)</label>
-                    <Input type="number" placeholder="0.00" />
-                  </div>
-                )}
-
-                {/* Contact */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">ফোন নম্বর *</label>
-                    <Input placeholder="+968 XXXX XXXX" />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">ইমেইল</label>
-                    <Input type="email" placeholder="your@email.com" />
-                  </div>
-                </div>
-
-                {/* Images */}
-                <div>
-                  <label className="text-sm font-medium mb-2 block">ছবি আপলোড করুন</label>
-                  <div className="border-2 border-dashed rounded-lg p-8 text-center hover:bg-muted/50 cursor-pointer transition-colors">
-                    <Upload className="h-12 w-12 mx-auto text-muted-foreground mb-2" />
-                    <p className="text-sm text-muted-foreground">
-                      ক্লিক করে বা ড্র্যাগ করে ছবি যোগ করুন
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      সর্বোচ্চ ৫টি ছবি (প্রতিটি ৫MB পর্যন্ত)
-                    </p>
-                  </div>
-                </div>
+              <CardContent className="pt-6">
+                {/* Render appropriate form based on category */}
+                {selectedCategory === 'job' && <JobPostForm />}
+                {selectedCategory === 'property' && <PropertyPostForm />}
+                {selectedCategory === 'vehicle' && <VehiclePostForm />}
+                {selectedCategory === 'classified' && <ClassifiedPostForm />}
+                {selectedCategory === 'discussion' && <DiscussionPostForm />}
 
                 {/* Actions */}
-                <div className="flex gap-4 pt-4">
+                <div className="flex gap-4 pt-8 mt-8 border-t">
                   <Button
                     variant="outline"
                     className="flex-1"
                     onClick={() => setSelectedCategory('')}
                   >
-                    পেছনে যান
+                    বাতিল করুন
                   </Button>
-                  <Button className="flex-1">পোস্ট প্রকাশ করুন</Button>
+                  <Button className="flex-1 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700">
+                    পোস্ট প্রকাশ করুন
+                  </Button>
                 </div>
               </CardContent>
             </Card>
