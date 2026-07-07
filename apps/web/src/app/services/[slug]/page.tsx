@@ -50,9 +50,9 @@ export function generateStaticParams() {
 }
 
 function CategoryPage({ categorySlug, category }: { categorySlug: string; category: { name: string; nameBn: string; icon: string; description: string } }) {
-  const allServices = getServices()
-  // Filter services loosely by matching category name
-  // Since our mock data has limited entries, show all services for now
+  const { getServicesByCategory } = require('@hello-oman-sheba/database/mock-data');
+  const categoryServices = getServicesByCategory(categorySlug);
+  
   return (
     <div className="min-h-screen bg-background">
       <div className="bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-700 text-white py-12">
@@ -72,58 +72,70 @@ function CategoryPage({ categorySlug, category }: { categorySlug: string; catego
       </div>
 
       <div className="container py-8">
-        <h2 className="text-2xl font-bold mb-6">সেবা প্রদানকারীসমূহ</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {allServices.map((service) => (
-            <Card key={service.id} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div>
-                    <CardTitle className="text-xl mb-1">{service.nameBn}</CardTitle>
-                    <p className="text-sm text-muted-foreground">{service.name}</p>
+        <h2 className="text-2xl font-bold mb-6">
+          {categoryServices.length > 0 ? `${categoryServices.length}টি সেবা প্রদানকারী` : 'সেবা প্রদানকারী'}
+        </h2>
+        
+        {categoryServices.length === 0 ? (
+          <div className="text-center py-16">
+            <p className="text-muted-foreground text-lg mb-4">এই ক্যাটাগরিতে এখনো কোন সেবা যোগ করা হয়নি।</p>
+            <Link href="/services">
+              <Button>সব সেবা দেখুন</Button>
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {categoryServices.map((service) => (
+              <Card key={service.id} className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <CardTitle className="text-xl mb-1">{service.nameBn}</CardTitle>
+                      <p className="text-sm text-muted-foreground">{service.name}</p>
+                    </div>
+                    {service.verified && (
+                      <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full flex items-center text-sm shrink-0">
+                        <Shield className="h-4 w-4 mr-1" />
+                        যাচাইকৃত
+                      </span>
+                    )}
                   </div>
-                  {service.verified && (
-                    <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full flex items-center text-sm shrink-0">
-                      <Shield className="h-4 w-4 mr-1" />
-                      যাচাইকৃত
-                    </span>
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <p className="text-muted-foreground text-sm">{service.descriptionBn}</p>
-                <div className="flex items-center text-sm text-muted-foreground">
-                  <MapPin className="h-4 w-4 mr-2" />
-                  {service.area}, {service.city}
-                </div>
-                <div className="flex items-center text-sm">
-                  <Star className="h-4 w-4 mr-1 fill-yellow-400 text-yellow-400" />
-                  <span className="font-semibold mr-1">{service.rating}</span>
-                  <span className="text-muted-foreground">({service.reviewCount} রিভিউ)</span>
-                </div>
-                <div className="flex items-center text-sm text-muted-foreground">
-                  <Phone className="h-4 w-4 mr-2" />
-                  {service.phone}
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {service.services.map((s, i) => (
-                    <span key={i} className="text-xs bg-purple-50 text-purple-700 px-2 py-1 rounded border border-purple-200">
-                      {s}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex gap-2 pt-2">
-                  <Link href={`/services/${service.id}`} className="flex-1">
-                    <Button variant="outline" className="w-full">বিস্তারিত</Button>
-                  </Link>
-                  <a href={`tel:${service.phone}`} className="flex-1">
-                    <Button className="w-full">যোগাযোগ করুন</Button>
-                  </a>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <p className="text-muted-foreground text-sm">{service.descriptionBn}</p>
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <MapPin className="h-4 w-4 mr-2" />
+                    {service.area}, {service.city}
+                  </div>
+                  <div className="flex items-center text-sm">
+                    <Star className="h-4 w-4 mr-1 fill-yellow-400 text-yellow-400" />
+                    <span className="font-semibold mr-1">{service.rating}</span>
+                    <span className="text-muted-foreground">({service.reviewCount} রিভিউ)</span>
+                  </div>
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <Phone className="h-4 w-4 mr-2" />
+                    {service.phone}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {service.services.slice(0, 4).map((s, i) => (
+                      <span key={i} className="text-xs bg-purple-50 text-purple-700 px-2 py-1 rounded border border-purple-200">
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex gap-2 pt-2">
+                    <Link href={`/services/${service.id}`} className="flex-1">
+                      <Button variant="outline" className="w-full">বিস্তারিত</Button>
+                    </Link>
+                    <a href={`tel:${service.phone}`} className="flex-1">
+                      <Button className="w-full">যোগাযোগ করুন</Button>
+                    </a>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
