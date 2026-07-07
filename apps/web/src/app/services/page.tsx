@@ -1,153 +1,214 @@
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { MapPin, Star, Phone, Shield } from 'lucide-react'
 import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
 
-const categories = [
-  { name: 'স্বাস্থ্যসেবা', slug: 'healthcare', icon: '🏥', count: 45 },
-  { name: 'আইনি সেবা', slug: 'legal', icon: '⚖️', count: 23 },
-  { name: 'পাসপোর্ট সেবা', slug: 'passport', icon: '📄', count: 12 },
-  { name: 'ভিসা সেবা', slug: 'visa', icon: '📋', count: 18 },
-  { name: 'ভ্রমণ সেবা', slug: 'travel', icon: '✈️', count: 34 },
-  { name: 'শিক্ষা', slug: 'education', icon: '🎓', count: 28 },
-]
-
-const services = [
-  {
-    id: '1',
-    name: 'আল নূর হাসপাতাল',
-    category: 'স্বাস্থ্যসেবা',
-    location: 'মাস্কাট, রুয়ি',
-    rating: 4.8,
-    reviews: 156,
-    verified: true,
-    phone: '+968 2478 9012',
+const allCategories = [
+  // Main Categories
+  { 
+    nameBn: 'চাকরি', 
+    href: '/jobs', 
+    icon: '💼',
+    color: 'from-blue-500 to-blue-600',
+    description: 'চাকরি খুঁজুন এবং আবেদন করুন'
+  },
+  { 
+    nameBn: 'বাসা ভাড়া', 
+    href: '/properties', 
+    icon: '🏠',
+    color: 'from-green-500 to-green-600',
+    description: 'ফ্ল্যাট, রুম এবং বেড স্পেস'
+  },
+  { 
+    nameBn: 'গাড়ি', 
+    href: '/vehicles', 
+    icon: '🚗',
+    color: 'from-purple-500 to-purple-600',
+    description: 'গাড়ি কিনুন বা ভাড়া নিন'
+  },
+  { 
+    nameBn: 'মার্কেট', 
+    href: '/classifieds', 
+    icon: '🛒',
+    color: 'from-orange-500 to-red-500',
+    description: 'কিনুন এবং বিক্রি করুন'
+  },
+  { 
+    nameBn: 'কমিউনিটি', 
+    href: '/community', 
+    icon: '👥',
+    color: 'from-pink-500 to-rose-600',
+    description: 'আলোচনা এবং সহযোগিতা'
+  },
+  
+  // Services
+  { 
+    nameBn: 'ওমান - বাংলাদেশ দূতাবাস', 
+    href: '/services/embassy', 
+    icon: '🏛️',
+    color: 'from-blue-600 to-indigo-700',
+    description: 'দূতাবাস সেবা এবং সহায়তা'
+  },
+  { 
+    nameBn: 'বিশেষজ্ঞ ডাক্তার', 
+    href: '/services/doctors', 
+    icon: '👨‍⚕️',
+    color: 'from-red-500 to-pink-600',
+    description: 'বিশেষজ্ঞ চিকিৎসক এবং পরামর্শ'
+  },
+  { 
+    nameBn: 'হাসপাতাল', 
+    href: '/services/hospitals', 
     icon: '🏥',
-    services: ['জরুরী সেবা', 'সার্জারি', 'পরীক্ষাগার']
+    color: 'from-red-400 to-red-500',
+    description: 'হাসপাতাল এবং ক্লিনিক'
   },
-  {
-    id: '2',
-    name: 'লিগ্যাল কনসালটেন্সি',
-    category: 'আইনি সেবা',
-    location: 'মাস্কাট',
-    rating: 4.9,
-    reviews: 203,
-    verified: true,
-    phone: '+968 2434 5678',
+  { 
+    nameBn: 'আম্বুলেন্স', 
+    href: '/services/ambulance', 
+    icon: '🚑',
+    color: 'from-red-600 to-rose-700',
+    description: 'জরুরী অ্যাম্বুলেন্স সেবা'
+  },
+  { 
+    nameBn: 'আইনজীবী', 
+    href: '/services/lawyers', 
     icon: '⚖️',
-    services: ['ভিসা সেবা', 'লেবার কোর্ট', 'ডকুমেন্টেশন']
+    color: 'from-amber-500 to-orange-600',
+    description: 'আইনি পরামর্শ এবং সহায়তা'
   },
-  {
-    id: '3',
-    name: 'ভিসা সেবা কেন্দ্র',
-    category: 'ভিসা সেবা',
-    location: 'রুয়ি, মাস্কাট',
-    rating: 4.6,
-    reviews: 89,
-    verified: true,
-    phone: '+968 2412 3456',
-    icon: '📄',
-    services: ['নতুন ভিসা', 'রিনিউয়াল', 'ফ্যামিলি ভিসা']
-  },
-  {
-    id: '4',
-    name: 'ট্রাভেল এজেন্সি',
-    category: 'ভ্রমণ সেবা',
-    location: 'বোশার, মাস্কাট',
-    rating: 4.7,
-    reviews: 124,
-    verified: true,
-    phone: '+968 2456 7890',
+  { 
+    nameBn: 'ট্রাভেল এজেন্সি', 
+    href: '/services/travel-agency', 
     icon: '✈️',
-    services: ['ফ্লাইট টিকেট', 'হোটেল বুকিং', 'ট্যুর প্যাকেজ']
+    color: 'from-cyan-500 to-blue-500',
+    description: 'ফ্লাইট এবং ট্যুর বুকিং'
+  },
+  { 
+    nameBn: 'হোটেল', 
+    href: '/services/hotels', 
+    icon: '🏨',
+    color: 'from-indigo-500 to-purple-600',
+    description: 'হোটেল এবং আবাসন'
+  },
+  { 
+    nameBn: 'মানি এক্সচেঞ্জ', 
+    href: '/services/money-exchange', 
+    icon: '💱',
+    color: 'from-emerald-500 to-green-600',
+    description: 'মানি ট্রান্সফার এবং এক্সচেঞ্জ'
+  },
+  { 
+    nameBn: 'মক্তব সানাদ', 
+    href: '/services/maktab', 
+    icon: '📜',
+    color: 'from-teal-500 to-cyan-600',
+    description: 'মক্তব সার্টিফিকেট সেবা'
+  },
+  { 
+    nameBn: 'দর্শনীয় স্থান', 
+    href: '/services/tourist-places', 
+    icon: '🗿',
+    color: 'from-lime-500 to-green-600',
+    description: 'ওমানের পর্যটন স্থান'
+  },
+  { 
+    nameBn: 'পুলিশ স্টেশন', 
+    href: '/services/police', 
+    icon: '👮',
+    color: 'from-slate-600 to-blue-700',
+    description: 'পুলিশ স্টেশন তথ্য'
+  },
+  { 
+    nameBn: 'জরুরী নম্বর', 
+    href: '/emergency', 
+    icon: '🚨',
+    color: 'from-rose-500 to-red-600',
+    description: 'জরুরী যোগাযোগ নম্বর'
+  },
+  { 
+    nameBn: 'সংবাদ', 
+    href: '/news', 
+    icon: '📰',
+    color: 'from-gray-600 to-slate-700',
+    description: 'সর্বশেষ সংবাদ'
+  },
+  { 
+    nameBn: 'হ্যালো ওমান সম্পর্কে', 
+    href: '/about', 
+    icon: '💫',
+    color: 'from-violet-500 to-purple-600',
+    description: 'আমাদের সম্পর্কে জানুন'
   },
 ]
 
-export default function ServicesPage() {
+
+export default function AllServicesPage() {
   return (
     <div className="min-h-screen bg-background">
-      <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-12">
+      {/* Header */}
+      <section className="bg-gradient-to-r from-violet-600 to-purple-600 text-white py-16">
         <div className="container">
-          <h1 className="text-4xl font-bold mb-4">সেবা প্রদানকারী</h1>
-          <p className="text-lg text-purple-100">বিশ্বস্ত এবং যাচাইকৃত সেবা প্রদানকারী খুঁজুন</p>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">সকল সেবাসমূহ</h1>
+          <p className="text-xl text-violet-100">
+            ওমানে বসবাসের জন্য প্রয়োজনীয় সকল সেবা এক জায়গায়
+          </p>
         </div>
-      </div>
+      </section>
 
-      <div className="container py-8">
-        {/* Categories */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold mb-6">সেবার ধরন</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.map((cat) => (
+      {/* All Categories Grid */}
+      <section className="py-16">
+        <div className="container">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
+            {allCategories.map((category) => (
               <Link
-                key={cat.slug}
-                href={`/services/${cat.slug}`}
+                key={category.href}
+                href={category.href}
                 className="group"
               >
-                <Card className="hover:shadow-lg transition-all hover:-translate-y-1 text-center">
-                  <CardContent className="pt-6">
-                    <div className="text-4xl mb-3">{cat.icon}</div>
-                    <h3 className="font-semibold mb-1">{cat.name}</h3>
-                    <p className="text-sm text-muted-foreground">{cat.count}টি সেবা</p>
-                  </CardContent>
-                </Card>
+                <div className="flex flex-col items-center p-6 rounded-2xl border-2 border-border bg-card hover:shadow-xl transition-all hover:-translate-y-2 h-full">
+                  <div className={`mb-4 rounded-2xl bg-gradient-to-br ${category.color} p-4 group-hover:scale-110 transition-transform shadow-lg`}>
+                    <span className="text-4xl">{category.icon}</span>
+                  </div>
+                  <h3 className="text-sm sm:text-base font-bold text-center mb-2">
+                    {category.nameBn}
+                  </h3>
+                  <p className="text-xs text-muted-foreground text-center line-clamp-2">
+                    {category.description}
+                  </p>
+                  <div className="mt-4 flex items-center text-violet-600 group-hover:text-violet-700 text-sm font-medium">
+                    বিস্তারিত <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
               </Link>
             ))}
           </div>
         </div>
+      </section>
 
-        {/* Service Providers */}
-        <div>
-          <h2 className="text-2xl font-bold mb-6">জনপ্রিয় সেবা প্রদানকারী</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {services.map((service) => (
-              <Card key={service.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="text-5xl">{service.icon}</div>
-                    {service.verified && (
-                      <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full flex items-center text-sm">
-                        <Shield className="h-4 w-4 mr-1" />
-                        যাচাইকৃত
-                      </div>
-                    )}
-                  </div>
-                  <CardTitle className="text-xl">{service.name}</CardTitle>
-                  <p className="text-sm text-muted-foreground">{service.category}</p>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <MapPin className="h-4 w-4 mr-2" />
-                    {service.location}
-                  </div>
-                  <div className="flex items-center text-sm">
-                    <Star className="h-4 w-4 mr-1 fill-yellow-400 text-yellow-400" />
-                    <span className="font-semibold mr-1">{service.rating}</span>
-                    <span className="text-muted-foreground">({service.reviews} রিভিউ)</span>
-                  </div>
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <Phone className="h-4 w-4 mr-2" />
-                    {service.phone}
-                  </div>
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {service.services.map((s, i) => (
-                      <span key={i} className="text-xs bg-muted px-2 py-1 rounded">
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                </CardContent>
-                <CardFooter className="flex gap-2">
-                  <Link href={`/services/${service.id}`} className="flex-1">
-                    <Button variant="outline" className="w-full">বিস্তারিত</Button>
-                  </Link>
-                  <Button className="flex-1">যোগাযোগ করুন</Button>
-                </CardFooter>
-              </Card>
-            ))}
+      {/* Help Section */}
+      <section className="py-16 bg-gradient-to-br from-violet-50 to-purple-50">
+        <div className="container">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-3xl font-bold mb-4">আপনার প্রয়োজনীয় সেবা খুঁজে পাচ্ছেন না?</h2>
+            <p className="text-muted-foreground mb-6">
+              আমাদের সাথে যোগাযোগ করুন অথবা কমিউনিটিতে প্রশ্ন করুন
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                href="/community"
+                className="px-6 py-3 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors inline-flex items-center justify-center gap-2"
+              >
+                কমিউনিটিতে প্রশ্ন করুন <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/post/create"
+                className="px-6 py-3 border-2 border-violet-600 text-violet-600 rounded-lg hover:bg-violet-50 transition-colors inline-flex items-center justify-center gap-2"
+              >
+                পোস্ট করুন <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   )
 }
