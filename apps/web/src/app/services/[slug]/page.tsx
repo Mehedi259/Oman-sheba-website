@@ -85,7 +85,7 @@ function CategoryPage({ categorySlug, category }: { categorySlug: string; catego
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {categoryServices.map((service) => (
+            {categoryServices.map((service: any) => (
               <Card key={service.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex items-start justify-between">
@@ -117,7 +117,7 @@ function CategoryPage({ categorySlug, category }: { categorySlug: string; catego
                     {service.phone}
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {service.services.slice(0, 4).map((s, i) => (
+                    {service.services.slice(0, 4).map((s: string, i: number) => (
                       <span key={i} className="text-xs bg-purple-50 text-purple-700 px-2 py-1 rounded border border-purple-200">
                         {s}
                       </span>
