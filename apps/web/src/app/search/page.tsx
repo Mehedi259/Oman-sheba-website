@@ -27,7 +27,7 @@ export default function SearchPage() {
       title: 'সিনিয়র সফটওয়্যার ইঞ্জিনিয়ার',
       description: 'টেক সলিউশন্স ওমান',
       location: 'মাস্কাট',
-      price: '800-1200 OMR',
+      price: '৳ ২৮০,০০০-৪২০,০০০',
       icon: '💼',
     },
     {
@@ -36,7 +36,7 @@ export default function SearchPage() {
       title: '২ বেডরুম অ্যাপার্টমেন্ট',
       description: 'আল খুয়াইর',
       location: 'মাস্কাট',
-      price: '350 OMR/মাসিক',
+      price: '৳ ১২২,৫০০/মাসিক',
       icon: '🏠',
     },
     {
@@ -45,7 +45,7 @@ export default function SearchPage() {
       title: 'Toyota Corolla 2020',
       description: 'চমৎকার অবস্থায়',
       location: 'মাস্কাট',
-      price: '5500 OMR',
+      price: '৳ ১৯,২৫,০০০',
       icon: '🚗',
     },
   ];

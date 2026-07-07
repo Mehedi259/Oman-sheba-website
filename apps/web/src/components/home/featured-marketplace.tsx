@@ -8,7 +8,7 @@ const items = [
     id: 1,
     title: 'স্যামসাং ফ্রিজ বিক্রয়',
     category: 'গৃহস্থালী সামগ্রী',
-    price: 85,
+    price: 29750,
     image: 'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=500',
     condition: 'ভালো',
     location: 'মাস্কাট, আল খুয়াইর',
@@ -18,7 +18,7 @@ const items = [
     id: 2,
     title: 'আইফোন ১৩ প্রো',
     category: 'মোবাইল',
-    price: 280,
+    price: 98000,
     image: 'https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=500',
     condition: 'প্রায় নতুন',
     location: 'মাস্কাট, রুয়ি',
@@ -28,7 +28,7 @@ const items = [
     id: 3,
     title: 'সোফা সেট (৫ সিটার)',
     category: 'ফার্নিচার',
-    price: 120,
+    price: 42000,
     image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500',
     condition: 'ভালো',
     location: 'মাস্কাট, আল মাবেলা',
@@ -88,8 +88,7 @@ export function FeaturedMarketplace() {
                   
                   <div className="flex items-center justify-between pt-3 border-t">
                     <div className="flex items-center gap-1 text-orange-600 font-bold text-xl">
-                      <DollarSign className="h-5 w-5" />
-                      {item.price} OMR
+                      ৳ {item.price.toLocaleString('bn-BD')}
                     </div>
                   </div>
                 </CardContent>

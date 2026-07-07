@@ -11,7 +11,7 @@ const vehicles = [
     make: 'Toyota',
     model: 'Corolla',
     year: 2020,
-    price: 3500,
+    price: 1225000,
     image: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=500',
     mileage: 45000,
     transmission: 'অটোমেটিক',
@@ -25,7 +25,7 @@ const vehicles = [
     make: 'Nissan',
     model: 'Patrol',
     year: 2019,
-    price: 8500,
+    price: 2975000,
     image: 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=500',
     mileage: 60000,
     transmission: 'অটোমেটিক',
@@ -39,7 +39,7 @@ const vehicles = [
     make: 'Honda',
     model: 'Civic',
     year: 2021,
-    price: 4200,
+    price: 1470000,
     image: 'https://images.unsplash.com/photo-1590362891991-f776e747a588?w=500',
     mileage: 35000,
     transmission: 'অটোমেটিক',
@@ -101,8 +101,7 @@ export function FeaturedVehicles() {
                   
                   <div className="flex items-center justify-between pt-3 border-t">
                     <div className="flex items-center gap-1 text-purple-600 font-bold text-xl">
-                      <DollarSign className="h-5 w-5" />
-                      {vehicle.price.toLocaleString()} OMR
+                      ৳ {vehicle.price.toLocaleString('bn-BD')}
                     </div>
                   </div>
                 </CardContent>

@@ -104,9 +104,9 @@ export function PropertyPostForm() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="text-sm font-medium mb-2 block">
-            মাসিক ভাড়া/মূল্য (OMR) *
+            মাসিক ভাড়া/মূল্য (টাকা) *
           </label>
-          <Input type="number" placeholder="যেমন: ১৫০" />
+          <Input type="number" placeholder="যেমন: ৫০০০০" />
         </div>
         <div className="flex items-center pt-8">
           <input type="checkbox" id="negotiable" className="mr-2" />

@@ -88,15 +88,15 @@ export function JobPostForm() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="text-sm font-medium mb-2 block">
-            সর্বনিম্ন বেতন (OMR)
+            সর্বনিম্ন বেতন (টাকা)
           </label>
-          <Input type="number" placeholder="যেমন: ১৫০" />
+          <Input type="number" placeholder="যেমন: ৫০০০০" />
         </div>
         <div>
           <label className="text-sm font-medium mb-2 block">
-            সর্বোচ্চ বেতন (OMR)
+            সর্বোচ্চ বেতন (টাকা)
           </label>
-          <Input type="number" placeholder="যেমন: ২০০" />
+          <Input type="number" placeholder="যেমন: ৭০০০০" />
         </div>
       </div>
 

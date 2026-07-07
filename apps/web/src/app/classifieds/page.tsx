@@ -34,8 +34,8 @@ const listings = [
     id: 1,
     title: 'iPhone 13 Pro - চমৎকার অবস্থায়',
     titleBn: 'iPhone 13 Pro - চমৎকার অবস্থায়',
-    price: 280,
-    currency: 'OMR',
+    price: 98000,
+    currency: 'BDT',
     category: 'ইলেকট্রনিক্স',
     location: 'মাস্কাট, আল খুয়াইর',
     condition: 'ব্যবহৃত - ভাল',
@@ -47,8 +47,8 @@ const listings = [
     id: 2,
     title: 'Dell Laptop i7 16GB RAM',
     titleBn: 'Dell ল্যাপটপ i7 16GB RAM',
-    price: 180,
-    currency: 'OMR',
+    price: 63000,
+    currency: 'BDT',
     category: 'কম্পিউটার',
     location: 'মাস্কাট, রুয়ি',
     condition: 'ব্যবহৃত - ভাল',
@@ -60,8 +60,8 @@ const listings = [
     id: 3,
     title: 'সোফা সেট - ৩ পিস',
     titleBn: 'সোফা সেট - ৩ পিস',
-    price: 120,
-    currency: 'OMR',
+    price: 42000,
+    currency: 'BDT',
     category: 'ফার্নিচার',
     location: 'মাস্কাট, বোশার',
     condition: 'নতুনের মত',
@@ -73,8 +73,8 @@ const listings = [
     id: 4,
     title: 'শিশুর খেলনা সেট',
     titleBn: 'শিশুর খেলনা সেট',
-    price: 15,
-    currency: 'OMR',
+    price: 5250,
+    currency: 'BDT',
     category: 'শিশু সামগ্রী',
     location: 'সোহার',
     condition: 'নতুন',
@@ -86,8 +86,8 @@ const listings = [
     id: 5,
     title: 'Samsung Smart TV 55 inch',
     titleBn: 'Samsung Smart TV 55 inch',
-    price: 200,
-    currency: 'OMR',
+    price: 70000,
+    currency: 'BDT',
     category: 'ইলেকট্রনিক্স',
     location: 'মাস্কাট, কুরুম',
     condition: 'ব্যবহৃত - চমৎকার',
@@ -99,8 +99,8 @@ const listings = [
     id: 6,
     title: 'ডাইনিং টেবিল সেট',
     titleBn: 'ডাইনিং টেবিল সেট',
-    price: 80,
-    currency: 'OMR',
+    price: 28000,
+    currency: 'BDT',
     category: 'ফার্নিচার',
     location: 'মাস্কাট, আল হাইল',
     condition: 'ব্যবহৃত - ভাল',
@@ -197,7 +197,7 @@ export default function ClassifiedsPage() {
                 </Link>
                 <div className="flex items-center gap-2 mt-2">
                   <span className="text-2xl font-bold text-primary">
-                    {item.price} {item.currency}
+                    ৳ {item.price.toLocaleString('bn-BD')}
                   </span>
                 </div>
               </CardHeader>
