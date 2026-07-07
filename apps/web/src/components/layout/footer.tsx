@@ -13,18 +13,38 @@ export function Footer() {
               ওমানে বসবাসরত বাংলাদেশীদের জন্য সম্পূর্ণ ডিজিটাল সেবা প্ল্যাটফর্ম
             </p>
             <div className="flex space-x-3">
-              <Link href="#" className="text-muted-foreground hover:text-primary">
+              <a 
+                href="https://www.facebook.com/helloomanbangla/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary"
+              >
                 <Facebook className="h-5 w-5" />
-              </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary">
+              </a>
+              <a 
+                href="https://www.facebook.com/helloomanbangla/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary"
+              >
                 <Twitter className="h-5 w-5" />
-              </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary">
+              </a>
+              <a 
+                href="https://www.facebook.com/helloomanbangla/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary"
+              >
                 <Instagram className="h-5 w-5" />
-              </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary">
+              </a>
+              <a 
+                href="https://www.facebook.com/helloomanbangla/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary"
+              >
                 <Youtube className="h-5 w-5" />
-              </Link>
+              </a>
             </div>
           </div>
 

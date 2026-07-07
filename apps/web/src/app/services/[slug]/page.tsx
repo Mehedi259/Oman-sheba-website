@@ -10,27 +10,33 @@ import { getServiceById, getServices } from '@hello-oman-sheba/database/mock-dat
 
 // Category definitions used on the services listing page
 const serviceCategories: Record<string, { name: string; nameBn: string; icon: string; description: string }> = {
-  'healthcare': { name: 'Healthcare', nameBn: 'স্বাস্থ্যসেবা', icon: '🏥', description: 'হাসপাতাল, ক্লিনিক এবং মেডিকেল সেবা প্রদানকারী।' },
-  'legal': { name: 'Legal', nameBn: 'আইনি সেবা', icon: '⚖️', description: 'আইনগত পরামর্শ, লেবার কোর্ট এবং ডকুমেন্টেশন সেবা।' },
-  'passport': { name: 'Passport', nameBn: 'পাসপোর্ট সেবা', icon: '📄', description: 'পাসপোর্ট নবায়ন, নতুন পাসপোর্ট এবং সংশোধন সেবা।' },
-  'visa': { name: 'Visa', nameBn: 'ভিসা সেবা', icon: '📋', description: 'ওয়ার্ক ভিসা, ফ্যামিলি ভিসা, ভিজিট ভিসা এবং ভিসা রিনিউয়াল।' },
-  'travel': { name: 'Travel', nameBn: 'ভ্রমণ সেবা', icon: '✈️', description: 'ফ্লাইট বুকিং, হোটেল রিজার্ভেশন এবং ট্যুর প্যাকেজ।' },
-  'education': { name: 'Education', nameBn: 'শিক্ষা', icon: '🎓', description: 'শিক্ষা প্রতিষ্ঠান, কোচিং এবং ট্রেনিং সেন্টার।' },
-  'business': { name: 'Business', nameBn: 'ব্যবসা', icon: '🏢', description: 'ব্যবসায়িক পরামর্শ, কোম্পানি রেজিস্ট্রেশন এবং ট্রেড লাইসেন্স।' },
-  'restaurant': { name: 'Restaurant', nameBn: 'রেস্টুরেন্ট', icon: '🍽️', description: 'বাংলাদেশি এবং আন্তর্জাতিক রেস্টুরেন্ট ও খাবার সেবা।' },
+  'embassy': { name: 'Embassy', nameBn: 'ওমান - বাংলাদেশ দূতাবাস', icon: '🏛️', description: 'বাংলাদেশ দূতাবাস সেবা, কনস্যুলার সেবা এবং জরুরী সহায়তা।' },
+  'ambulance': { name: 'Ambulance', nameBn: 'আম্বুলেন্স', icon: '🚑', description: 'জরুরী অ্যাম্বুলেন্স সেবা এবং মেডিকেল ট্রান্সপোর্ট।' },
+  'doctors': { name: 'Doctors', nameBn: 'বিশেষজ্ঞ ডাক্তার', icon: '👨‍⚕️', description: 'বিশেষজ্ঞ চিকিৎসক, পরামর্শ এবং চেকআপ সেবা।' },
+  'hospitals': { name: 'Hospitals', nameBn: 'হাসপাতাল', icon: '🏥', description: 'হাসপাতাল, ক্লিনিক এবং মেডিকেল সেন্টার।' },
+  'maktab': { name: 'Maktab Certificate', nameBn: 'মক্তব সানাদ', icon: '📜', description: 'মক্তব সার্টিফিকেট, শিক্ষা সনদ এবং সংশ্লিষ্ট সেবা।' },
+  'travel-agency': { name: 'Travel Agency', nameBn: 'ট্রাভেল এজেন্সি', icon: '✈️', description: 'ফ্লাইট বুকিং, হোটেল রিজার্ভেশন এবং ট্যুর প্যাকেজ।' },
+  'tourist-places': { name: 'Tourist Places', nameBn: 'দর্শনীয় স্থান', icon: '🗿', description: 'ওমানের দর্শনীয় স্থান, ঐতিহাসিক স্থান এবং পর্যটন।' },
+  'lawyers': { name: 'Lawyers', nameBn: 'আইনজীবী', icon: '⚖️', description: 'আইনজীবী, আইনগত পরামর্শ এবং লেবার কোর্ট সেবা।' },
+  'hotels': { name: 'Hotels', nameBn: 'হোটেল', icon: '🏨', description: 'হোটেল, রেস্ট হাউস এবং আবাসন সেবা।' },
+  'money-exchange': { name: 'Money Exchange', nameBn: 'মানি এক্সচেঞ্জ', icon: '💱', description: 'মানি এক্সচেঞ্জ, রেমিট্যান্স এবং ব্যাংকিং সেবা।' },
+  'police': { name: 'Police Station', nameBn: 'পুলিশ স্টেশন', icon: '👮', description: 'পুলিশ স্টেশন, জরুরী সেবা এবং আইন শৃঙ্খলা।' },
 }
 
 export function generateStaticParams() {
   return [
     // Category slugs
-    { slug: 'healthcare' },
-    { slug: 'legal' },
-    { slug: 'passport' },
-    { slug: 'visa' },
-    { slug: 'travel' },
-    { slug: 'education' },
-    { slug: 'business' },
-    { slug: 'restaurant' },
+    { slug: 'embassy' },
+    { slug: 'ambulance' },
+    { slug: 'doctors' },
+    { slug: 'hospitals' },
+    { slug: 'maktab' },
+    { slug: 'travel-agency' },
+    { slug: 'tourist-places' },
+    { slug: 'lawyers' },
+    { slug: 'hotels' },
+    { slug: 'money-exchange' },
+    { slug: 'police' },
     // Service provider IDs
     { slug: 's1' },
     { slug: 's2' },

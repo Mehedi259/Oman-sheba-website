@@ -1,22 +1,21 @@
 import Link from 'next/link'
 
 const categories = [
+  { nameBn: 'ওমান - বাংলাদেশ দূতাবাস', href: '/services/embassy', icon: '/icons/embassy.svg' },
+  { nameBn: 'আম্বুলেন্স', href: '/services/ambulance', icon: '/icons/ambulance.svg' },
   { nameBn: 'চাকরি', href: '/jobs', icon: '/icons/jobs.svg' },
   { nameBn: 'বাসা ভাড়া', href: '/properties', icon: '/icons/properties.svg' },
-  { nameBn: 'গাড়ি', href: '/vehicles', icon: '/icons/vehicles.svg' },
-  { nameBn: 'স্বাস্থ্যসেবা', href: '/services/healthcare', icon: '/icons/healthcare.svg' },
-  { nameBn: 'পাসপোর্ট', href: '/services/passport', icon: '/icons/passport.svg' },
-  { nameBn: 'ভিসা', href: '/services/visa', icon: '/icons/visa.svg' },
-  { nameBn: 'ভ্রমণ', href: '/services/travel', icon: '/icons/travel.svg' },
-  { nameBn: 'শিক্ষা', href: '/services/education', icon: '/icons/education.svg' },
-  { nameBn: 'আইনগত সহায়তা', href: '/services/legal', icon: '/icons/legal.svg' },
-  { nameBn: 'ব্যবসা', href: '/services/business', icon: '/icons/business.svg' },
-  { nameBn: 'কমিউনিটি', href: '/community', icon: '/icons/community.svg' },
+  { nameBn: 'বিশেষজ্ঞ ডাক্তার', href: '/services/doctors', icon: '/icons/doctor.svg' },
+  { nameBn: 'হাসপাতাল', href: '/services/hospitals', icon: '/icons/hospital.svg' },
+  { nameBn: 'মক্তব সানাদ', href: '/services/maktab', icon: '/icons/maktab.svg' },
+  { nameBn: 'ট্রাভেল এজেন্সি', href: '/services/travel-agency', icon: '/icons/travel.svg' },
+  { nameBn: 'দর্শনীয় স্থান', href: '/services/tourist-places', icon: '/icons/tourism.svg' },
+  { nameBn: 'আইনজীবী', href: '/services/lawyers', icon: '/icons/lawyer.svg' },
+  { nameBn: 'হোটেল', href: '/services/hotels', icon: '/icons/hotel.svg' },
+  { nameBn: 'মানি এক্সচেঞ্জ', href: '/services/money-exchange', icon: '/icons/money.svg' },
   { nameBn: 'মার্কেট', href: '/classifieds', icon: '/icons/classifieds.svg' },
-  { nameBn: 'রেস্টুরেন্ট', href: '/services/restaurant', icon: '/icons/restaurant.svg' },
-  { nameBn: 'জরুরী নম্বর', href: '/emergency', icon: '/icons/emergency.svg' },
-  { nameBn: 'সংবাদ', href: '/news', icon: '/icons/news.svg' },
-  { nameBn: 'ফোরাম', href: '/forum', icon: '/icons/forum.svg' },
+  { nameBn: 'পুলিশ স্টেশন', href: '/services/police', icon: '/icons/police.svg' },
+  { nameBn: 'হ্যালো ওমান', href: '/about', icon: '/icons/logo.svg' },
 ]
 
 export function CategoryGrid() {
