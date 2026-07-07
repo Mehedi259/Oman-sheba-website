@@ -62,7 +62,7 @@ export function Header() {
             কমিউনিটি
           </Link>
           <Link href="/classifieds" className="text-sm font-medium hover:text-primary transition-colors">
-            ক্লাসিফাইড
+            মার্কেট
           </Link>
         </nav>
 
@@ -121,7 +121,7 @@ export function Header() {
             <Link href="/vehicles" onClick={closeMenu} className="text-sm font-medium hover:text-primary">গাড়ি</Link>
             <Link href="/services" onClick={closeMenu} className="text-sm font-medium hover:text-primary">সেবা</Link>
             <Link href="/community" onClick={closeMenu} className="text-sm font-medium hover:text-primary">কমিউনিটি</Link>
-            <Link href="/classifieds" onClick={closeMenu} className="text-sm font-medium hover:text-primary">ক্লাসিফাইড</Link>
+            <Link href="/classifieds" onClick={closeMenu} className="text-sm font-medium hover:text-primary">মার্কেট</Link>
             <div className="border-t pt-3 space-y-2">
               <Link href="/search" onClick={closeMenu} className="flex items-center gap-2 text-sm font-medium hover:text-primary">
                 <Search className="h-4 w-4" /> সার্চ

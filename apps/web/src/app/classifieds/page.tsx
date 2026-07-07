@@ -117,7 +117,7 @@ export default function ClassifiedsPage() {
       <section className="bg-gradient-to-r from-green-600 to-teal-600 text-white py-16">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">ক্লাসিফাইড বিজ্ঞাপন</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">মার্কেট</h1>
             <p className="text-xl mb-8 text-green-100">
               কিনুন, বিক্রি করুন এবং বিনিময় করুন
             </p>

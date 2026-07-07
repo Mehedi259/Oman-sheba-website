@@ -17,7 +17,7 @@ export default function SearchPage() {
     { id: 'properties', name: 'প্রপার্টি', icon: Home },
     { id: 'vehicles', name: 'গাড়ি', icon: Car },
     { id: 'services', name: 'সেবা', icon: Wrench },
-    { id: 'classifieds', name: 'ক্লাসিফাইড', icon: Tag },
+    { id: 'classifieds', name: 'মার্কেট', icon: Tag },
   ];
 
   const mockResults = [

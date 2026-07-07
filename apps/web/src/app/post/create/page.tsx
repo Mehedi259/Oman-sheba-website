@@ -21,7 +21,7 @@ const categories = [
   { id: 'job', name: 'চাকরি পোস্ট', icon: Briefcase, color: 'bg-blue-500' },
   { id: 'property', name: 'প্রপার্টি', icon: Home, color: 'bg-green-500' },
   { id: 'vehicle', name: 'গাড়ি', icon: Car, color: 'bg-purple-500' },
-  { id: 'classified', name: 'ক্লাসিফাইড', icon: Tag, color: 'bg-orange-500' },
+  { id: 'classified', name: 'মার্কেট', icon: Tag, color: 'bg-orange-500' },
   { id: 'discussion', name: 'আলোচনা', icon: MessageSquare, color: 'bg-pink-500' },
 ];
 

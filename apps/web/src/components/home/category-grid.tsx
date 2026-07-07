@@ -12,7 +12,7 @@ const categories = [
   { nameBn: 'আইনগত সহায়তা', href: '/services/legal', icon: '/icons/legal.svg' },
   { nameBn: 'ব্যবসা', href: '/services/business', icon: '/icons/business.svg' },
   { nameBn: 'কমিউনিটি', href: '/community', icon: '/icons/community.svg' },
-  { nameBn: 'ক্লাসিফাইড', href: '/classifieds', icon: '/icons/classifieds.svg' },
+  { nameBn: 'মার্কেট', href: '/classifieds', icon: '/icons/classifieds.svg' },
   { nameBn: 'রেস্টুরেন্ট', href: '/services/restaurant', icon: '/icons/restaurant.svg' },
   { nameBn: 'জরুরী নম্বর', href: '/emergency', icon: '/icons/emergency.svg' },
   { nameBn: 'সংবাদ', href: '/news', icon: '/icons/news.svg' },
