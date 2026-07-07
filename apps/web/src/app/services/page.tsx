@@ -7,35 +7,35 @@ const allCategories = [
     nameBn: 'চাকরি', 
     href: '/jobs', 
     icon: '💼',
-    color: 'from-blue-500 to-blue-600',
+    color: 'bg-gradient-to-br from-blue-50 to-blue-100',
     description: 'চাকরি খুঁজুন এবং আবেদন করুন'
   },
   { 
     nameBn: 'বাসা ভাড়া', 
     href: '/properties', 
     icon: '🏠',
-    color: 'from-green-500 to-green-600',
+    color: 'bg-gradient-to-br from-emerald-50 to-green-100',
     description: 'ফ্ল্যাট, রুম এবং বেড স্পেস'
   },
   { 
     nameBn: 'গাড়ি', 
     href: '/vehicles', 
     icon: '🚗',
-    color: 'from-purple-500 to-purple-600',
+    color: 'bg-gradient-to-br from-purple-50 to-violet-100',
     description: 'গাড়ি কিনুন বা ভাড়া নিন'
   },
   { 
     nameBn: 'মার্কেট', 
     href: '/classifieds', 
     icon: '🛒',
-    color: 'from-orange-500 to-red-500',
+    color: 'bg-gradient-to-br from-orange-50 to-amber-100',
     description: 'কিনুন এবং বিক্রি করুন'
   },
   { 
     nameBn: 'কমিউনিটি', 
     href: '/community', 
     icon: '👥',
-    color: 'from-pink-500 to-rose-600',
+    color: 'bg-gradient-to-br from-pink-50 to-rose-100',
     description: 'আলোচনা এবং সহযোগিতা'
   },
   
@@ -44,99 +44,99 @@ const allCategories = [
     nameBn: 'ওমান - বাংলাদেশ দূতাবাস', 
     href: '/services/embassy', 
     icon: '🏛️',
-    color: 'from-blue-600 to-indigo-700',
+    color: 'bg-gradient-to-br from-indigo-50 to-blue-100',
     description: 'দূতাবাস সেবা এবং সহায়তা'
   },
   { 
     nameBn: 'বিশেষজ্ঞ ডাক্তার', 
     href: '/services/doctors', 
     icon: '👨‍⚕️',
-    color: 'from-red-500 to-pink-600',
+    color: 'bg-gradient-to-br from-red-50 to-pink-100',
     description: 'বিশেষজ্ঞ চিকিৎসক এবং পরামর্শ'
   },
   { 
     nameBn: 'হাসপাতাল', 
     href: '/services/hospitals', 
     icon: '🏥',
-    color: 'from-red-400 to-red-500',
+    color: 'bg-gradient-to-br from-rose-50 to-red-100',
     description: 'হাসপাতাল এবং ক্লিনিক'
   },
   { 
     nameBn: 'আম্বুলেন্স', 
     href: '/services/ambulance', 
     icon: '🚑',
-    color: 'from-red-600 to-rose-700',
+    color: 'bg-gradient-to-br from-red-50 to-orange-100',
     description: 'জরুরী অ্যাম্বুলেন্স সেবা'
   },
   { 
     nameBn: 'আইনজীবী', 
     href: '/services/lawyers', 
     icon: '⚖️',
-    color: 'from-amber-500 to-orange-600',
+    color: 'bg-gradient-to-br from-amber-50 to-yellow-100',
     description: 'আইনি পরামর্শ এবং সহায়তা'
   },
   { 
     nameBn: 'ট্রাভেল এজেন্সি', 
     href: '/services/travel-agency', 
     icon: '✈️',
-    color: 'from-cyan-500 to-blue-500',
+    color: 'bg-gradient-to-br from-sky-50 to-cyan-100',
     description: 'ফ্লাইট এবং ট্যুর বুকিং'
   },
   { 
     nameBn: 'হোটেল', 
     href: '/services/hotels', 
     icon: '🏨',
-    color: 'from-indigo-500 to-purple-600',
+    color: 'bg-gradient-to-br from-indigo-50 to-purple-100',
     description: 'হোটেল এবং আবাসন'
   },
   { 
     nameBn: 'মানি এক্সচেঞ্জ', 
     href: '/services/money-exchange', 
     icon: '💱',
-    color: 'from-emerald-500 to-green-600',
+    color: 'bg-gradient-to-br from-teal-50 to-emerald-100',
     description: 'মানি ট্রান্সফার এবং এক্সচেঞ্জ'
   },
   { 
     nameBn: 'মক্তব সানাদ', 
     href: '/services/maktab', 
     icon: '📜',
-    color: 'from-teal-500 to-cyan-600',
+    color: 'bg-gradient-to-br from-cyan-50 to-teal-100',
     description: 'মক্তব সার্টিফিকেট সেবা'
   },
   { 
     nameBn: 'দর্শনীয় স্থান', 
     href: '/services/tourist-places', 
     icon: '🗿',
-    color: 'from-lime-500 to-green-600',
+    color: 'bg-gradient-to-br from-lime-50 to-green-100',
     description: 'ওমানের পর্যটন স্থান'
   },
   { 
     nameBn: 'পুলিশ স্টেশন', 
     href: '/services/police', 
     icon: '👮',
-    color: 'from-slate-600 to-blue-700',
+    color: 'bg-gradient-to-br from-slate-50 to-gray-100',
     description: 'পুলিশ স্টেশন তথ্য'
   },
   { 
     nameBn: 'জরুরী নম্বর', 
     href: '/emergency', 
     icon: '🚨',
-    color: 'from-rose-500 to-red-600',
+    color: 'bg-gradient-to-br from-rose-50 to-pink-100',
     description: 'জরুরী যোগাযোগ নম্বর'
   },
   { 
     nameBn: 'সংবাদ', 
     href: '/news', 
     icon: '📰',
-    color: 'from-gray-600 to-slate-700',
+    color: 'bg-gradient-to-br from-gray-50 to-slate-100',
     description: 'সর্বশেষ সংবাদ'
   },
   { 
-    nameBn: 'হ্যালো ওমান সম্পর্কে', 
-    href: '/about', 
+    nameBn: 'হ্যালো ওমান', 
+    href: 'https://www.facebook.com/helloomanbangla/', 
     icon: '💫',
-    color: 'from-violet-500 to-purple-600',
-    description: 'আমাদের সম্পর্কে জানুন'
+    color: 'bg-gradient-to-br from-violet-100 to-purple-100',
+    description: 'আমাদের Facebook পেজ'
   },
 ]
 
@@ -158,28 +158,41 @@ export default function AllServicesPage() {
       <section className="py-16">
         <div className="container">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
-            {allCategories.map((category) => (
-              <Link
-                key={category.href}
-                href={category.href}
-                className="group"
-              >
-                <div className="flex flex-col items-center p-6 rounded-2xl border-2 border-border bg-card hover:shadow-xl transition-all hover:-translate-y-2 h-full">
-                  <div className={`mb-4 rounded-2xl bg-gradient-to-br ${category.color} p-4 group-hover:scale-110 transition-transform shadow-lg`}>
-                    <span className="text-4xl">{category.icon}</span>
+            {allCategories.map((category) => {
+              const isExternal = category.href.startsWith('http');
+              const linkProps = isExternal ? {
+                href: category.href,
+                target: '_blank',
+                rel: 'noopener noreferrer'
+              } : {
+                href: category.href
+              };
+              
+              const LinkComponent = isExternal ? 'a' : Link;
+              
+              return (
+                <LinkComponent
+                  key={category.href}
+                  {...linkProps}
+                  className="group"
+                >
+                  <div className="flex flex-col items-center p-6 rounded-2xl border-2 border-border bg-card hover:shadow-xl transition-all hover:-translate-y-2 h-full">
+                    <div className={`mb-4 rounded-2xl ${category.color} p-4 group-hover:scale-110 transition-transform shadow-sm`}>
+                      <span className="text-4xl">{category.icon}</span>
+                    </div>
+                    <h3 className="text-sm sm:text-base font-bold text-center mb-2">
+                      {category.nameBn}
+                    </h3>
+                    <p className="text-xs text-muted-foreground text-center line-clamp-2">
+                      {category.description}
+                    </p>
+                    <div className="mt-4 flex items-center text-violet-600 group-hover:text-violet-700 text-sm font-medium">
+                      বিস্তারিত <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                    </div>
                   </div>
-                  <h3 className="text-sm sm:text-base font-bold text-center mb-2">
-                    {category.nameBn}
-                  </h3>
-                  <p className="text-xs text-muted-foreground text-center line-clamp-2">
-                    {category.description}
-                  </p>
-                  <div className="mt-4 flex items-center text-violet-600 group-hover:text-violet-700 text-sm font-medium">
-                    বিস্তারিত <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </Link>
-            ))}
+                </LinkComponent>
+              );
+            })}
           </div>
         </div>
       </section>

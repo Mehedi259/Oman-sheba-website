@@ -5,73 +5,73 @@ const categories = [
     nameBn: 'চাকরি', 
     href: '/jobs', 
     icon: '💼',
-    color: 'from-blue-500 to-blue-600'
+    color: 'bg-gradient-to-br from-blue-50 to-blue-100'
   },
   { 
     nameBn: 'বাসা ভাড়া', 
     href: '/properties', 
     icon: '🏠',
-    color: 'from-green-500 to-green-600'
+    color: 'bg-gradient-to-br from-emerald-50 to-green-100'
   },
   { 
     nameBn: 'গাড়ি', 
     href: '/vehicles', 
     icon: '🚗',
-    color: 'from-purple-500 to-purple-600'
+    color: 'bg-gradient-to-br from-purple-50 to-violet-100'
   },
   { 
     nameBn: 'বিশেষজ্ঞ ডাক্তার', 
     href: '/services/doctors', 
     icon: '👨‍⚕️',
-    color: 'from-red-500 to-pink-600'
+    color: 'bg-gradient-to-br from-red-50 to-pink-100'
   },
   { 
     nameBn: 'হাসপাতাল', 
     href: '/services/hospitals', 
     icon: '🏥',
-    color: 'from-red-400 to-red-500'
+    color: 'bg-gradient-to-br from-rose-50 to-red-100'
   },
   { 
     nameBn: 'ট্রাভেল এজেন্সি', 
     href: '/services/travel-agency', 
     icon: '✈️',
-    color: 'from-cyan-500 to-blue-500'
+    color: 'bg-gradient-to-br from-sky-50 to-cyan-100'
   },
   { 
     nameBn: 'আইনজীবী', 
     href: '/services/lawyers', 
     icon: '⚖️',
-    color: 'from-amber-500 to-orange-600'
+    color: 'bg-gradient-to-br from-amber-50 to-yellow-100'
   },
   { 
     nameBn: 'মার্কেট', 
     href: '/classifieds', 
     icon: '🛒',
-    color: 'from-orange-500 to-red-500'
+    color: 'bg-gradient-to-br from-orange-50 to-amber-100'
   },
   { 
     nameBn: 'হোটেল', 
     href: '/services/hotels', 
     icon: '🏨',
-    color: 'from-indigo-500 to-purple-600'
+    color: 'bg-gradient-to-br from-indigo-50 to-purple-100'
   },
   { 
     nameBn: 'মানি এক্সচেঞ্জ', 
     href: '/services/money-exchange', 
     icon: '💱',
-    color: 'from-emerald-500 to-green-600'
+    color: 'bg-gradient-to-br from-teal-50 to-emerald-100'
   },
   { 
     nameBn: 'জরুরী সেবা', 
     href: '/emergency', 
     icon: '🚨',
-    color: 'from-rose-500 to-red-600'
+    color: 'bg-gradient-to-br from-rose-50 to-pink-100'
   },
   { 
     nameBn: 'আরো সেবা', 
     href: '/services', 
     icon: '📋',
-    color: 'from-slate-500 to-gray-600'
+    color: 'bg-gradient-to-br from-slate-50 to-gray-100'
   },
 ]
 
@@ -90,7 +90,7 @@ export function CategoryGrid() {
               href={category.href}
               className="group flex flex-col items-center p-3 sm:p-6 rounded-xl border bg-card hover:shadow-lg transition-all hover:-translate-y-1"
             >
-              <div className={`mb-2 sm:mb-3 rounded-xl bg-gradient-to-br ${category.color} p-2.5 sm:p-3 group-hover:scale-110 transition-transform shadow-md`}>
+              <div className={`mb-2 sm:mb-3 rounded-xl ${category.color} p-2.5 sm:p-3 group-hover:scale-110 transition-transform shadow-sm`}>
                 <span className="text-2xl sm:text-3xl">{category.icon}</span>
               </div>
               <span className="text-xs sm:text-sm font-medium text-center leading-tight">
