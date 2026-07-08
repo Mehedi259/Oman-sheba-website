@@ -160,7 +160,7 @@ model Job {
   // Salary
   salaryMin       Int?
   salaryMax       Int?
-  salaryCurrency  String      @default("BDT")
+  salaryCurrency  String      @default("OMR")
   salaryPeriod    String      @default("MONTHLY") // MONTHLY, YEARLY
   
   // Requirements
@@ -373,7 +373,7 @@ model Property {
   
   // Price
   price           Float
-  currency        String         @default("BDT")
+  currency        String         @default("OMR")
   priceNegotiable Boolean        @default(false)
   
   // Amenities
@@ -496,7 +496,7 @@ model Vehicle {
   // Price & Purpose
   purpose         VehiclePurpose
   price           Float?
-  currency        String          @default("BDT")
+  currency        String          @default("OMR")
   priceNegotiable Boolean         @default(false)
   
   // Rental (if applicable)
@@ -985,7 +985,7 @@ model Classified {
   
   // Price
   price           Float?
-  currency        String            @default("BDT")
+  currency        String            @default("OMR")
   priceNegotiable Boolean           @default(false)
   
   // Condition

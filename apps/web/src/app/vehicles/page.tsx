@@ -8,7 +8,7 @@ const vehicles = [
   {
     id: '1',
     title: 'টয়োটা ক্যামরি ২০২০',
-    price: '৳ ২২,৭৫,০০০',
+    price: '৬,৫০০ রিয়াল',
     type: 'বিক্রয়',
     make: 'Toyota',
     model: 'Camry',
@@ -22,7 +22,7 @@ const vehicles = [
   {
     id: '2',
     title: 'হোন্ডা সিভিক ২০১৮',
-    price: '৳ ১৬,৮০,০০০',
+    price: '৪,৮০০ রিয়াল',
     type: 'বিক্রয়',
     make: 'Honda',
     model: 'Civic',
@@ -36,7 +36,7 @@ const vehicles = [
   {
     id: '3',
     title: 'নিসান এক্স-ট্রেইল ২০১৯',
-    price: '৳ ১৮,২০,০০০',
+    price: '৫,২০০ রিয়াল',
     type: 'বিক্রয়',
     make: 'Nissan',
     model: 'X-Trail',
@@ -50,7 +50,7 @@ const vehicles = [
   {
     id: '4',
     title: 'হুন্ডাই এলান্ট্রা ২০২১',
-    price: '৳ ২৫,২০,০০০',
+    price: '৭,২০০ রিয়াল',
     type: 'বিক্রয়',
     make: 'Hyundai',
     model: 'Elantra',

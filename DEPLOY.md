@@ -20,7 +20,7 @@
 
 ## 📱 Result
 
-Deployment URL: `https://oman-sheba-website.vercel.app`
+Deployment URL: `https://sheba-website.vercel.app`
 
 ---
 
