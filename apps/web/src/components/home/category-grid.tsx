@@ -50,10 +50,10 @@ const categories = [
     color: 'bg-gradient-to-br from-orange-50 to-amber-100'
   },
   { 
-    nameBn: 'হোটেল', 
-    href: '/services/hotels', 
-    icon: '🏨',
-    color: 'bg-gradient-to-br from-indigo-50 to-purple-100'
+    nameBn: 'মক্তব সানাদ', 
+    href: '/services/maktab', 
+    icon: '📜',
+    color: 'bg-gradient-to-br from-indigo-50 to-blue-100'
   },
   { 
     nameBn: 'মানি এক্সচেঞ্জ', 
