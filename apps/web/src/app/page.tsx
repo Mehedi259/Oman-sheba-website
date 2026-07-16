@@ -10,6 +10,9 @@ import { NewsSection } from '@/components/home/news-section'
 import { CallToAction } from '@/components/home/call-to-action'
 import { EmergencyContacts } from '@/components/home/emergency-contacts'
 
+// Force dynamic rendering to avoid build-time API calls
+export const dynamic = 'force-dynamic'
+
 export default function HomePage() {
   return (
     <div className="flex flex-col">
