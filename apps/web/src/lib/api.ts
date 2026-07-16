@@ -44,6 +44,7 @@ async function fetchApi<T>(
     const response = await fetch(url.toString(), {
       ...options,
       headers,
+      signal: AbortSignal.timeout(10000), // 10 second timeout
       next: options?.next || { revalidate: 60 }, // Cache for 60 seconds
     });
     
@@ -51,8 +52,14 @@ async function fetchApi<T>(
       throw new Error(`API Error: ${response.statusText}`);
     }
     
-    // Django REST Framework returns data directly, not wrapped in {success, data}
+    // Django REST Framework may return paginated response
     const result = await response.json();
+    
+    // Check if it's a paginated response
+    if (result && typeof result === 'object' && 'results' in result) {
+      return result.results as T;
+    }
+    
     return result as T;
   } catch (error) {
     console.warn(`Fetch to ${endpoint} failed, falling back to local mock data.`, error);
