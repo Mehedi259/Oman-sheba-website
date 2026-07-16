@@ -1,236 +1,358 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Upload } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { createVehicle } from '@/lib/api';
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
+
+const VEHICLE_TYPES = [
+  { value: 'CAR', label: 'গাড়ি' },
+  { value: 'SUV', label: 'এসইউভি' },
+  { value: 'TRUCK', label: 'ট্রাক' },
+  { value: 'VAN', label: 'ভ্যান' },
+  { value: 'MOTORCYCLE', label: 'মোটরসাইকেল' },
+  { value: 'BUS', label: 'বাস' },
+];
+
+const CONDITIONS = [
+  { value: 'NEW', label: 'নতুন' },
+  { value: 'USED', label: 'ব্যবহৃত' },
+  { value: 'EXCELLENT', label: 'চমৎকার' },
+  { value: 'GOOD', label: 'ভাল' },
+  { value: 'FAIR', label: 'মোটামুটি' },
+];
+
+const FUEL_TYPES = [
+  { value: 'PETROL', label: 'পেট্রোল' },
+  { value: 'DIESEL', label: 'ডিজেল' },
+  { value: 'ELECTRIC', label: 'বৈদ্যুতিক' },
+  { value: 'HYBRID', label: 'হাইব্রিড' },
+];
+
+const TRANSMISSIONS = [
+  { value: 'AUTOMATIC', label: 'অটোমেটিক' },
+  { value: 'MANUAL', label: 'ম্যানুয়াল' },
+];
+
+const CITIES = [
+  'Muscat', 'Salalah', 'Sohar', 'Nizwa', 'Sur', 'Ibri', 'Barka', 'Rustaq'
+];
 
 export function VehiclePostForm() {
-  return (
-    <div className="space-y-6">
-      {/* গাড়ির শিরোনাম */}
-      <div>
-        <label className="text-sm font-medium mb-2 block">
-          গাড়ির শিরোনাম *
-        </label>
-        <Input placeholder="যেমন: Toyota Corolla 2020 বিক্রয়" />
-      </div>
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+  const router = useRouter();
+  
+  const [formData, setFormData] = useState({
+    title_bn: '',
+    title_en: '',
+    description_bn: '',
+    description_en: '',
+    vehicle_type: '',
+    brand: '',
+    model: '',
+    year: '',
+    condition: '',
+    fuel_type: '',
+    transmission: '',
+    mileage: '',
+    price: '',
+    currency: 'OMR',
+    city: '',
+    area: '',
+    contact_phone: '',
+    contact_email: '',
+  });
 
-      {/* গাড়ির ধরন */}
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      await createVehicle({
+        ...formData,
+        year: parseInt(formData.year),
+        mileage: formData.mileage ? parseInt(formData.mileage) : null,
+        price: parseFloat(formData.price),
+      });
+      
+      toast({
+        title: 'সফল!',
+        description: 'আপনার গাড়ির পোস্ট সফলভাবে জমা হয়েছে।',
+      });
+      
+      router.push('/vehicles');
+    } catch (error) {
+      toast({
+        title: 'ত্রুটি',
+        description: 'পোস্ট করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="text-sm font-medium mb-2 block">
-            গাড়ির ধরন *
-          </label>
-          <select className="w-full p-3 border rounded-md bg-background">
-            <option value="">নির্বাচন করুন</option>
-            <option value="CAR">গাড়ি</option>
-            <option value="MOTORCYCLE">মোটরসাইকেল</option>
-            <option value="TRUCK">ট্রাক</option>
-            <option value="VAN">ভ্যান</option>
-            <option value="BUS">বাস</option>
-          </select>
+        <div className="space-y-2">
+          <Label htmlFor="title_bn">শিরোনাম (বাংলা) *</Label>
+          <Input
+            id="title_bn"
+            value={formData.title_bn}
+            onChange={(e) => handleChange('title_bn', e.target.value)}
+            placeholder="যেমন: টয়োটা কামরি ২০২০"
+            required
+          />
         </div>
         
-        <div>
-          <label className="text-sm font-medium mb-2 block">
-            উদ্দেশ্য *
-          </label>
-          <select className="w-full p-3 border rounded-md bg-background">
-            <option value="">নির্বাচন করুন</option>
-            <option value="SALE">বিক্রয়</option>
-            <option value="RENT">ভাড়া</option>
-          </select>
+        <div className="space-y-2">
+          <Label htmlFor="title_en">Title (English) *</Label>
+          <Input
+            id="title_en"
+            value={formData.title_en}
+            onChange={(e) => handleChange('title_en', e.target.value)}
+            placeholder="e.g: Toyota Camry 2020"
+            required
+          />
         </div>
       </div>
 
-      {/* ব্র্যান্ড ও মডেল */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="vehicle_type">গাড়ির ধরন *</Label>
+          <Select value={formData.vehicle_type} onValueChange={(value) => handleChange('vehicle_type', value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="নির্বাচন করুন" />
+            </SelectTrigger>
+            <SelectContent>
+              {VEHICLE_TYPES.map((type) => (
+                <SelectItem key={type.value} value={type.value}>
+                  {type.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="brand">ব্র্যান্ড *</Label>
+          <Input
+            id="brand"
+            value={formData.brand}
+            onChange={(e) => handleChange('brand', e.target.value)}
+            placeholder="যেমন: Toyota"
+            required
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="model">মডেল *</Label>
+          <Input
+            id="model"
+            value={formData.model}
+            onChange={(e) => handleChange('model', e.target.value)}
+            placeholder="যেমন: Camry"
+            required
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="year">বছর *</Label>
+          <Input
+            id="year"
+            type="number"
+            value={formData.year}
+            onChange={(e) => handleChange('year', e.target.value)}
+            placeholder="2020"
+            required
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="condition">অবস্থা *</Label>
+          <Select value={formData.condition} onValueChange={(value) => handleChange('condition', value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="নির্বাচন করুন" />
+            </SelectTrigger>
+            <SelectContent>
+              {CONDITIONS.map((condition) => (
+                <SelectItem key={condition.value} value={condition.value}>
+                  {condition.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="fuel_type">জ্বালানির ধরন *</Label>
+          <Select value={formData.fuel_type} onValueChange={(value) => handleChange('fuel_type', value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="নির্বাচন করুন" />
+            </SelectTrigger>
+            <SelectContent>
+              {FUEL_TYPES.map((fuel) => (
+                <SelectItem key={fuel.value} value={fuel.value}>
+                  {fuel.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="transmission">ট্রান্সমিশন *</Label>
+          <Select value={formData.transmission} onValueChange={(value) => handleChange('transmission', value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="নির্বাচন করুন" />
+            </SelectTrigger>
+            <SelectContent>
+              {TRANSMISSIONS.map((transmission) => (
+                <SelectItem key={transmission.value} value={transmission.value}>
+                  {transmission.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="mileage">মাইলেজ (km)</Label>
+          <Input
+            id="mileage"
+            type="number"
+            value={formData.mileage}
+            onChange={(e) => handleChange('mileage', e.target.value)}
+            placeholder="50000"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="price">মূল্য *</Label>
+          <Input
+            id="price"
+            type="number"
+            value={formData.price}
+            onChange={(e) => handleChange('price', e.target.value)}
+            placeholder="5000"
+            required
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="currency">মুদ্রা</Label>
+          <Select value={formData.currency} onValueChange={(value) => handleChange('currency', value)}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="OMR">OMR</SelectItem>
+              <SelectItem value="USD">USD</SelectItem>
+              <SelectItem value="BDT">BDT</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="text-sm font-medium mb-2 block">
-            ব্র্যান্ড/মেক *
-          </label>
-          <Input placeholder="যেমন: Toyota, Nissan, Honda" />
+        <div className="space-y-2">
+          <Label htmlFor="city">শহর *</Label>
+          <Select value={formData.city} onValueChange={(value) => handleChange('city', value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="নির্বাচন করুন" />
+            </SelectTrigger>
+            <SelectContent>
+              {CITIES.map((city) => (
+                <SelectItem key={city} value={city}>
+                  {city}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
-        <div>
-          <label className="text-sm font-medium mb-2 block">
-            মডেল *
-          </label>
-          <Input placeholder="যেমন: Corolla, Patrol, Civic" />
+
+        <div className="space-y-2">
+          <Label htmlFor="area">এলাকা *</Label>
+          <Input
+            id="area"
+            value={formData.area}
+            onChange={(e) => handleChange('area', e.target.value)}
+            placeholder="যেমন: Al Khuwair"
+            required
+          />
         </div>
       </div>
 
-      {/* বছর ও রঙ */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="text-sm font-medium mb-2 block">
-            মডেল বছর *
-          </label>
-          <Input type="number" placeholder="যেমন: 2020" />
-        </div>
-        <div>
-          <label className="text-sm font-medium mb-2 block">
-            রঙ
-          </label>
-          <Input placeholder="যেমন: সাদা, কালো, রূপালী" />
-        </div>
-      </div>
-
-      {/* বিস্তারিত বিবরণ */}
-      <div>
-        <label className="text-sm font-medium mb-2 block">
-          গাড়ির বিস্তারিত বিবরণ *
-        </label>
-        <textarea
-          className="w-full min-h-32 p-3 border rounded-md"
-          placeholder="গাড়ির অবস্থা, ফিচার, সার্ভিস হিস্ট্রি, দুর্ঘটনার ইতিহাস ইত্যাদি বিস্তারিত লিখুন..."
+      <div className="space-y-2">
+        <Label htmlFor="description_bn">বিবরণ (বাংলা) *</Label>
+        <Textarea
+          id="description_bn"
+          value={formData.description_bn}
+          onChange={(e) => handleChange('description_bn', e.target.value)}
+          placeholder="গাড়ির বিস্তারিত বিবরণ লিখুন"
+          rows={4}
+          required
         />
       </div>
 
-      {/* মাইলেজ ও অবস্থা */}
+      <div className="space-y-2">
+        <Label htmlFor="description_en">Description (English) *</Label>
+        <Textarea
+          id="description_en"
+          value={formData.description_en}
+          onChange={(e) => handleChange('description_en', e.target.value)}
+          placeholder="Enter detailed vehicle description"
+          rows={4}
+          required
+        />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="text-sm font-medium mb-2 block">
-            মাইলেজ (কিলোমিটার)
-          </label>
-          <Input type="number" placeholder="যেমন: ৫০০০০" />
+        <div className="space-y-2">
+          <Label htmlFor="contact_phone">যোগাযোগ ফোন *</Label>
+          <Input
+            id="contact_phone"
+            value={formData.contact_phone}
+            onChange={(e) => handleChange('contact_phone', e.target.value)}
+            placeholder="+968 9XXXXXXX"
+            required
+          />
         </div>
-        <div>
-          <label className="text-sm font-medium mb-2 block">
-            গাড়ির অবস্থা *
-          </label>
-          <select className="w-full p-3 border rounded-md bg-background">
-            <option value="">নির্বাচন করুন</option>
-            <option value="NEW">নতুন</option>
-            <option value="USED_LIKE_NEW">প্রায় নতুন</option>
-            <option value="USED_GOOD">ব্যবহৃত - ভালো</option>
-            <option value="USED_FAIR">ব্যবহৃত - মোটামুটি</option>
-            <option value="NEEDS_REPAIR">মেরামত প্রয়োজন</option>
-          </select>
+
+        <div className="space-y-2">
+          <Label htmlFor="contact_email">যোগাযোগ ইমেইল</Label>
+          <Input
+            id="contact_email"
+            type="email"
+            value={formData.contact_email}
+            onChange={(e) => handleChange('contact_email', e.target.value)}
+            placeholder="email@example.com"
+          />
         </div>
       </div>
 
-      {/* ট্রান্সমিশন ও ফুয়েল */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="text-sm font-medium mb-2 block">
-            ট্রান্সমিশন *
-          </label>
-          <select className="w-full p-3 border rounded-md bg-background">
-            <option value="">নির্বাচন করুন</option>
-            <option value="AUTOMATIC">অটোমেটিক</option>
-            <option value="MANUAL">ম্যানুয়াল</option>
-          </select>
-        </div>
-        <div>
-          <label className="text-sm font-medium mb-2 block">
-            ফুয়েল টাইপ *
-          </label>
-          <select className="w-full p-3 border rounded-md bg-background">
-            <option value="">নির্বাচন করুন</option>
-            <option value="PETROL">পেট্রোল</option>
-            <option value="DIESEL">ডিজেল</option>
-            <option value="ELECTRIC">ইলেকট্রিক</option>
-            <option value="HYBRID">হাইব্রিড</option>
-          </select>
-        </div>
-      </div>
-
-      {/* ইঞ্জিন ক্যাপাসিটি */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="text-sm font-medium mb-2 block">
-            ইঞ্জিন ক্যাপাসিটি
-          </label>
-          <Input placeholder="যেমন: 2.0L, 1.8L" />
-        </div>
-        <div>
-          <label className="text-sm font-medium mb-2 block">
-            সিট সংখ্যা
-          </label>
-          <Input type="number" placeholder="যেমন: ৫" />
-        </div>
-      </div>
-
-      {/* ইন্স্যুরেন্স */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="flex items-center pt-8">
-          <input type="checkbox" id="insurance" className="mr-2" />
-          <label htmlFor="insurance" className="text-sm">
-            ইন্স্যুরেন্স আছে
-          </label>
-        </div>
-        <div>
-          <label className="text-sm font-medium mb-2 block">
-            ইন্স্যুরেন্স মেয়াদ শেষ
-          </label>
-          <Input type="date" />
-        </div>
-      </div>
-
-      {/* মূল্য */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="text-sm font-medium mb-2 block">
-            মূল্য (রিয়াল) *
-          </label>
-          <Input type="number" placeholder="যেমন: ৩৫০০" />
-        </div>
-        <div className="flex items-center pt-8">
-          <input type="checkbox" id="vehicle-negotiable" className="mr-2" />
-          <label htmlFor="vehicle-negotiable" className="text-sm">
-            দর দাম আলোচনা সাপেক্ষ
-          </label>
-        </div>
-      </div>
-
-      {/* রেজিস্ট্রেশন */}
-      <div>
-        <label className="text-sm font-medium mb-2 block">
-          রেজিস্ট্রেশন নম্বর (ঐচ্ছিক)
-        </label>
-        <Input placeholder="গাড়ির প্লেট নম্বর" />
-      </div>
-
-      {/* যোগাযোগ */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="text-sm font-medium mb-2 block">
-            মালিকের নাম *
-          </label>
-          <Input placeholder="আপনার নাম লিখুন" />
-        </div>
-        <div>
-          <label className="text-sm font-medium mb-2 block">
-            যোগাযোগের ফোন নম্বর *
-          </label>
-          <Input placeholder="+968 XXXX XXXX" />
-        </div>
-      </div>
-
-      {/* হোয়াটসঅ্যাপ */}
-      <div>
-        <label className="text-sm font-medium mb-2 block">
-          হোয়াটসঅ্যাপ নম্বর (ঐচ্ছিক)
-        </label>
-        <Input placeholder="+968 XXXX XXXX" />
-      </div>
-
-      {/* ছবি */}
-      <div>
-        <label className="text-sm font-medium mb-2 block">
-          গাড়ির ছবি আপলোড করুন *
-        </label>
-        <div className="border-2 border-dashed rounded-lg p-8 text-center hover:bg-muted/50 cursor-pointer transition-colors">
-          <Upload className="h-12 w-12 mx-auto text-muted-foreground mb-2" />
-          <p className="text-sm text-muted-foreground">
-            ক্লিক করে বা ড্র্যাগ করে ছবি যোগ করুন
-          </p>
-          <p className="text-xs text-muted-foreground mt-1">
-            সর্বনিম্ন ৪টি, সর্বোচ্চ ১০টি ছবি (প্রতিটি ৫MB পর্যন্ত)
-          </p>
-        </div>
-      </div>
-    </div>
+      <Button 
+        type="submit" 
+        className="w-full bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700"
+        disabled={loading}
+      >
+        {loading ? 'প্রকাশ হচ্ছে...' : 'পোস্ট প্রকাশ করুন'}
+      </Button>
+    </form>
   );
 }

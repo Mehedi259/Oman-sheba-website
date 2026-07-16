@@ -118,20 +118,6 @@ export default function CreatePostPage() {
                 {selectedCategory === 'vehicle' && <VehiclePostForm />}
                 {selectedCategory === 'classified' && <ClassifiedPostForm />}
                 {selectedCategory === 'discussion' && <DiscussionPostForm />}
-
-                {/* Actions */}
-                <div className="flex gap-4 pt-8 mt-8 border-t">
-                  <Button
-                    variant="outline"
-                    className="flex-1"
-                    onClick={() => setSelectedCategory('')}
-                  >
-                    বাতিল করুন
-                  </Button>
-                  <Button className="flex-1 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700">
-                    পোস্ট প্রকাশ করুন
-                  </Button>
-                </div>
               </CardContent>
             </Card>
           )}

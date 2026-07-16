@@ -1,7 +1,17 @@
 // API Client for fetching data
 import * as mockData from '@hello-oman-sheba/database/mock-data';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL 
+  ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/classifieds`
+  : 'http://localhost:3000/api';
+
+// Helper to get auth token from localStorage
+const getAuthToken = () => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('token');
+  }
+  return null;
+};
 
 interface ApiResponse<T> {
   success: boolean;
@@ -10,7 +20,11 @@ interface ApiResponse<T> {
   error?: string;
 }
 
-async function fetchApi<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
+async function fetchApi<T>(
+  endpoint: string, 
+  params?: Record<string, string>,
+  options?: RequestInit
+): Promise<T> {
   const url = new URL(`${API_BASE_URL}${endpoint}`);
   
   if (params) {
@@ -19,45 +33,50 @@ async function fetchApi<T>(endpoint: string, params?: Record<string, string>): P
     });
   }
   
+  const token = getAuthToken();
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...(options?.headers || {}),
+  };
+  
   try {
     const response = await fetch(url.toString(), {
-      next: { revalidate: 60 }, // Cache for 60 seconds
+      ...options,
+      headers,
+      next: options?.next || { revalidate: 60 }, // Cache for 60 seconds
     });
     
     if (!response.ok) {
       throw new Error(`API Error: ${response.statusText}`);
     }
     
-    const result: ApiResponse<T> = await response.json();
-    
-    if (!result.success) {
-      throw new Error(result.error || 'Unknown API error');
-    }
-    
-    return result.data;
+    // Django REST Framework returns data directly, not wrapped in {success, data}
+    const result = await response.json();
+    return result as T;
   } catch (error) {
     console.warn(`Fetch to ${endpoint} failed, falling back to local mock data.`, error);
     
     // Fallback based on endpoint using the same methods from mock-data
-    if (endpoint === '/jobs') {
+    if (endpoint === '/jobs' || endpoint === '/jobs/') {
       const city = params?.city || undefined;
       const type = params?.type || undefined;
       const limit = params?.limit ? parseInt(params.limit) : undefined;
       return mockData.getJobs({ city, type, limit }) as unknown as T;
     }
-    if (endpoint === '/properties') {
+    if (endpoint === '/properties' || endpoint === '/properties/') {
       const city = params?.city || undefined;
       const purpose = params?.purpose || undefined;
       const limit = params?.limit ? parseInt(params.limit) : undefined;
       return mockData.getProperties({ city, purpose, limit }) as unknown as T;
     }
-    if (endpoint === '/vehicles') {
+    if (endpoint === '/vehicles' || endpoint === '/vehicles/') {
       const city = params?.city || undefined;
       const type = params?.type || undefined;
       const limit = params?.limit ? parseInt(params.limit) : undefined;
       return mockData.getVehicles({ city, type, limit }) as unknown as T;
     }
-    if (endpoint === '/services') {
+    if (endpoint === '/services' || endpoint === '/service-providers/') {
       const city = params?.city || undefined;
       const category = params?.category || undefined;
       const limit = params?.limit ? parseInt(params.limit) : undefined;
@@ -79,29 +98,41 @@ async function fetchApi<T>(endpoint: string, params?: Record<string, string>): P
 
 // Jobs API
 export async function getJobs(filters?: { city?: string; type?: string; limit?: number }) {
-  return fetchApi<any[]>('/jobs', filters as any);
+  const params: Record<string, string> = {};
+  if (filters?.city) params.city = filters.city;
+  if (filters?.type) params.type = filters.type;
+  if (filters?.limit) params.page_size = filters.limit.toString();
+  return fetchApi<any[]>('/jobs/', params);
 }
 
 export async function getFeaturedJobs(limit = 6) {
-  return fetchApi<any[]>('/jobs', { limit: limit.toString() });
+  return fetchApi<any[]>('/jobs/', { page_size: limit.toString() });
 }
 
 // Properties API
 export async function getProperties(filters?: { city?: string; purpose?: string; limit?: number }) {
-  return fetchApi<any[]>('/properties', filters as any);
+  const params: Record<string, string> = {};
+  if (filters?.city) params.city = filters.city;
+  if (filters?.purpose) params.purpose = filters.purpose;
+  if (filters?.limit) params.page_size = filters.limit.toString();
+  return fetchApi<any[]>('/properties/', params);
 }
 
 export async function getFeaturedProperties(limit = 6) {
-  return fetchApi<any[]>('/properties', { limit: limit.toString() });
+  return fetchApi<any[]>('/properties/', { page_size: limit.toString() });
 }
 
 // Vehicles API
 export async function getVehicles(filters?: { city?: string; type?: string; limit?: number }) {
-  return fetchApi<any[]>('/vehicles', filters as any);
+  const params: Record<string, string> = {};
+  if (filters?.city) params.city = filters.city;
+  if (filters?.type) params.type = filters.type;
+  if (filters?.limit) params.page_size = filters.limit.toString();
+  return fetchApi<any[]>('/vehicles/', params);
 }
 
 export async function getFeaturedVehicles(limit = 6) {
-  return fetchApi<any[]>('/vehicles', { limit: limit.toString() });
+  return fetchApi<any[]>('/vehicles/', { page_size: limit.toString() });
 }
 
 // Services API
@@ -130,4 +161,51 @@ export async function getFeaturedNews(limit = 4) {
 // Emergency Contacts API
 export async function getEmergencyContacts() {
   return fetchApi<any[]>('/emergency');
+}
+
+
+// POST APIs for creating posts
+
+export async function createJob(data: any) {
+  return fetchApi<any>('/jobs/', {}, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function createProperty(data: any) {
+  return fetchApi<any>('/properties/', {}, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function createVehicle(data: any) {
+  return fetchApi<any>('/vehicles/', {}, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function createClassified(data: any) {
+  // Classifieds go through community API
+  const COMMUNITY_BASE = process.env.NEXT_PUBLIC_BACKEND_URL 
+    ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/community`
+    : 'http://localhost:3000/api/community';
+  
+  const token = getAuthToken();
+  const response = await fetch(`${COMMUNITY_BASE}/classifieds/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify(data),
+  });
+  
+  if (!response.ok) {
+    throw new Error(`Failed to create classified: ${response.statusText}`);
+  }
+  
+  return response.json();
 }
