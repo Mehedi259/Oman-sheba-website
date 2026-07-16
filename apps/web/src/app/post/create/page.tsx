@@ -11,6 +11,9 @@ import {
   MessageSquare,
   ArrowLeft
 } from 'lucide-react';
+import { useAuth } from '@/components/auth/auth-provider';
+import { AuthModal } from '@/components/auth/auth-modal';
+import { useRouter } from 'next/navigation';
 import { JobPostForm } from '@/components/forms/job-post-form';
 import { PropertyPostForm } from '@/components/forms/property-post-form';
 import { VehiclePostForm } from '@/components/forms/vehicle-post-form';
@@ -27,6 +30,26 @@ const categories = [
 
 export default function CreatePostPage() {
   const [selectedCategory, setSelectedCategory] = useState('');
+  const { isAuthenticated, isLoading } = useAuth();
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const router = useRouter();
+
+  if (!isLoading && !isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
+        <h2 className="text-2xl font-bold mb-4">লগইন প্রয়োজন</h2>
+        <p className="text-muted-foreground mb-6">পোস্ট করার জন্য আপনাকে প্রথমে লগইন করতে হবে।</p>
+        <Button onClick={() => setAuthModalOpen(true)}>লগইন করুন</Button>
+        <AuthModal 
+          isOpen={authModalOpen} 
+          onClose={() => {
+            setAuthModalOpen(false);
+            if (!isAuthenticated) router.push('/');
+          }} 
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">

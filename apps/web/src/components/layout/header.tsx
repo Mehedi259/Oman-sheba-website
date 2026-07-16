@@ -5,11 +5,25 @@ import { Button } from '@/components/ui/button'
 import { Search, Menu, User, Bell, Heart } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useAuth } from '../auth/auth-provider'
+import { AuthModal } from '../auth/auth-modal'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [everOpened, setEverOpened] = useState(false)
+  const [authModalOpen, setAuthModalOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  
+  const { user, isAuthenticated, logout } = useAuth()
 
   useEffect(() => {
     if (!mobileMenuOpen) return
@@ -28,6 +42,13 @@ export function Header() {
   const toggleMenu = () => {
     setEverOpened(true)
     setMobileMenuOpen((open) => !open)
+  }
+
+  const handlePostClick = (e: React.MouseEvent) => {
+    if (!isAuthenticated) {
+      e.preventDefault()
+      setAuthModalOpen(true)
+    }
   }
 
   return (
@@ -86,13 +107,42 @@ export function Header() {
               </span>
             </Link>
           </Button>
-          <Button variant="ghost" size="icon" className="hidden md:flex" asChild>
-            <Link href="/profile">
-              <User className="h-5 w-5" />
-            </Link>
-          </Button>
+          {isAuthenticated ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full hidden md:flex">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={user?.avatar_url || ''} alt={user?.name || ''} />
+                    <AvatarFallback>{user?.name?.charAt(0) || <User className="h-4 w-4" />}</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">{user?.name}</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user?.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/profile">প্রোফাইল</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={logout}>
+                  লগআউট
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button variant="outline" className="hidden md:flex" onClick={() => setAuthModalOpen(true)}>
+              লগইন
+            </Button>
+          )}
+          
           <Button className="hidden md:flex" asChild>
-            <Link href="/post/create">পোস্ট করুন</Link>
+            <Link href="/post/create" onClick={handlePostClick}>পোস্ট করুন</Link>
           </Button>
           <Button variant="ghost" size="icon" className="md:hidden" onClick={toggleMenu}>
             <Menu className="h-5 w-5" />
@@ -132,16 +182,29 @@ export function Header() {
               <Link href="/notifications" onClick={closeMenu} className="flex items-center gap-2 text-sm font-medium hover:text-primary">
                 <Bell className="h-4 w-4" /> নোটিফিকেশন
               </Link>
-              <Link href="/profile" onClick={closeMenu} className="flex items-center gap-2 text-sm font-medium hover:text-primary">
-                <User className="h-4 w-4" /> প্রোফাইল
-              </Link>
+              {isAuthenticated ? (
+                <>
+                  <Link href="/profile" onClick={closeMenu} className="flex items-center gap-2 text-sm font-medium hover:text-primary">
+                    <User className="h-4 w-4" /> প্রোফাইল ({user?.name})
+                  </Link>
+                  <button onClick={() => { logout(); closeMenu(); }} className="flex items-center gap-2 text-sm font-medium hover:text-primary w-full text-left">
+                    লগআউট
+                  </button>
+                </>
+              ) : (
+                <button onClick={() => { setAuthModalOpen(true); closeMenu(); }} className="flex items-center gap-2 text-sm font-medium hover:text-primary w-full text-left">
+                  <User className="h-4 w-4" /> লগইন
+                </button>
+              )}
             </div>
             <Button className="w-full mt-4" asChild>
-              <Link href="/post/create" onClick={closeMenu}>পোস্ট করুন</Link>
+              <Link href="/post/create" onClick={(e) => { handlePostClick(e); closeMenu(); }}>পোস্ট করুন</Link>
             </Button>
           </nav>
         </div>
       </div>
+      
+      <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
     </header>
   )
 }

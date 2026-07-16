@@ -68,3 +68,4 @@ logs/
 # OS
 Thumbs.db
 .env*
+client_secret_*.json
