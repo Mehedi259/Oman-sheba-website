@@ -31,16 +31,13 @@ export function ClassifiedPostForm() {
   
   const [formData, setFormData] = useState({
     title_bn: '',
-    title_en: '',
     description_bn: '',
-    description_en: '',
     category: '',
     price: '',
     currency: 'OMR',
     city: '',
     area: '',
     contact_phone: '',
-    contact_email: '',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -48,10 +45,15 @@ export function ClassifiedPostForm() {
     setLoading(true);
 
     try {
-      const response = await createClassified({
+      const payload = {
         ...formData,
+        title: formData.title_bn,
+        title_bn: formData.title_bn,
+        description: formData.description_bn,
+        description_bn: formData.description_bn,
         price: parseFloat(formData.price),
-      });
+      };
+      const response = await createClassified(payload);
       
       if (files.length > 0 && response.id) {
         await Promise.all(
@@ -84,28 +86,15 @@ export function ClassifiedPostForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="title_bn">শিরোনাম (বাংলা) *</Label>
-          <Input
-            id="title_bn"
-            value={formData.title_bn}
-            onChange={(e) => handleChange('title_bn', e.target.value)}
-            placeholder="যেমন: স্যামসাং ফোন বিক্রয়"
-            required
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="title_en">Title (English) *</Label>
-          <Input
-            id="title_en"
-            value={formData.title_en}
-            onChange={(e) => handleChange('title_en', e.target.value)}
-            placeholder="e.g: Samsung Phone for Sale"
-            required
-          />
-        </div>
+      <div className="space-y-2">
+        <Label htmlFor="title_bn">শিরোনাম *</Label>
+        <Input
+          id="title_bn"
+          value={formData.title_bn}
+          onChange={(e) => handleChange('title_bn', e.target.value)}
+          placeholder="যেমন: স্যামসাং ফোন বিক্রয়"
+          required
+        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -182,7 +171,7 @@ export function ClassifiedPostForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description_bn">বিবরণ (বাংলা) *</Label>
+        <Label htmlFor="description_bn">বিবরণ *</Label>
         <Textarea
           id="description_bn"
           value={formData.description_bn}
@@ -194,39 +183,14 @@ export function ClassifiedPostForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description_en">Description (English) *</Label>
-        <Textarea
-          id="description_en"
-          value={formData.description_en}
-          onChange={(e) => handleChange('description_en', e.target.value)}
-          placeholder="Enter detailed product description"
-          rows={4}
+        <Label htmlFor="contact_phone">যোগাযোগ ফোন *</Label>
+        <Input
+          id="contact_phone"
+          value={formData.contact_phone}
+          onChange={(e) => handleChange('contact_phone', e.target.value)}
+          placeholder="+968 9XXXXXXX"
           required
         />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="contact_phone">যোগাযোগ ফোন *</Label>
-          <Input
-            id="contact_phone"
-            value={formData.contact_phone}
-            onChange={(e) => handleChange('contact_phone', e.target.value)}
-            placeholder="+968 9XXXXXXX"
-            required
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="contact_email">যোগাযোগ ইমেইল</Label>
-          <Input
-            id="contact_email"
-            type="email"
-            value={formData.contact_email}
-            onChange={(e) => handleChange('contact_email', e.target.value)}
-            placeholder="email@example.com"
-          />
-        </div>
       </div>
 
       <div className="space-y-2">

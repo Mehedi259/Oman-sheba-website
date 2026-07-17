@@ -30,9 +30,7 @@ export function JobPostForm() {
   
   const [formData, setFormData] = useState({
     title_bn: '',
-    title_en: '',
     description_bn: '',
-    description_en: '',
     job_type: '',
     city: '',
     area: '',
@@ -40,13 +38,9 @@ export function JobPostForm() {
     salary_max: '',
     salary_currency: 'OMR',
     requirements_bn: '',
-    requirements_en: '',
     benefits_bn: '',
-    benefits_en: '',
     contact_phone: '',
-    contact_email: '',
     company_name_bn: '',
-    company_name_en: '',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -56,9 +50,12 @@ export function JobPostForm() {
     try {
       const payload = {
         ...formData,
-        title: formData.title_en,
-        description: formData.description_en,
+        title: formData.title_bn,
+        title_bn: formData.title_bn,
+        description: formData.description_bn,
+        description_bn: formData.description_bn,
         type: formData.job_type,
+        company_name_en: formData.company_name_bn,
         salary_min: formData.salary_min ? parseFloat(formData.salary_min) : null,
         salary_max: formData.salary_max ? parseFloat(formData.salary_max) : null,
       };
@@ -98,7 +95,7 @@ export function JobPostForm() {
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="title_bn">চাকরির শিরোনাম (বাংলা) *</Label>
+          <Label htmlFor="title_bn">চাকরির শিরোনাম *</Label>
           <Input
             id="title_bn"
             value={formData.title_bn}
@@ -109,36 +106,12 @@ export function JobPostForm() {
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="title_en">Job Title (English) *</Label>
-          <Input
-            id="title_en"
-            value={formData.title_en}
-            onChange={(e) => handleChange('title_en', e.target.value)}
-            placeholder="e.g: Software Engineer"
-            required
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="company_name_bn">কোম্পানির নাম (বাংলা) *</Label>
+          <Label htmlFor="company_name_bn">কোম্পানির নাম *</Label>
           <Input
             id="company_name_bn"
             value={formData.company_name_bn}
             onChange={(e) => handleChange('company_name_bn', e.target.value)}
             placeholder="কোম্পানির নাম লিখুন"
-            required
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="company_name_en">Company Name (English) *</Label>
-          <Input
-            id="company_name_en"
-            value={formData.company_name_en}
-            onChange={(e) => handleChange('company_name_en', e.target.value)}
-            placeholder="Enter company name"
             required
           />
         </div>
@@ -228,7 +201,7 @@ export function JobPostForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description_bn">বিবরণ (বাংলা) *</Label>
+        <Label htmlFor="description_bn">বিবরণ *</Label>
         <Textarea
           id="description_bn"
           value={formData.description_bn}
@@ -240,19 +213,7 @@ export function JobPostForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description_en">Description (English) *</Label>
-        <Textarea
-          id="description_en"
-          value={formData.description_en}
-          onChange={(e) => handleChange('description_en', e.target.value)}
-          placeholder="Enter detailed job description"
-          rows={4}
-          required
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="requirements_bn">যোগ্যতা (বাংলা)</Label>
+        <Label htmlFor="requirements_bn">যোগ্যতা</Label>
         <Textarea
           id="requirements_bn"
           value={formData.requirements_bn}
@@ -263,18 +224,7 @@ export function JobPostForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="requirements_en">Requirements (English)</Label>
-        <Textarea
-          id="requirements_en"
-          value={formData.requirements_en}
-          onChange={(e) => handleChange('requirements_en', e.target.value)}
-          placeholder="Enter job requirements"
-          rows={3}
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="benefits_bn">সুবিধা (বাংলা)</Label>
+        <Label htmlFor="benefits_bn">সুবিধা</Label>
         <Textarea
           id="benefits_bn"
           value={formData.benefits_bn}
@@ -285,38 +235,14 @@ export function JobPostForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="benefits_en">Benefits (English)</Label>
-        <Textarea
-          id="benefits_en"
-          value={formData.benefits_en}
-          onChange={(e) => handleChange('benefits_en', e.target.value)}
-          placeholder="Enter job benefits"
-          rows={2}
+        <Label htmlFor="contact_phone">যোগাযোগ ফোন *</Label>
+        <Input
+          id="contact_phone"
+          value={formData.contact_phone}
+          onChange={(e) => handleChange('contact_phone', e.target.value)}
+          placeholder="+968 9XXXXXXX"
+          required
         />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="contact_phone">যোগাযোগ ফোন *</Label>
-          <Input
-            id="contact_phone"
-            value={formData.contact_phone}
-            onChange={(e) => handleChange('contact_phone', e.target.value)}
-            placeholder="+968 9XXXXXXX"
-            required
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="contact_email">যোগাযোগ ইমেইল</Label>
-          <Input
-            id="contact_email"
-            type="email"
-            value={formData.contact_email}
-            onChange={(e) => handleChange('contact_email', e.target.value)}
-            placeholder="email@example.com"
-          />
-        </div>
       </div>
 
       <div className="space-y-2">
