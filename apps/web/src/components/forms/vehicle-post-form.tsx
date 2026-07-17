@@ -74,12 +74,18 @@ export function VehiclePostForm() {
     setLoading(true);
 
     try {
-      await createVehicle({
+      const payload = {
         ...formData,
+        title: formData.title_en,
+        description: formData.description_en,
+        type: formData.vehicle_type,
+        make: formData.brand,
         year: parseInt(formData.year),
         mileage: formData.mileage ? parseInt(formData.mileage) : null,
         price: parseFloat(formData.price),
-      });
+      };
+      
+      await createVehicle(payload);
       
       toast({
         title: 'সফল!',

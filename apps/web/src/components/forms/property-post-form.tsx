@@ -57,13 +57,19 @@ export function PropertyPostForm() {
     setLoading(true);
 
     try {
-      await createProperty({
+      const payload = {
         ...formData,
+        title: formData.title_en,
+        description: formData.description_en,
+        category: formData.property_type,
+        type: formData.property_type === 'COMMERCIAL' ? 'COMMERCIAL' : 'RESIDENTIAL',
         price: parseFloat(formData.price),
         bedrooms: formData.bedrooms ? parseInt(formData.bedrooms) : null,
         bathrooms: formData.bathrooms ? parseInt(formData.bathrooms) : null,
         size: formData.size ? parseFloat(formData.size) : null,
-      });
+      };
+      
+      await createProperty(payload);
       
       toast({
         title: 'সফল!',

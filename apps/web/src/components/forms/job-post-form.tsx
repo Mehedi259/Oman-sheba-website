@@ -53,11 +53,16 @@ export function JobPostForm() {
     setLoading(true);
 
     try {
-      await createJob({
+      const payload = {
         ...formData,
+        title: formData.title_en,
+        description: formData.description_en,
+        type: formData.job_type,
         salary_min: formData.salary_min ? parseFloat(formData.salary_min) : null,
         salary_max: formData.salary_max ? parseFloat(formData.salary_max) : null,
-      });
+      };
+      
+      await createJob(payload);
       
       toast({
         title: 'সফল!',
