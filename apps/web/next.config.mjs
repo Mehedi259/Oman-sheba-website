@@ -60,7 +60,7 @@ const nextConfig = {
     return [
       {
         source: '/api/proxy/:path*',
-        destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/:path*`,
+        destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/:path*/`,
       },
     ];
   },
