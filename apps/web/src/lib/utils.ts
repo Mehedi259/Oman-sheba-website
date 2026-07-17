@@ -12,8 +12,10 @@ export function formatCurrency(amount: number, currency: string = 'OMR'): string
   }).format(amount)
 }
 
-export function formatDate(date: Date | string, locale: string = 'bn-BD'): string {
+export function formatDate(date: Date | string | null | undefined, locale: string = 'bn-BD'): string {
+  if (!date) return ''
   const d = typeof date === 'string' ? new Date(date) : date
+  if (isNaN(d.getTime())) return ''
   return new Intl.DateTimeFormat(locale, {
     year: 'numeric',
     month: 'long',
@@ -21,8 +23,10 @@ export function formatDate(date: Date | string, locale: string = 'bn-BD'): strin
   }).format(d)
 }
 
-export function formatRelativeTime(date: Date | string): string {
+export function formatRelativeTime(date: Date | string | null | undefined): string {
+  if (!date) return ''
   const d = typeof date === 'string' ? new Date(date) : date
+  if (isNaN(d.getTime())) return ''
   const now = new Date()
   const diffInSeconds = Math.floor((now.getTime() - d.getTime()) / 1000)
   

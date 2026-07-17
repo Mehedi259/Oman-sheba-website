@@ -101,7 +101,7 @@ export async function FeaturedProperties() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Link href={`/properties/${property.slug}`} className="w-full">
+                <Link href={`/properties/${property.id}`} className="w-full">
                   <Button variant="outline" className="w-full">বিস্তারিত</Button>
                 </Link>
               </CardFooter>

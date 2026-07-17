@@ -18,9 +18,13 @@ const serviceCategories: Record<string, { name: string; nameBn: string; icon: st
   'travel-agency': { name: 'Travel Agency', nameBn: 'ট্রাভেল এজেন্সি', icon: '✈️', description: 'ফ্লাইট বুকিং, হোটেল রিজার্ভেশন এবং ট্যুর প্যাকেজ।' },
   'tourist-places': { name: 'Tourist Places', nameBn: 'দর্শনীয় স্থান', icon: '🗿', description: 'ওমানের দর্শনীয় স্থান, ঐতিহাসিক স্থান এবং পর্যটন।' },
   'lawyers': { name: 'Lawyers', nameBn: 'আইনজীবী', icon: '⚖️', description: 'আইনজীবী, আইনগত পরামর্শ এবং লেবার কোর্ট সেবা।' },
+  'legal': { name: 'Legal Services', nameBn: 'আইনগত সহায়তা', icon: '⚖️', description: 'আইনগত সহায়তা, পরামর্শ এবং লেবার কোর্ট সেবা।' },
   'hotels': { name: 'Hotels', nameBn: 'হোটেল', icon: '🏨', description: 'হোটেল, রেস্ট হাউস এবং আবাসন সেবা।' },
   'money-exchange': { name: 'Money Exchange', nameBn: 'মানি এক্সচেঞ্জ', icon: '💱', description: 'মানি এক্সচেঞ্জ, রেমিট্যান্স এবং ব্যাংকিং সেবা।' },
   'police': { name: 'Police Station', nameBn: 'পুলিশ স্টেশন', icon: '👮', description: 'পুলিশ স্টেশন, জরুরী সেবা এবং আইন শৃঙ্খলা।' },
+  'passport': { name: 'Passport Services', nameBn: 'পাসপোর্ট সেবা', icon: '🛂', description: 'পাসপোর্ট নবায়ন, হারানো পাসপোর্ট এবং সম্পর্কিত সেবা।' },
+  'visa': { name: 'Visa Services', nameBn: 'ভিসা সেবা', icon: '🛂', description: 'ভিসা প্রসেসিং, রিনিউয়াল এবং সম্পর্কিত সহায়তা।' },
+  'healthcare': { name: 'Healthcare', nameBn: 'স্বাস্থ্যসেবা', icon: '🏥', description: 'স্বাস্থ্যসেবা, ক্লিনিক এবং মেডিকেল সহায়তা।' },
 }
 
 export function generateStaticParams() {
@@ -34,9 +38,13 @@ export function generateStaticParams() {
     { slug: 'travel-agency' },
     { slug: 'tourist-places' },
     { slug: 'lawyers' },
+    { slug: 'legal' },
     { slug: 'hotels' },
     { slug: 'money-exchange' },
     { slug: 'police' },
+    { slug: 'passport' },
+    { slug: 'visa' },
+    { slug: 'healthcare' },
     // Service provider IDs
     { slug: 's1' },
     { slug: 's2' },

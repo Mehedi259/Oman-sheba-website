@@ -39,11 +39,16 @@ export async function FeaturedJobs() {
               <CardHeader>
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <div className="w-12 h-12 rounded-lg bg-muted/50 flex items-center justify-center p-2">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={getJobIcon(job)} alt="" className="h-8 w-8" />
+                    <div className="w-12 h-12 rounded-lg bg-muted/50 flex items-center justify-center p-2 overflow-hidden shrink-0">
+                      {job.images && job.images.length > 0 ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={job.images[0]} alt="" className="h-full w-full object-cover" />
+                      ) : (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={getJobIcon(job)} alt="" className="h-8 w-8" />
+                      )}
                     </div>
-                    {job.company.verified && (
+                    {job.company?.verified && (
                       <CheckCircle2 className="h-4 w-4 text-blue-500" />
                     )}
                   </div>
@@ -54,7 +59,7 @@ export async function FeaturedJobs() {
                   )}
                 </div>
                 <CardTitle className="text-lg">{job.titleBn}</CardTitle>
-                <p className="text-sm text-muted-foreground">{job.company.nameBn}</p>
+                <p className="text-sm text-muted-foreground">{job.company?.nameBn || job.company?.name || job.company_name_bn || ''}</p>
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="flex items-center text-sm text-muted-foreground">
@@ -69,11 +74,11 @@ export async function FeaturedJobs() {
                 </div>
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Clock className="h-4 w-4 mr-2" />
-                  {formatRelativeTime(job.createdAt)}
+                  {formatRelativeTime(job.createdAt || job.created_at)}
                 </div>
               </CardContent>
               <CardFooter>
-                <Link href={`/jobs/${job.slug}`} className="w-full">
+                <Link href={`/jobs/${job.id}`} className="w-full">
                   <Button className="w-full">বিস্তারিত দেখুন</Button>
                 </Link>
               </CardFooter>

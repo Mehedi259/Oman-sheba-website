@@ -7,19 +7,19 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getPropertyById } from '@hello-oman-sheba/database/mock-data'
+import { getPropertyById } from '@/lib/api'
 
-export function generateStaticParams() {
-  return [
-    { id: 'p1' },
-    { id: 'p2' },
-    { id: 'p3' },
-  ]
-}
+export const dynamic = 'force-dynamic'
 
 export default async function PropertyDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const property = getPropertyById(id)
+  
+  let property: any
+  try {
+    property = await getPropertyById(id)
+  } catch (error) {
+    notFound()
+  }
 
   if (!property) {
     notFound()
@@ -39,6 +39,8 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
     'VILLA': 'ভিলা',
     'BED_SPACE': 'বেড স্পেস',
     'ROOM': 'রুম',
+    'HOUSE': 'বাসা',
+    'FLAT': 'ফ্ল্যাট',
   }
 
   return (
@@ -57,10 +59,10 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
                 <span className="bg-green-500/30 text-green-100 px-3 py-1 rounded-full text-sm font-medium">
-                  {purposeMap[property.purpose] || property.purpose}
+                  {purposeMap[property.purpose] || property.purpose || ''}
                 </span>
                 <span className="bg-white/10 text-green-100 px-3 py-1 rounded-full text-sm">
-                  {categoryMap[property.category] || property.category}
+                  {categoryMap[property.category] || property.category || ''}
                 </span>
                 {property.verified && (
                   <span className="bg-blue-500/20 text-blue-200 px-2 py-0.5 rounded-full text-xs flex items-center gap-1">
@@ -68,11 +70,11 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
                   </span>
                 )}
               </div>
-              <h1 className="text-3xl md:text-4xl font-bold mb-2">{property.titleBn}</h1>
+              <h1 className="text-3xl md:text-4xl font-bold mb-2">{property.title_bn || property.title}</h1>
               <p className="text-green-200 text-lg mb-3">{property.title}</p>
               <div className="flex items-center gap-2 text-green-200">
                 <MapPin className="h-4 w-4" />
-                <span>{property.area}, {property.city}</span>
+                <span>{property.area ? `${property.area}, ` : ''}{property.city}</span>
               </div>
             </div>
           </div>
@@ -85,7 +87,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
           <div className="lg:col-span-2 space-y-6">
             {/* Quick Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {property.bedrooms !== undefined && (
+              {property.bedrooms != null && (
                 <Card className="text-center">
                   <CardContent className="pt-6">
                     <Home className="h-6 w-6 mx-auto mb-2 text-green-600" />
@@ -94,7 +96,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
                   </CardContent>
                 </Card>
               )}
-              {property.bathrooms !== undefined && (
+              {property.bathrooms != null && (
                 <Card className="text-center">
                   <CardContent className="pt-6">
                     <Bath className="h-6 w-6 mx-auto mb-2 text-green-600" />
@@ -108,7 +110,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
                   <CardContent className="pt-6">
                     <Maximize className="h-6 w-6 mx-auto mb-2 text-green-600" />
                     <p className="text-2xl font-bold">{property.size}</p>
-                    <p className="text-sm text-muted-foreground">{property.sizeUnit || 'sqft'}</p>
+                    <p className="text-sm text-muted-foreground">{property.size_unit || 'sqft'}</p>
                   </CardContent>
                 </Card>
               )}
@@ -116,7 +118,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
                 <Card className="text-center">
                   <CardContent className="pt-6">
                     <Layers className="h-6 w-6 mx-auto mb-2 text-green-600" />
-                    <p className="text-2xl font-bold">{property.floor}/{property.totalFloors}</p>
+                    <p className="text-2xl font-bold">{property.floor}{property.total_floors ? `/${property.total_floors}` : ''}</p>
                     <p className="text-sm text-muted-foreground">তলা</p>
                   </CardContent>
                 </Card>
@@ -129,8 +131,10 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
                 <CardTitle className="text-xl">বিবরণ</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground leading-relaxed">{property.descriptionBn}</p>
-                <p className="text-muted-foreground leading-relaxed mt-2">{property.description}</p>
+                <p className="text-muted-foreground leading-relaxed">{property.description_bn || property.description}</p>
+                {property.description_bn && property.description && property.description !== property.description_bn && (
+                  <p className="text-muted-foreground leading-relaxed mt-2">{property.description}</p>
+                )}
               </CardContent>
             </Card>
 
@@ -142,7 +146,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {property.amenities.map((amenity, i) => (
+                    {property.amenities.map((amenity: string, i: number) => (
                       <div key={i} className="flex items-center gap-2 p-2 bg-green-50 rounded-lg">
                         <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />
                         <span className="text-sm">{amenity}</span>
@@ -162,11 +166,11 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
                 <div>
                   <p className="text-sm text-muted-foreground mb-1">মূল্য</p>
                   <p className="text-3xl font-bold text-green-700">
-                    {property.currency} {property.price.toLocaleString()}
+                    {property.currency || 'OMR'} {property.price ? Number(property.price).toLocaleString() : 'আলোচনা সাপেক্ষে'}
                   </p>
                   <p className="text-sm text-muted-foreground">
                     {property.purpose === 'RENT' ? 'প্রতি মাসে' : 'মোট মূল্য'}
-                    {property.priceNegotiable && ' • আলোচনাসাপেক্ষ'}
+                    {property.price_negotiable && ' • আলোচনাসাপেক্ষ'}
                   </p>
                 </div>
                 <hr />
@@ -180,12 +184,12 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
                       </div>
                     </div>
                   )}
-                  {property.availableFrom && (
+                  {property.available_from && (
                     <div className="flex items-center gap-3">
                       <Calendar className="h-5 w-5 text-muted-foreground shrink-0" />
                       <div>
                         <p className="text-sm text-muted-foreground">উপলব্ধ তারিখ</p>
-                        <p className="font-medium">{new Date(property.availableFrom).toLocaleDateString('bn-BD')}</p>
+                        <p className="font-medium">{new Date(property.available_from).toLocaleDateString('bn-BD')}</p>
                       </div>
                     </div>
                   )}
@@ -199,15 +203,17 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
                 <CardTitle className="text-lg">যোগাযোগ করুন</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <p className="font-semibold text-lg">{property.contactName}</p>
-                <a href={`tel:${property.contactPhone}`} className="block">
-                  <Button variant="outline" className="w-full justify-start">
-                    <Phone className="h-4 w-4 mr-2" />
-                    {property.contactPhone}
-                  </Button>
-                </a>
-                {property.contactWhatsapp && (
-                  <a href={`https://wa.me/${property.contactWhatsapp.replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer" className="block">
+                {property.contact_name && <p className="font-semibold text-lg">{property.contact_name}</p>}
+                {property.contact_phone && (
+                  <a href={`tel:${property.contact_phone}`} className="block">
+                    <Button variant="outline" className="w-full justify-start">
+                      <Phone className="h-4 w-4 mr-2" />
+                      {property.contact_phone}
+                    </Button>
+                  </a>
+                )}
+                {property.contact_whatsapp && (
+                  <a href={`https://wa.me/${property.contact_whatsapp.replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer" className="block">
                     <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
                       <MessageSquare className="h-4 w-4 mr-2" />
                       WhatsApp-এ যোগাযোগ করুন

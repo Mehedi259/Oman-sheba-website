@@ -6,18 +6,19 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getVehicleById } from '@hello-oman-sheba/database/mock-data'
+import { getVehicleById } from '@/lib/api'
 
-export function generateStaticParams() {
-  return [
-    { id: 'v1' },
-    { id: 'v2' },
-  ]
-}
+export const dynamic = 'force-dynamic'
 
 export default async function VehicleDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const vehicle = getVehicleById(id)
+  
+  let vehicle: any
+  try {
+    vehicle = await getVehicleById(id)
+  } catch (error) {
+    notFound()
+  }
 
   if (!vehicle) {
     notFound()
@@ -38,6 +39,8 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
     'DIESEL': 'ডিজেল',
     'ELECTRIC': 'ইলেকট্রিক',
     'HYBRID': 'হাইব্রিড',
+    'CNG': 'সিএনজি',
+    'OCTANE': 'অকটেন',
   }
 
   return (
@@ -67,12 +70,12 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
                   <span className="bg-red-500/30 text-red-200 px-3 py-1 rounded-full text-sm">বিক্রিত</span>
                 )}
               </div>
-              <h1 className="text-3xl md:text-4xl font-bold mb-2">{vehicle.titleBn}</h1>
+              <h1 className="text-3xl md:text-4xl font-bold mb-2">{vehicle.title_bn || vehicle.title}</h1>
               <p className="text-orange-200 text-lg mb-3">{vehicle.title}</p>
               <div className="flex flex-wrap gap-3 text-sm text-orange-200">
-                <span className="flex items-center gap-1"><MapPin className="h-4 w-4" />{vehicle.area}, {vehicle.city}</span>
-                <span className="flex items-center gap-1"><Calendar className="h-4 w-4" />{vehicle.year}</span>
-                <span className="flex items-center gap-1"><Gauge className="h-4 w-4" />{vehicle.mileage.toLocaleString()} km</span>
+                <span className="flex items-center gap-1"><MapPin className="h-4 w-4" />{vehicle.area ? `${vehicle.area}, ` : ''}{vehicle.city}</span>
+                {vehicle.year && <span className="flex items-center gap-1"><Calendar className="h-4 w-4" />{vehicle.year}</span>}
+                {vehicle.mileage != null && <span className="flex items-center gap-1"><Gauge className="h-4 w-4" />{Number(vehicle.mileage).toLocaleString()} km</span>}
               </div>
             </div>
           </div>
@@ -85,34 +88,42 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
           <div className="lg:col-span-2 space-y-6">
             {/* Quick Specs */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Card className="text-center">
-                <CardContent className="pt-6">
-                  <Calendar className="h-6 w-6 mx-auto mb-2 text-orange-600" />
-                  <p className="text-2xl font-bold">{vehicle.year}</p>
-                  <p className="text-sm text-muted-foreground">সাল</p>
-                </CardContent>
-              </Card>
-              <Card className="text-center">
-                <CardContent className="pt-6">
-                  <Gauge className="h-6 w-6 mx-auto mb-2 text-orange-600" />
-                  <p className="text-2xl font-bold">{(vehicle.mileage / 1000).toFixed(0)}k</p>
-                  <p className="text-sm text-muted-foreground">কিলোমিটার</p>
-                </CardContent>
-              </Card>
-              <Card className="text-center">
-                <CardContent className="pt-6">
-                  <Settings className="h-6 w-6 mx-auto mb-2 text-orange-600" />
-                  <p className="text-lg font-bold">{transmissionMap[vehicle.transmission]}</p>
-                  <p className="text-sm text-muted-foreground">ট্রান্সমিশন</p>
-                </CardContent>
-              </Card>
-              <Card className="text-center">
-                <CardContent className="pt-6">
-                  <Fuel className="h-6 w-6 mx-auto mb-2 text-orange-600" />
-                  <p className="text-lg font-bold">{fuelMap[vehicle.fuelType]}</p>
-                  <p className="text-sm text-muted-foreground">জ্বালানি</p>
-                </CardContent>
-              </Card>
+              {vehicle.year && (
+                <Card className="text-center">
+                  <CardContent className="pt-6">
+                    <Calendar className="h-6 w-6 mx-auto mb-2 text-orange-600" />
+                    <p className="text-2xl font-bold">{vehicle.year}</p>
+                    <p className="text-sm text-muted-foreground">সাল</p>
+                  </CardContent>
+                </Card>
+              )}
+              {vehicle.mileage != null && (
+                <Card className="text-center">
+                  <CardContent className="pt-6">
+                    <Gauge className="h-6 w-6 mx-auto mb-2 text-orange-600" />
+                    <p className="text-2xl font-bold">{(Number(vehicle.mileage) / 1000).toFixed(0)}k</p>
+                    <p className="text-sm text-muted-foreground">কিলোমিটার</p>
+                  </CardContent>
+                </Card>
+              )}
+              {vehicle.transmission && (
+                <Card className="text-center">
+                  <CardContent className="pt-6">
+                    <Settings className="h-6 w-6 mx-auto mb-2 text-orange-600" />
+                    <p className="text-lg font-bold">{transmissionMap[vehicle.transmission] || vehicle.transmission}</p>
+                    <p className="text-sm text-muted-foreground">ট্রান্সমিশন</p>
+                  </CardContent>
+                </Card>
+              )}
+              {vehicle.fuel_type && (
+                <Card className="text-center">
+                  <CardContent className="pt-6">
+                    <Fuel className="h-6 w-6 mx-auto mb-2 text-orange-600" />
+                    <p className="text-lg font-bold">{fuelMap[vehicle.fuel_type] || vehicle.fuel_type}</p>
+                    <p className="text-sm text-muted-foreground">জ্বালানি</p>
+                  </CardContent>
+                </Card>
+              )}
             </div>
 
             {/* Description */}
@@ -121,8 +132,10 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
                 <CardTitle className="text-xl">গাড়ির বিবরণ</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground leading-relaxed">{vehicle.descriptionBn}</p>
-                <p className="text-muted-foreground leading-relaxed mt-2">{vehicle.description}</p>
+                <p className="text-muted-foreground leading-relaxed">{vehicle.description_bn || vehicle.description}</p>
+                {vehicle.description_bn && vehicle.description && vehicle.description !== vehicle.description_bn && (
+                  <p className="text-muted-foreground leading-relaxed mt-2">{vehicle.description}</p>
+                )}
               </CardContent>
             </Card>
 
@@ -133,61 +146,73 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
-                    <Car className="h-5 w-5 text-orange-600 shrink-0" />
-                    <div>
-                      <p className="text-xs text-muted-foreground">ব্র্যান্ড / মডেল</p>
-                      <p className="font-medium">{vehicle.make} {vehicle.model}</p>
+                  {vehicle.make && (
+                    <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
+                      <Car className="h-5 w-5 text-orange-600 shrink-0" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">ব্র্যান্ড / মডেল</p>
+                        <p className="font-medium">{vehicle.make} {vehicle.model}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
-                    <div className="h-5 w-5 rounded-full shrink-0" style={{ backgroundColor: vehicle.color.toLowerCase() === 'white' ? '#e5e7eb' : vehicle.color.toLowerCase() === 'black' ? '#1f2937' : '#9ca3af' }} />
-                    <div>
-                      <p className="text-xs text-muted-foreground">রঙ</p>
-                      <p className="font-medium">{vehicle.color}</p>
+                  )}
+                  {vehicle.color && (
+                    <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
+                      <div className="h-5 w-5 rounded-full shrink-0 border border-gray-300" style={{ backgroundColor: vehicle.color.toLowerCase() === 'white' ? '#ffffff' : vehicle.color.toLowerCase() === 'black' ? '#1f2937' : vehicle.color.toLowerCase() }} />
+                      <div>
+                        <p className="text-xs text-muted-foreground">রঙ</p>
+                        <p className="font-medium">{vehicle.color}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
-                    <Settings className="h-5 w-5 text-orange-600 shrink-0" />
-                    <div>
-                      <p className="text-xs text-muted-foreground">ইঞ্জিন</p>
-                      <p className="font-medium">{vehicle.engineCapacity}</p>
+                  )}
+                  {vehicle.engine_capacity && (
+                    <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
+                      <Settings className="h-5 w-5 text-orange-600 shrink-0" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">ইঞ্জিন</p>
+                        <p className="font-medium">{vehicle.engine_capacity}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
-                    <Users className="h-5 w-5 text-orange-600 shrink-0" />
-                    <div>
-                      <p className="text-xs text-muted-foreground">আসন</p>
-                      <p className="font-medium">{vehicle.seats} জন</p>
+                  )}
+                  {vehicle.seats != null && (
+                    <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
+                      <Users className="h-5 w-5 text-orange-600 shrink-0" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">আসন</p>
+                        <p className="font-medium">{vehicle.seats} জন</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
-                    <DoorOpen className="h-5 w-5 text-orange-600 shrink-0" />
-                    <div>
-                      <p className="text-xs text-muted-foreground">দরজা</p>
-                      <p className="font-medium">{vehicle.doors} টি</p>
+                  )}
+                  {vehicle.doors != null && (
+                    <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
+                      <DoorOpen className="h-5 w-5 text-orange-600 shrink-0" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">দরজা</p>
+                        <p className="font-medium">{vehicle.doors} টি</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
-                    <CheckCircle className="h-5 w-5 text-orange-600 shrink-0" />
-                    <div>
-                      <p className="text-xs text-muted-foreground">অবস্থা</p>
-                      <p className="font-medium">{conditionMap[vehicle.condition] || vehicle.condition}</p>
+                  )}
+                  {vehicle.condition && (
+                    <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
+                      <CheckCircle className="h-5 w-5 text-orange-600 shrink-0" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">অবস্থা</p>
+                        <p className="font-medium">{conditionMap[vehicle.condition] || vehicle.condition}</p>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
 
             {/* Insurance */}
-            {vehicle.insurance && (
+            {vehicle.insurance && vehicle.insurance_expiry && (
               <Card className="border-green-200 bg-green-50/30">
                 <CardContent className="pt-6 flex items-center gap-3">
                   <Shield className="h-8 w-8 text-green-600 shrink-0" />
                   <div>
                     <p className="font-semibold text-green-800">বীমা সক্রিয়</p>
                     <p className="text-sm text-green-600">
-                      মেয়াদ: {new Date(vehicle.insuranceExpiry).toLocaleDateString('bn-BD')} পর্যন্ত
+                      মেয়াদ: {new Date(vehicle.insurance_expiry).toLocaleDateString('bn-BD')} পর্যন্ত
                     </p>
                   </div>
                 </CardContent>
@@ -203,9 +228,9 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
                 <div>
                   <p className="text-sm text-muted-foreground mb-1">মূল্য</p>
                   <p className="text-3xl font-bold text-orange-700">
-                    {vehicle.currency} {vehicle.price.toLocaleString()}
+                    {vehicle.currency || 'OMR'} {vehicle.price ? Number(vehicle.price).toLocaleString() : 'আলোচনা সাপেক্ষে'}
                   </p>
-                  {vehicle.priceNegotiable && (
+                  {vehicle.price_negotiable && (
                     <p className="text-sm text-orange-600 mt-1">আলোচনাসাপেক্ষ</p>
                   )}
                 </div>
@@ -218,15 +243,17 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
                 <CardTitle className="text-lg">বিক্রেতার সাথে যোগাযোগ</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <p className="font-semibold text-lg">{vehicle.contactName}</p>
-                <a href={`tel:${vehicle.contactPhone}`} className="block">
-                  <Button variant="outline" className="w-full justify-start">
-                    <Phone className="h-4 w-4 mr-2" />
-                    {vehicle.contactPhone}
-                  </Button>
-                </a>
-                {vehicle.contactWhatsapp && (
-                  <a href={`https://wa.me/${vehicle.contactWhatsapp.replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer" className="block">
+                {vehicle.contact_name && <p className="font-semibold text-lg">{vehicle.contact_name}</p>}
+                {vehicle.contact_phone && (
+                  <a href={`tel:${vehicle.contact_phone}`} className="block">
+                    <Button variant="outline" className="w-full justify-start">
+                      <Phone className="h-4 w-4 mr-2" />
+                      {vehicle.contact_phone}
+                    </Button>
+                  </a>
+                )}
+                {vehicle.contact_whatsapp && (
+                  <a href={`https://wa.me/${vehicle.contact_whatsapp.replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer" className="block">
                     <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
                       <MessageSquare className="h-4 w-4 mr-2" />
                       WhatsApp-এ যোগাযোগ করুন

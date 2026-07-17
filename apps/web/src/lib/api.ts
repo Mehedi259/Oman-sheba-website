@@ -21,7 +21,7 @@ const getApiUrl = (endpoint: string) => {
 // Helper to get auth token from localStorage
 const getAuthToken = () => {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem('token');
+    return localStorage.getItem('access_token');
   }
   return null;
 };
@@ -60,15 +60,22 @@ async function fetchApi<T>(
   };
   
   try {
-    const response = await fetch(url.toString(), {
+    const fetchOptions: RequestInit = {
       ...options,
       headers,
       signal: AbortSignal.timeout(10000), // 10 second timeout
-      next: options?.next || { revalidate: 60 }, // Cache for 60 seconds
-    });
+    };
+
+    if (!fetchOptions.cache && !fetchOptions.next) {
+      fetchOptions.next = { revalidate: 60 }; // Cache for 60 seconds by default
+    }
+
+    const response = await fetch(url.toString(), fetchOptions);
     
     if (!response.ok) {
-      throw new Error(`API Error: ${response.statusText}`);
+      const errorText = await response.text();
+      console.error(`API Error ${response.status}:`, errorText);
+      throw new Error(`API Error: ${response.status} - ${errorText}`);
     }
     
     // Django REST Framework may return paginated response
@@ -81,7 +88,12 @@ async function fetchApi<T>(
     
     return result as T;
   } catch (error) {
-    console.warn(`Fetch to ${endpoint} failed, falling back to local mock data.`, error);
+    console.warn(`Fetch to ${endpoint} failed.`, error);
+    
+    // Don't fallback to mock data for mutations
+    if (options?.method && options.method !== 'GET') {
+      throw error;
+    }
     
     // Fallback based on endpoint using the same methods from mock-data
     if (endpoint === '/jobs' || endpoint === '/jobs/') {
@@ -132,7 +144,7 @@ export async function getJobs(filters?: { city?: string; type?: string; limit?: 
 }
 
 export async function getFeaturedJobs(limit = 6) {
-  return fetchApi<any[]>('/jobs/', { page_size: limit.toString() });
+  return fetchApi<any[]>('/jobs/', { page_size: limit.toString() }, { cache: 'no-store' });
 }
 
 // Properties API
@@ -145,7 +157,7 @@ export async function getProperties(filters?: { city?: string; purpose?: string;
 }
 
 export async function getFeaturedProperties(limit = 6) {
-  return fetchApi<any[]>('/properties/', { page_size: limit.toString() });
+  return fetchApi<any[]>('/properties/', { page_size: limit.toString() }, { cache: 'no-store' });
 }
 
 // Vehicles API
@@ -158,7 +170,7 @@ export async function getVehicles(filters?: { city?: string; type?: string; limi
 }
 
 export async function getFeaturedVehicles(limit = 6) {
-  return fetchApi<any[]>('/vehicles/', { page_size: limit.toString() });
+  return fetchApi<any[]>('/vehicles/', { page_size: limit.toString() }, { cache: 'no-store' });
 }
 
 // Services API
@@ -167,7 +179,7 @@ export async function getServices(filters?: { city?: string; category?: string; 
 }
 
 export async function getFeaturedServices(limit = 6) {
-  return fetchApi<any[]>('/services', { limit: limit.toString() });
+  return fetchApi<any[]>('/services', { limit: limit.toString() }, { cache: 'no-store' });
 }
 
 // News API
@@ -189,8 +201,18 @@ export async function getEmergencyContacts() {
   return fetchApi<any[]>('/emergency');
 }
 
+// Single item APIs
+export async function getJobById(id: string) {
+  return fetchApi<any>(`/jobs/${id}/`, {}, { cache: 'no-store' });
+}
 
-// POST APIs for creating posts
+export async function getPropertyById(id: string) {
+  return fetchApi<any>(`/properties/${id}/`, {}, { cache: 'no-store' });
+}
+
+export async function getVehicleById(id: string) {
+  return fetchApi<any>(`/vehicles/${id}/`, {}, { cache: 'no-store' });
+}
 
 export async function createJob(data: any) {
   return fetchApi<any>('/jobs/', {}, {

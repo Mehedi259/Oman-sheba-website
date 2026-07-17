@@ -7,20 +7,20 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getJobById } from '@hello-oman-sheba/database/mock-data'
+import { getJobById } from '@/lib/api'
 
-// For static generation, define all possible IDs
-export function generateStaticParams() {
-  return [
-    { id: '1' },
-    { id: '2' },
-    { id: '3' },
-  ]
-}
+// Dynamic rendering - fetch from API at request time
+export const dynamic = 'force-dynamic'
 
 export default async function JobDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const job = getJobById(id)
+  
+  let job: any
+  try {
+    job = await getJobById(id)
+  } catch (error) {
+    notFound()
+  }
 
   if (!job) {
     notFound()
@@ -47,20 +47,20 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
               🏢
             </div>
             <div className="flex-1">
-              <h1 className="text-3xl md:text-4xl font-bold mb-2">{job.titleBn}</h1>
+              <h1 className="text-3xl md:text-4xl font-bold mb-2">{job.title_bn || job.title}</h1>
               <p className="text-blue-200 text-lg mb-1">{job.title}</p>
               <div className="flex items-center gap-2 mb-4">
-                <span className="font-semibold text-lg">{job.company.nameBn}</span>
-                {job.company.verified && (
+                <span className="font-semibold text-lg">{job.company?.name_bn || job.company?.name || ''}</span>
+                {job.company?.verified && (
                   <span className="bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full text-xs flex items-center gap-1">
                     <Shield className="h-3 w-3" /> যাচাইকৃত
                   </span>
                 )}
               </div>
               <div className="flex flex-wrap gap-3 text-sm text-blue-200">
-                <span className="flex items-center gap-1"><MapPin className="h-4 w-4" />{job.city}, {job.area}</span>
+                <span className="flex items-center gap-1"><MapPin className="h-4 w-4" />{job.city}{job.area ? `, ${job.area}` : ''}</span>
                 <span className="flex items-center gap-1"><Briefcase className="h-4 w-4" />{typeMap[job.type] || job.type}</span>
-                <span className="flex items-center gap-1"><Clock className="h-4 w-4" />{job.experience}</span>
+                {job.experience && <span className="flex items-center gap-1"><Clock className="h-4 w-4" />{job.experience}</span>}
                 {job.featured && (
                   <span className="bg-yellow-500/20 text-yellow-300 px-2 py-0.5 rounded-full flex items-center gap-1">
                     <Star className="h-3 w-3" /> ফিচার্ড
@@ -82,43 +82,72 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
                 <CardTitle className="text-xl">চাকরির বিবরণ</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground leading-relaxed">{job.descriptionBn}</p>
-                <p className="text-muted-foreground leading-relaxed mt-2">{job.description}</p>
+                <p className="text-muted-foreground leading-relaxed">{job.description_bn || job.description}</p>
+                {job.description_bn && job.description && job.description !== job.description_bn && (
+                  <p className="text-muted-foreground leading-relaxed mt-2">{job.description}</p>
+                )}
               </CardContent>
             </Card>
 
             {/* Skills Required */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-xl">প্রয়োজনীয় দক্ষতা</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-2">
-                  {job.skills.map((skill, i) => (
-                    <span key={i} className="bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium border border-blue-200">
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            {job.skills && job.skills.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-xl">প্রয়োজনীয় দক্ষতা</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    {job.skills.map((skill: string, i: number) => (
+                      <span key={i} className="bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium border border-blue-200">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Requirements */}
+            {job.requirements_bn && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-xl">যোগ্যতা</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground leading-relaxed">{job.requirements_bn}</p>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Benefits */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-xl">সুযোগ-সুবিধা</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {job.benefits.map((benefit, i) => (
-                    <div key={i} className="flex items-center gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-500 shrink-0" />
-                      <span>{benefit}</span>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            {job.benefits && job.benefits.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-xl">সুযোগ-সুবিধা</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {job.benefits.map((benefit: string, i: number) => (
+                      <div key={i} className="flex items-center gap-2">
+                        <CheckCircle className="h-5 w-5 text-green-500 shrink-0" />
+                        <span>{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {job.benefits_bn && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-xl">সুবিধা</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground leading-relaxed">{job.benefits_bn}</p>
+                </CardContent>
+              </Card>
+            )}
           </div>
 
           {/* Sidebar */}
@@ -129,7 +158,9 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
                 <div>
                   <p className="text-sm text-muted-foreground mb-1">বেতন</p>
                   <p className="text-2xl font-bold text-blue-700">
-                    {job.salaryCurrency} {job.salaryMin} - {job.salaryMax}
+                    {job.salary_min && job.salary_max 
+                      ? `${job.salary_currency || 'OMR'} ${job.salary_min} - ${job.salary_max}`
+                      : 'আলোচনা সাপেক্ষে'}
                   </p>
                   <p className="text-sm text-muted-foreground">মাসিক</p>
                 </div>
@@ -139,37 +170,43 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
                     <Building className="h-5 w-5 text-muted-foreground shrink-0" />
                     <div>
                       <p className="text-sm text-muted-foreground">কোম্পানি</p>
-                      <p className="font-medium">{job.company.nameBn}</p>
+                      <p className="font-medium">{job.company?.name_bn || job.company?.name || ''}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <MapPin className="h-5 w-5 text-muted-foreground shrink-0" />
                     <div>
                       <p className="text-sm text-muted-foreground">অবস্থান</p>
-                      <p className="font-medium">{job.city}, {job.area}</p>
+                      <p className="font-medium">{job.city}{job.area ? `, ${job.area}` : ''}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <GraduationCap className="h-5 w-5 text-muted-foreground shrink-0" />
-                    <div>
-                      <p className="text-sm text-muted-foreground">শিক্ষাগত যোগ্যতা</p>
-                      <p className="font-medium">{job.education}</p>
+                  {job.education && (
+                    <div className="flex items-center gap-3">
+                      <GraduationCap className="h-5 w-5 text-muted-foreground shrink-0" />
+                      <div>
+                        <p className="text-sm text-muted-foreground">শিক্ষাগত যোগ্যতা</p>
+                        <p className="font-medium">{job.education}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Users className="h-5 w-5 text-muted-foreground shrink-0" />
-                    <div>
-                      <p className="text-sm text-muted-foreground">পদসংখ্যা</p>
-                      <p className="font-medium">{job.vacancy} টি</p>
+                  )}
+                  {job.vacancy && (
+                    <div className="flex items-center gap-3">
+                      <Users className="h-5 w-5 text-muted-foreground shrink-0" />
+                      <div>
+                        <p className="text-sm text-muted-foreground">পদসংখ্যা</p>
+                        <p className="font-medium">{job.vacancy} টি</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Calendar className="h-5 w-5 text-muted-foreground shrink-0" />
-                    <div>
-                      <p className="text-sm text-muted-foreground">আবেদনের শেষ তারিখ</p>
-                      <p className="font-medium">{new Date(job.applicationDeadline).toLocaleDateString('bn-BD')}</p>
+                  )}
+                  {job.application_deadline && (
+                    <div className="flex items-center gap-3">
+                      <Calendar className="h-5 w-5 text-muted-foreground shrink-0" />
+                      <div>
+                        <p className="text-sm text-muted-foreground">আবেদনের শেষ তারিখ</p>
+                        <p className="font-medium">{new Date(job.application_deadline).toLocaleDateString('bn-BD')}</p>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -177,22 +214,22 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
             {/* Apply Card */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">আবেদন করুন</CardTitle>
+                <CardTitle className="text-lg">যোগাযোগ করুন</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {job.applicationEmail && (
-                  <a href={`mailto:${job.applicationEmail}`} className="block">
+                {(job.application_email || job.contact_email) && (
+                  <a href={`mailto:${job.application_email || job.contact_email}`} className="block">
                     <Button variant="outline" className="w-full justify-start">
                       <Mail className="h-4 w-4 mr-2" />
-                      {job.applicationEmail}
+                      {job.application_email || job.contact_email}
                     </Button>
                   </a>
                 )}
-                {job.applicationPhone && (
-                  <a href={`tel:${job.applicationPhone}`} className="block">
+                {(job.application_phone || job.contact_phone) && (
+                  <a href={`tel:${job.application_phone || job.contact_phone}`} className="block">
                     <Button variant="outline" className="w-full justify-start">
                       <Phone className="h-4 w-4 mr-2" />
-                      {job.applicationPhone}
+                      {job.application_phone || job.contact_phone}
                     </Button>
                   </a>
                 )}
