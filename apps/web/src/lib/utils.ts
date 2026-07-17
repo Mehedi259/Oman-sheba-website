@@ -5,6 +5,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function getMediaUrl(url: string | null | undefined): string {
+  if (!url) return '';
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://188.245.212.240';
+  if (url.startsWith(backendUrl)) {
+    return url.replace(backendUrl, '');
+  }
+  return url;
+}
+
 export function formatCurrency(amount: number, currency: string = 'OMR'): string {
   return new Intl.NumberFormat('en-OM', {
     style: 'currency',

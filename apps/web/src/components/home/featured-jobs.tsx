@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Button } from '@/components/ui/button'
 import { MapPin, Briefcase, Clock, ArrowRight, CheckCircle2 } from 'lucide-react'
 import { getFeaturedJobs } from '@/lib/api'
-import { formatCurrency, formatRelativeTime } from '@/lib/utils'
+import { formatCurrency, formatRelativeTime, getMediaUrl } from '@/lib/utils'
 
 // Colorful flat icon per job industry (falls back to a briefcase)
 const jobIcons: Record<string, string> = {
@@ -42,7 +42,7 @@ export async function FeaturedJobs() {
                     <div className="w-12 h-12 rounded-lg bg-muted/50 flex items-center justify-center p-2 overflow-hidden shrink-0">
                       {job.images && job.images.length > 0 ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={job.images[0]} alt="" className="h-full w-full object-cover" />
+                        <img src={getMediaUrl(job.images[0])} alt="" className="h-full w-full object-cover" />
                       ) : (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={getJobIcon(job)} alt="" className="h-8 w-8" />

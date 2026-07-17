@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { MapPin, Bed, Bath, Home, ArrowRight, CheckCircle2 } from 'lucide-react'
 import { getFeaturedProperties } from '@/lib/api'
+import { getMediaUrl } from '@/lib/utils'
 
 const propertyTypeLabels: Record<string, string> = {
   'APARTMENT': 'অ্যাপার্টমেন্ট',
@@ -53,7 +54,7 @@ export async function FeaturedProperties() {
                 {property.images?.[0] ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={property.images[0]}
+                    src={getMediaUrl(property.images[0])}
                     alt={property.titleBn}
                     className="h-full w-full object-cover"
                   />
