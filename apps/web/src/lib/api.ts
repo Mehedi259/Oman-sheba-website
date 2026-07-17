@@ -237,3 +237,33 @@ export async function createClassified(data: any) {
   
   return response.json();
 }
+
+export async function uploadClassifiedImage(file: File, contentType: string, contentId: number, isPrimary: boolean = false) {
+  const apiUrl = getApiUrl('/images/');
+  const url = typeof window !== 'undefined' && apiUrl.startsWith('/') 
+    ? new URL(apiUrl, window.location.origin)
+    : new URL(apiUrl);
+    
+  const formData = new FormData();
+  formData.append('image', file);
+  formData.append('content_type', contentType);
+  formData.append('content_id', contentId.toString());
+  formData.append('is_primary', isPrimary.toString());
+
+  const token = getAuthToken();
+  const response = await fetch(url.toString(), {
+    method: 'POST',
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      // Do NOT set Content-Type header when sending FormData
+      // The browser will automatically set it to multipart/form-data with the boundary
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to upload image: ${response.statusText}`);
+  }
+
+  return response.json();
+}

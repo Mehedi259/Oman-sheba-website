@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { createProperty } from '@/lib/api';
+import { createProperty, uploadClassifiedImage } from '@/lib/api';
 import { useToast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 
@@ -30,6 +30,7 @@ const CITIES = [
 
 export function PropertyPostForm() {
   const [loading, setLoading] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
   const { toast } = useToast();
   const router = useRouter();
   
@@ -69,7 +70,16 @@ export function PropertyPostForm() {
         size: formData.size ? parseFloat(formData.size) : null,
       };
       
-      await createProperty(payload);
+      const response = await createProperty(payload);
+      
+      // Upload images if any
+      if (files.length > 0 && response.id) {
+        await Promise.all(
+          files.map((file, index) => 
+            uploadClassifiedImage(file, 'property', response.id, index === 0)
+          )
+        );
+      }
       
       toast({
         title: 'সফল!',
@@ -303,6 +313,25 @@ export function PropertyPostForm() {
             placeholder="email@example.com"
           />
         </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="images">ছবি আপলোড করুন (একাধিক ছবি সিলেক্ট করতে পারেন)</Label>
+        <Input
+          id="images"
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={(e) => {
+            if (e.target.files) {
+              setFiles(Array.from(e.target.files));
+            }
+          }}
+          className="cursor-pointer file:text-violet-700"
+        />
+        {files.length > 0 && (
+          <p className="text-sm text-muted-foreground">{files.length} টি ছবি নির্বাচন করা হয়েছে</p>
+        )}
       </div>
 
       <Button 
