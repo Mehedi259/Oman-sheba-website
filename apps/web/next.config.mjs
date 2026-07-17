@@ -54,6 +54,16 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui'],
   },
+  
+  // API proxy rewrites to fix Mixed Content errors
+  async rewrites() {
+    return [
+      {
+        source: '/api/proxy/:path*',
+        destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/:path*`,
+      },
+    ];
+  },
 }
 
 export default nextConfig

@@ -1,9 +1,11 @@
 // API Client for fetching data
 import * as mockData from '@hello-oman-sheba/database/mock-data';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL 
-  ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/classifieds`
-  : 'http://localhost:3000/api';
+const API_BASE_URL = typeof window !== 'undefined'
+  ? '/api/proxy/classifieds'
+  : (process.env.NEXT_PUBLIC_BACKEND_URL 
+    ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/classifieds`
+    : 'http://localhost:8000/api/classifieds');
 
 // Helper to get auth token from localStorage
 const getAuthToken = () => {
@@ -196,9 +198,11 @@ export async function createVehicle(data: any) {
 
 export async function createClassified(data: any) {
   // Classifieds go through community API
-  const COMMUNITY_BASE = process.env.NEXT_PUBLIC_BACKEND_URL 
-    ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/community`
-    : 'http://localhost:3000/api/community';
+  const COMMUNITY_BASE = typeof window !== 'undefined'
+    ? '/api/proxy/community'
+    : (process.env.NEXT_PUBLIC_BACKEND_URL 
+      ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/community`
+      : 'http://localhost:8000/api/community');
   
   const token = getAuthToken();
   const response = await fetch(`${COMMUNITY_BASE}/classifieds/`, {

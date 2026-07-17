@@ -20,7 +20,9 @@ export interface AuthResponse {
   created: boolean;
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+const API_BASE_URL = typeof window !== 'undefined'
+  ? '/api/proxy'
+  : (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000');
 
 export async function googleLogin(idToken: string): Promise<AuthResponse> {
   const response = await fetch(`${API_BASE_URL}/api/users/auth/google/`, {
