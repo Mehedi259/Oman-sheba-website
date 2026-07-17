@@ -56,6 +56,7 @@ export function JobPostForm() {
         description_bn: formData.description_bn,
         type: formData.job_type,
         company_name_en: formData.company_name_bn,
+        status: 'PUBLISHED',
         salary_min: formData.salary_min ? parseFloat(formData.salary_min) : null,
         salary_max: formData.salary_max ? parseFloat(formData.salary_max) : null,
       };

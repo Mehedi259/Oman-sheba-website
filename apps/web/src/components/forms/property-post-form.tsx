@@ -61,6 +61,7 @@ export function PropertyPostForm() {
         description_bn: formData.description_bn,
         category: formData.property_type,
         type: formData.property_type === 'COMMERCIAL' ? 'COMMERCIAL' : 'RESIDENTIAL',
+        status: 'PUBLISHED',
         price: parseFloat(formData.price),
         bedrooms: formData.bedrooms ? parseInt(formData.bedrooms) : null,
         bathrooms: formData.bathrooms ? parseInt(formData.bathrooms) : null,

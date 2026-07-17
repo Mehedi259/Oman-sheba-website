@@ -81,6 +81,7 @@ export function VehiclePostForm() {
         type: formData.vehicle_type,
         make: formData.brand,
         year: parseInt(formData.year),
+        status: 'PUBLISHED',
         mileage: formData.mileage ? parseInt(formData.mileage) : null,
         price: parseFloat(formData.price),
       };

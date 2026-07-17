@@ -51,6 +51,7 @@ export function ClassifiedPostForm() {
         title_bn: formData.title_bn,
         description: formData.description_bn,
         description_bn: formData.description_bn,
+        status: 'PUBLISHED',
         price: parseFloat(formData.price),
       };
       const response = await createClassified(payload);
