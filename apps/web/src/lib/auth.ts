@@ -20,12 +20,16 @@ export interface AuthResponse {
   created: boolean;
 }
 
-const API_BASE_URL = typeof window !== 'undefined'
-  ? '/api/proxy'
-  : (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000');
+const getAuthUrl = (endpoint: string) => {
+  if (typeof window !== 'undefined') {
+    return `/api/proxy${endpoint}`;
+  }
+  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+  return `${baseUrl}/api${endpoint}`;
+};
 
 export async function googleLogin(idToken: string): Promise<AuthResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/users/auth/google/`, {
+  const response = await fetch(getAuthUrl('/users/auth/google/'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -42,7 +46,7 @@ export async function googleLogin(idToken: string): Promise<AuthResponse> {
 }
 
 export async function getCurrentUser(accessToken: string): Promise<User> {
-  const response = await fetch(`${API_BASE_URL}/api/users/auth/me/`, {
+  const response = await fetch(getAuthUrl('/users/auth/me/'), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

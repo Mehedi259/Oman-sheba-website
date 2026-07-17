@@ -1,11 +1,22 @@
 // API Client for fetching data
 import * as mockData from '@hello-oman-sheba/database/mock-data';
 
-const API_BASE_URL = typeof window !== 'undefined'
-  ? '/api/proxy/classifieds'
-  : (process.env.NEXT_PUBLIC_BACKEND_URL 
-    ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/classifieds`
-    : 'http://localhost:8000/api/classifieds');
+const getApiUrl = (endpoint: string) => {
+  if (typeof window !== 'undefined') {
+    // If endpoint is /news or /emergency, it's not under classifieds
+    if (endpoint.startsWith('/news') || endpoint.startsWith('/emergency')) {
+      return `/api/proxy${endpoint}`;
+    }
+    // Default to classifieds
+    return `/api/proxy/classifieds${endpoint}`;
+  }
+  
+  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+  if (endpoint.startsWith('/news') || endpoint.startsWith('/emergency')) {
+    return `${baseUrl}/api${endpoint}`;
+  }
+  return `${baseUrl}/api/classifieds${endpoint}`;
+};
 
 // Helper to get auth token from localStorage
 const getAuthToken = () => {
@@ -27,7 +38,13 @@ async function fetchApi<T>(
   params?: Record<string, string>,
   options?: RequestInit
 ): Promise<T> {
-  const url = new URL(`${API_BASE_URL}${endpoint}`);
+  const isClient = typeof window !== 'undefined';
+  const apiUrl = getApiUrl(endpoint);
+  
+  // URL constructor requires a base if apiUrl is relative
+  const url = isClient && apiUrl.startsWith('/') 
+    ? new URL(apiUrl, window.location.origin)
+    : new URL(apiUrl);
   
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
