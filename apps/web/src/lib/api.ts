@@ -219,7 +219,7 @@ export async function getCommunityPosts(filters?: { limit?: number; search?: str
   if (filters?.category) params.category = filters.category;
   if (filters?.sort) params.ordering = filters.sort;
   if (filters?.page) params.page = filters.page;
-  return fetchApi<any>('/community/forum/posts/', params);
+  return fetchApi<any>('/community/forum/posts/', params, { cache: 'no-store' });
 }
 
 export async function getForumCategories() {
@@ -227,7 +227,7 @@ export async function getForumCategories() {
 }
 
 export async function getForumComments(postId: string | number) {
-  return fetchApi<any[]>(`/community/forum/posts/${postId}/comments/`);
+  return fetchApi<any[]>(`/community/forum/posts/${postId}/comments/`, {}, { cache: 'no-store' });
 }
 
 export async function createForumComment(postId: string | number, content: string) {
@@ -258,7 +258,7 @@ export async function getClassifieds(filters?: { limit?: number; search?: string
   if (filters?.category) params.category = filters.category;
   if (filters?.sort) params.ordering = filters.sort;
   
-  return fetchApi<any>('/community/classifieds/', params);
+  return fetchApi<any>('/community/classifieds/', params, { cache: 'no-store' });
 }
 
 export async function getFeaturedClassifieds(limit = 4) {
