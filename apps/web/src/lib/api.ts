@@ -198,11 +198,11 @@ export async function getServiceById(id: string) {
 export async function getCommunityPosts(filters?: { limit?: number }) {
   const params: Record<string, string> = {};
   if (filters?.limit) params.page_size = filters.limit.toString();
-  return fetchApi<any>('/community/posts/', params);
+  return fetchApi<any>('/community/forum/posts/', params);
 }
 
 export async function getFeaturedForumPosts(limit = 3) {
-  return fetchApi<any[]>('/community/forum/', { page_size: limit.toString() }, { cache: 'no-store' });
+  return fetchApi<any[]>('/community/forum/posts/', { page_size: limit.toString() }, { cache: 'no-store' });
 }
 
 export async function getFeaturedCommunityPosts(limit = 3) {
@@ -267,7 +267,7 @@ export async function createCommunityPost(formData: FormData) {
       : 'http://localhost:8000/api/community');
   
   const token = await getAuthToken();
-  const response = await fetch(`${COMMUNITY_BASE}/posts/`, {
+  const response = await fetch(`${COMMUNITY_BASE}/forum/posts/`, {
     method: 'POST',
     headers: {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
