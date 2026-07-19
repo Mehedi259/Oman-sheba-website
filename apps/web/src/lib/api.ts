@@ -112,11 +112,14 @@ async function fetchApi<T>(
 }
 
 // Jobs API
-export async function getJobs(filters?: { city?: string; type?: string; limit?: number }) {
+export async function getJobs(filters?: { city?: string; type?: string; limit?: number; search?: string; sort?: string; page?: string }) {
   const params: Record<string, string> = {};
   if (filters?.city) params.city = filters.city;
   if (filters?.type) params.type = filters.type;
   if (filters?.limit) params.page_size = filters.limit.toString();
+  if (filters?.search) params.search = filters.search;
+  if (filters?.sort) params.ordering = filters.sort;
+  if (filters?.page) params.page = filters.page;
   return fetchApi<any>('/jobs/', params);
 }
 
@@ -125,11 +128,14 @@ export async function getFeaturedJobs(limit = 6) {
 }
 
 // Properties API
-export async function getProperties(filters?: { city?: string; purpose?: string; limit?: number }) {
+export async function getProperties(filters?: { city?: string; purpose?: string; limit?: number; search?: string; sort?: string; page?: string }) {
   const params: Record<string, string> = {};
   if (filters?.city) params.city = filters.city;
   if (filters?.purpose) params.purpose = filters.purpose;
   if (filters?.limit) params.page_size = filters.limit.toString();
+  if (filters?.search) params.search = filters.search;
+  if (filters?.sort) params.ordering = filters.sort;
+  if (filters?.page) params.page = filters.page;
   return fetchApi<any>('/properties/', params);
 }
 
