@@ -4,6 +4,8 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Input } from '@/components/ui/input';
 import { Calendar, Search, TrendingUp, Eye, Tag } from 'lucide-react';
 import Link from 'next/link';
+import { formatDate } from '@/lib/utils';
+import { fetchApi } from '@/lib/api';
 
 const categories = [
   { id: 1, name: 'ভিসা সংবাদ', count: 45 },
@@ -13,76 +15,15 @@ const categories = [
   { id: 5, name: 'বাংলাদেশ সংবাদ', count: 56 },
 ];
 
-const newsArticles = [
-  {
-    id: 1,
-    title: 'ওমানে নতুন ওয়ার্ক ভিসা নিয়ম ২০২৬',
-    titleBn: 'ওমানে নতুন ওয়ার্ক ভিসা নিয়ম ২০২৬',
-    excerpt: 'শ্রম মন্ত্রণালয় নতুন ওয়ার্ক ভিসা নিয়ম ঘোষণা করেছে যা ২০২৬ সাল থেকে কার্যকর হবে...',
-    category: 'ভিসা সংবাদ',
-    date: '২৮ জুন, ২০২৬',
-    views: 1234,
-    featured: true,
-    tags: ['ভিসা', 'নিয়ম', 'ওমান'],
-  },
-  {
-    id: 2,
-    title: 'বাংলাদেশ দূতাবাস নতুন সেবা চালু করেছে',
-    titleBn: 'বাংলাদেশ দূতাবাস নতুন সেবা চালু করেছে',
-    excerpt: 'মাস্কাটে বাংলাদেশ দূতাবাস অনলাইন পাসপোর্ট নবায়ন সেবা চালু করেছে...',
-    category: 'দূতাবাস',
-    date: '২৬ জুন, ২০২৬',
-    views: 987,
-    featured: true,
-    tags: ['দূতাবাস', 'পাসপোর্ট', 'সেবা'],
-  },
-  {
-    id: 3,
-    title: 'মাস্কাটে নতুন চাকরির বাজার সম্প্রসারণ',
-    titleBn: 'মাস্কাটে নতুন চাকরির বাজার সম্প্রসারণ',
-    excerpt: 'বিভিন্ন সেক্টরে নতুন চাকরির সুযোগ তৈরি হচ্ছে মাস্কাট অঞ্চলে...',
-    category: 'চাকরি সংবাদ',
-    date: '২৫ জুন, ২০২৬',
-    views: 756,
-    featured: false,
-    tags: ['চাকরি', 'মাস্কাট', 'সুযোগ'],
-  },
-  {
-    id: 4,
-    title: 'ওমান সরকারের নতুন স্বাস্থ্য বীমা নীতি',
-    titleBn: 'ওমান সরকারের নতুন স্বাস্থ্য বীমা নীতি',
-    excerpt: 'সকল প্রবাসীদের জন্য বাধ্যতামূলক স্বাস্থ্য বীমার নতুন নিয়ম আসছে...',
-    category: 'ওমান সংবাদ',
-    date: '২৪ জুন, ২০২৬',
-    views: 1456,
-    featured: false,
-    tags: ['স্বাস্থ্য', 'বীমা', 'নীতি'],
-  },
-  {
-    id: 5,
-    title: 'বাংলাদেশ-ওমান বাণিজ্য সম্পর্ক আরও শক্তিশালী',
-    titleBn: 'বাংলাদেশ-ওমান বাণিজ্য সম্পর্ক আরও শক্তিশালী',
-    excerpt: 'দুই দেশের মধ্যে নতুন বাণিজ্য চুক্তি স্বাক্ষরিত হয়েছে...',
-    category: 'বাংলাদেশ সংবাদ',
-    date: '২৩ জুন, ২০২৬',
-    views: 634,
-    featured: false,
-    tags: ['বাণিজ্য', 'চুক্তি', 'সম্পর্ক'],
-  },
-  {
-    id: 6,
-    title: 'সোহার অর্থনৈতিক অঞ্চলে নতুন বিনিয়োগ',
-    titleBn: 'সোহার অর্থনৈতিক অঞ্চলে নতুন বিনিয়োগ',
-    excerpt: 'সোহার অঞ্চলে বড় ধরনের শিল্প বিনিয়োগ আসছে যা হাজারো চাকরি সৃষ্টি করবে...',
-    category: 'ওমান সংবাদ',
-    date: '২২ জুন, ২০২৬',
-    views: 892,
-    featured: false,
-    tags: ['সোহার', 'বিনিয়োগ', 'চাকরি'],
-  },
-];
+export default async function NewsPage() {
+  let articles: any[] = [];
+  try {
+    const data = await import('@/lib/api').then(m => m.getFeaturedNews(20));
+    articles = Array.isArray(data) ? data : (data as any).results || [];
+  } catch (e) {
+    // fallback to empty
+  }
 
-export default function NewsPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -158,11 +99,20 @@ export default function NewsPage() {
             </div>
 
             <div className="space-y-6">
-              {newsArticles.map((article) => (
+              {articles.map((article: any) => (
                 <Card key={article.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                   <div className="md:flex">
                     <div className="md:w-1/3 h-48 md:h-auto bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center relative">
-                      <span className="text-6xl">📰</span>
+                      {article.featured_image ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={article.featured_image}
+                          alt={article.title_bn || article.title}
+                          className="absolute inset-0 h-full w-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-6xl">📰</span>
+                      )}
                       {article.featured && (
                         <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
                           <TrendingUp className="h-3 w-3" />
@@ -174,41 +124,43 @@ export default function NewsPage() {
                       <CardHeader>
                         <div className="flex items-center gap-2 mb-2">
                           <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
-                            {article.category}
+                            {article.category_name_bn || article.category_name || 'সংবাদ'}
                           </span>
                           <span className="flex items-center gap-1 text-sm text-muted-foreground">
                             <Calendar className="h-4 w-4" />
-                            {article.date}
+                            {formatDate(article.published_at || article.created_at)}
                           </span>
                         </div>
-                        <Link href={`/news/${article.id}`}>
+                        <Link href={`/news/${article.slug}`}>
                           <h3 className="text-xl font-bold hover:text-primary cursor-pointer">
-                            {article.titleBn}
+                            {article.title_bn || article.title}
                           </h3>
                         </Link>
                       </CardHeader>
                       <CardContent className="flex-1">
                         <p className="text-muted-foreground line-clamp-2">
-                          {article.excerpt}
+                          {article.excerpt_bn || article.excerpt}
                         </p>
-                        <div className="flex flex-wrap gap-2 mt-3">
-                          {article.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="inline-flex items-center gap-1 px-2 py-1 bg-muted rounded text-xs"
-                            >
-                              <Tag className="h-3 w-3" />
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
+                        {article.tags && article.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mt-3">
+                            {article.tags.map((tag: string) => (
+                              <span
+                                key={tag}
+                                className="inline-flex items-center gap-1 px-2 py-1 bg-muted rounded text-xs"
+                              >
+                                <Tag className="h-3 w-3" />
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                       </CardContent>
                       <CardFooter className="flex items-center justify-between">
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                           <Eye className="h-4 w-4" />
-                          <span>{article.views} ভিউ</span>
+                          <span>{article.views || 0} ভিউ</span>
                         </div>
-                        <Link href={`/news/${article.id}`}>
+                        <Link href={`/news/${article.slug}`}>
                           <Button variant="link">বিস্তারিত পড়ুন →</Button>
                         </Link>
                       </CardFooter>
@@ -218,14 +170,20 @@ export default function NewsPage() {
               ))}
             </div>
 
+            {articles.length === 0 && (
+              <div className="text-center py-12 text-muted-foreground">
+                <p className="text-lg">কোনো সংবাদ পাওয়া যায়নি</p>
+              </div>
+            )}
+
             {/* Pagination */}
-            <div className="flex justify-center gap-2 mt-8">
-              <Button variant="outline">পূর্ববর্তী</Button>
-              <Button variant="outline">১</Button>
-              <Button>২</Button>
-              <Button variant="outline">৩</Button>
-              <Button variant="outline">পরবর্তী</Button>
-            </div>
+            {articles.length > 0 && (
+              <div className="flex justify-center gap-2 mt-8">
+                <Button variant="outline">পূর্ববর্তী</Button>
+                <Button>১</Button>
+                <Button variant="outline">পরবর্তী</Button>
+              </div>
+            )}
           </main>
         </div>
       </div>

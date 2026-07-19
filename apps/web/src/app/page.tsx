@@ -1,4 +1,4 @@
-import { Hero } from '@/components/home/hero'
+import { HeroSlider } from '@/components/home/hero'
 import { CategoryGrid } from '@/components/home/category-grid'
 import { FeaturedJobs } from '@/components/home/featured-jobs'
 import { FeaturedProperties } from '@/components/home/featured-properties'
@@ -9,14 +9,22 @@ import { FeaturedMarketplace } from '@/components/home/featured-marketplace'
 import { NewsSection } from '@/components/home/news-section'
 import { CallToAction } from '@/components/home/call-to-action'
 import { EmergencyContacts } from '@/components/home/emergency-contacts'
+import { getHeroSliders } from '@/lib/api'
 
 // Force dynamic rendering to avoid build-time API calls
 export const dynamic = 'force-dynamic'
 
-export default function HomePage() {
+export default async function HomePage() {
+  let sliders: any[] = []
+  try {
+    sliders = await getHeroSliders()
+  } catch (e) {
+    // Fallback: Hero component has built-in fallback banners
+  }
+
   return (
     <div className="flex flex-col">
-      <Hero />
+      <HeroSlider sliders={sliders} />
       <CategoryGrid />
       <FeaturedJobs />
       <FeaturedProperties />

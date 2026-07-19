@@ -2,8 +2,8 @@
 
 const getApiUrl = (endpoint: string) => {
   if (typeof window !== 'undefined') {
-    // If endpoint is /news, /emergency or /community, it's not under classifieds
-    if (endpoint.startsWith('/news') || endpoint.startsWith('/emergency') || endpoint.startsWith('/community')) {
+    // If endpoint is /news, /emergency, /community, or /system, it's not under classifieds
+    if (endpoint.startsWith('/news') || endpoint.startsWith('/emergency') || endpoint.startsWith('/community') || endpoint.startsWith('/system')) {
       return `/api/proxy${endpoint}`;
     }
     // Default to classifieds
@@ -11,7 +11,7 @@ const getApiUrl = (endpoint: string) => {
   }
   
   const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
-  if (endpoint.startsWith('/news') || endpoint.startsWith('/emergency') || endpoint.startsWith('/community')) {
+  if (endpoint.startsWith('/news') || endpoint.startsWith('/emergency') || endpoint.startsWith('/community') || endpoint.startsWith('/system')) {
     return `${baseUrl}/api${endpoint}`;
   }
   return `${baseUrl}/api/classifieds${endpoint}`;
@@ -170,7 +170,12 @@ export async function getNews(filters?: { type?: string; featured?: boolean; lim
 }
 
 export async function getFeaturedNews(limit = 4) {
-  return fetchApi<any[]>('/news', { featured: 'true', limit: limit.toString() });
+  return fetchApi<any[]>('/news/articles/', { page_size: limit.toString() }, { cache: 'no-store' });
+}
+
+// Hero Sliders API
+export async function getHeroSliders() {
+  return fetchApi<any[]>('/system/sliders/', {}, { cache: 'no-store' });
 }
 
 // Emergency Contacts API
