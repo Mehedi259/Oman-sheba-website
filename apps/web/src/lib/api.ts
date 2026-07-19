@@ -85,7 +85,13 @@ async function fetchApi<T>(
     if (!response.ok) {
       const errorText = await response.text();
       console.error(`API Error ${response.status}:`, errorText);
-      // Return empty array/object to prevent whole page crash
+      
+      // For mutation requests, throw error so UI can handle it
+      if (fetchOptions.method && fetchOptions.method !== 'GET') {
+        throw new Error(`API Error: ${response.status} ${errorText}`);
+      }
+      
+      // Return empty array/object to prevent whole page crash for GET requests
       return [] as unknown as T;
     }
     
