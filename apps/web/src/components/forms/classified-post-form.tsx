@@ -12,8 +12,11 @@ import { useRouter } from 'next/navigation';
 
 const CATEGORIES = [
   { value: 'electronics', label: 'ইলেকট্রনিক্স' },
+  { value: 'computer', label: 'কম্পিউটার' },
   { value: 'furniture', label: 'ফার্নিচার' },
   { value: 'clothing', label: 'পোশাক' },
+  { value: 'baby', label: 'শিশু সামগ্রী' },
+  { value: 'tools', label: 'যন্ত্রপাতি' },
   { value: 'books', label: 'বই' },
   { value: 'sports', label: 'খেলাধুলা' },
   { value: 'others', label: 'অন্যান্য' },
