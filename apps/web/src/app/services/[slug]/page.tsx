@@ -7,6 +7,7 @@ import {
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getServices, getServiceById } from '@/lib/api'
+import { FavoriteButton } from '@/components/ui/favorite-button'
 
 // Category definitions used on the services listing page
 const serviceCategories: Record<string, { name: string; nameBn: string; icon: string; description: string }> = {
@@ -255,13 +256,19 @@ function ServiceDetailPage({ service }: { service: any }) {
                   </a>
                 )}
                 {service.website && (
-                  <a href={service.website} target="_blank" rel="noopener noreferrer" className="block">
+                  <a href={service.website} target="_blank" rel="noopener noreferrer" className="block mb-2">
                     <Button variant="outline" className="w-full justify-start">
                       <Globe className="h-4 w-4 mr-2" />
                       ওয়েবসাইট ভিজিট করুন
                     </Button>
                   </a>
                 )}
+                <div className="flex justify-end pt-2 border-t">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">পছন্দের তালিকায় রাখুন:</span>
+                    <FavoriteButton type="service" id={service.id} />
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>

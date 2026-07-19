@@ -21,9 +21,24 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [everOpened, setEverOpened] = useState(false)
   const [authModalOpen, setAuthModalOpen] = useState(false)
+  const [unreadCount, setUnreadCount] = useState(0)
   const menuRef = useRef<HTMLDivElement>(null)
   
   const { user, isAuthenticated, logout } = useAuth()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      import('@/lib/api').then(({ getNotifications }) => {
+        getNotifications().then(data => {
+          if (Array.isArray(data)) {
+            setUnreadCount(data.filter((n: any) => !n.read).length);
+          }
+        }).catch(() => {});
+      });
+    } else {
+      setUnreadCount(0);
+    }
+  }, [isAuthenticated])
 
   useEffect(() => {
     if (!mobileMenuOpen) return
@@ -102,9 +117,11 @@ export function Header() {
           <Button variant="ghost" size="icon" className="hidden md:flex relative" asChild>
             <Link href="/notifications">
               <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
-                3
-              </span>
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-4 h-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center px-1">
+                  {unreadCount}
+                </span>
+              )}
             </Link>
           </Button>
           {isAuthenticated ? (

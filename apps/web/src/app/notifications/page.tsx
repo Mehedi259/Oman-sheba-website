@@ -1,6 +1,9 @@
+'use client';
+
 export const dynamic = 'force-dynamic';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Bell,
   Briefcase,
@@ -12,89 +15,89 @@ import {
   Trash2,
   Check,
 } from 'lucide-react';
-
-const notifications = [
-  {
-    id: 1,
-    type: 'job',
-    icon: Briefcase,
-    title: 'নতুন চাকরির সুযোগ',
-    message: 'আপনার প্রোফাইলের সাথে মিলে যায় এমন ৫টি নতুন চাকরি পোস্ট হয়েছে',
-    time: '১০ মিনিট আগে',
-    read: false,
-    color: 'text-blue-600',
-    bgColor: 'bg-blue-100',
-  },
-  {
-    id: 2,
-    type: 'application',
-    icon: CheckCircle,
-    title: 'আবেদন গৃহীত হয়েছে',
-    message: 'টেক সলিউশন্স ওমান-এ আপনার আবেদন গৃহীত হয়েছে',
-    time: '২ ঘন্টা আগে',
-    read: false,
-    color: 'text-green-600',
-    bgColor: 'bg-green-100',
-  },
-  {
-    id: 3,
-    type: 'message',
-    icon: MessageSquare,
-    title: 'নতুন মেসেজ',
-    message: 'করিম আহমেদ আপনার পোস্টে মন্তব্য করেছেন',
-    time: '৫ ঘন্টা আগে',
-    read: true,
-    color: 'text-purple-600',
-    bgColor: 'bg-purple-100',
-  },
-  {
-    id: 4,
-    type: 'favorite',
-    icon: Heart,
-    title: 'পছন্দের তালিকা আপডেট',
-    message: 'আপনার পছন্দের একটি প্রপার্টির দাম কমেছে',
-    time: '১ দিন আগে',
-    read: true,
-    color: 'text-red-600',
-    bgColor: 'bg-red-100',
-  },
-  {
-    id: 5,
-    type: 'alert',
-    icon: AlertCircle,
-    title: 'গুরুত্বপূর্ণ ঘোষণা',
-    message: 'নতুন ভিসা নিয়ম কার্যকর হয়েছে - বিস্তারিত দেখুন',
-    time: '২ দিন আগে',
-    read: true,
-    color: 'text-orange-600',
-    bgColor: 'bg-orange-100',
-  },
-  {
-    id: 6,
-    type: 'job',
-    icon: Briefcase,
-    title: 'চাকরির আবেদন পর্যালোচনায়',
-    message: 'ওমান কন্সট্রাকশন এলএলসি আপনার CV দেখছে',
-    time: '৩ দিন আগে',
-    read: true,
-    color: 'text-blue-600',
-    bgColor: 'bg-blue-100',
-  },
-  {
-    id: 7,
-    type: 'message',
-    icon: MessageSquare,
-    title: 'কমিউনিটি আপডেট',
-    message: 'আপনার পোস্টে ৫টি নতুন উত্তর এসেছে',
-    time: '৪ দিন আগে',
-    read: true,
-    color: 'text-purple-600',
-    bgColor: 'bg-purple-100',
-  },
-];
+import { getNotifications, markNotificationRead } from '@/lib/api';
+import { useAuth } from '@/components/auth/auth-provider';
+import { useToast } from '@/components/ui/use-toast';
+import Link from 'next/link';
 
 export default function NotificationsPage() {
+  const { isAuthenticated } = useAuth();
+  const { toast } = useToast();
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState('all');
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadNotifications();
+    } else {
+      setLoading(false);
+    }
+  }, [isAuthenticated]);
+
+  const loadNotifications = async () => {
+    try {
+      setLoading(true);
+      const data = await getNotifications();
+      if (Array.isArray(data)) {
+        setNotifications(data);
+      }
+    } catch (err) {
+      console.error('Error fetching notifications', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleMarkAsRead = async (id: number) => {
+    try {
+      await markNotificationRead(id);
+      setNotifications(notifications.map(n => n.id === id ? { ...n, read: true } : n));
+    } catch (err) {
+      toast({ title: 'ত্রুটি', description: 'আপডেট করতে সমস্যা হয়েছে।', variant: 'destructive' });
+    }
+  };
+
+  const handleMarkAllAsRead = async () => {
+    try {
+      const unreadIds = notifications.filter(n => !n.read).map(n => n.id);
+      if (unreadIds.length === 0) return;
+      await Promise.all(unreadIds.map(id => markNotificationRead(id)));
+      setNotifications(notifications.map(n => ({ ...n, read: true })));
+      toast({ title: 'সফল', description: 'সব নোটিফিকেশন পড়া হিসেবে মার্ক করা হয়েছে।' });
+    } catch (err) {
+      toast({ title: 'ত্রুটি', description: 'আপডেট করতে সমস্যা হয়েছে।', variant: 'destructive' });
+    }
+  };
+
   const unreadCount = notifications.filter((n) => !n.read).length;
+
+  const filteredNotifications = notifications.filter((n) => {
+    if (filter === 'unread') return !n.read;
+    if (filter === 'job') return n.type === 'JOB_APPLICATION' || n.type === 'JOB_ALERT';
+    if (filter === 'message') return n.type === 'MESSAGE';
+    if (filter === 'system') return n.type === 'SYSTEM' || n.type === 'ANNOUNCEMENT';
+    return true;
+  });
+
+  const getIconAndColor = (type: string) => {
+    switch (type) {
+      case 'JOB_APPLICATION':
+      case 'JOB_ALERT':
+        return { icon: Briefcase, color: 'text-blue-600', bgColor: 'bg-blue-100' };
+      case 'MESSAGE':
+        return { icon: MessageSquare, color: 'text-purple-600', bgColor: 'bg-purple-100' };
+      case 'REVIEW':
+        return { icon: Heart, color: 'text-red-600', bgColor: 'bg-red-100' };
+      case 'SYSTEM':
+      case 'ANNOUNCEMENT':
+        return { icon: AlertCircle, color: 'text-orange-600', bgColor: 'bg-orange-100' };
+      case 'BOOKING':
+        return { icon: CheckCircle, color: 'text-green-600', bgColor: 'bg-green-100' };
+      default:
+        return { icon: Bell, color: 'text-gray-600', bgColor: 'bg-gray-100' };
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -117,114 +120,127 @@ export default function NotificationsPage() {
 
       <div className="container py-12">
         <div className="max-w-4xl mx-auto">
-          {/* Action Buttons */}
-          <Card className="mb-6">
-            <CardContent className="p-4">
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-wrap gap-2">
-                  <Button variant="outline" size="sm">
-                    সব
-                  </Button>
-                  <Button variant="outline" size="sm">
-                    পড়া হয়নি ({unreadCount})
-                  </Button>
-                  <Button variant="outline" size="sm">
-                    চাকরি
-                  </Button>
-                  <Button variant="outline" size="sm">
-                    মেসেজ
-                  </Button>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <Button variant="outline" size="sm">
-                    <Check className="h-4 w-4 mr-2" />
-                    সব পড়া হিসেবে চিহ্নিত করুন
-                  </Button>
-                  <Button variant="outline" size="sm">
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    সব মুছে ফেলুন
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Notifications List */}
-          <div className="space-y-4">
-            {notifications.map((notification) => {
-              const Icon = notification.icon;
-              return (
-                <Card
-                  key={notification.id}
-                  className={`hover:shadow-lg transition-shadow ${
-                    !notification.read ? 'border-l-4 border-l-primary' : ''
-                  }`}
-                >
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div
-                        className={`w-12 h-12 rounded-full ${notification.bgColor} flex items-center justify-center flex-shrink-0`}
-                      >
-                        <Icon className={`h-6 w-6 ${notification.color}`} />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-start justify-between gap-4">
-                          <div>
-                            <h3 className="font-bold text-lg mb-1">
-                              {notification.title}
-                              {!notification.read && (
-                                <span className="ml-2 text-xs bg-primary text-white px-2 py-1 rounded-full">
-                                  নতুন
-                                </span>
-                              )}
-                            </h3>
-                            <p className="text-muted-foreground">{notification.message}</p>
-                            <div className="flex items-center gap-2 mt-3 text-sm text-muted-foreground">
-                              <Clock className="h-4 w-4" />
-                              <span>{notification.time}</span>
-                            </div>
-                          </div>
-                          <div className="flex gap-2">
-                            {!notification.read && (
-                              <Button size="sm" variant="outline">
-                                <Check className="h-4 w-4" />
-                              </Button>
-                            )}
-                            <Button size="sm" variant="outline">
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-
-          {/* Empty State (when no notifications) */}
-          {notifications.length === 0 && (
-            <Card>
-              <CardContent className="p-12 text-center">
+          {!isAuthenticated ? (
+            <Card className="py-16">
+              <CardContent className="text-center">
                 <Bell className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-xl font-bold mb-2">কোন নোটিফিকেশন নেই</h3>
-                <p className="text-muted-foreground">
-                  আপনার সব নোটিফিকেশন পরিষ্কার করা হয়েছে
+                <h3 className="text-xl font-bold mb-2">লগইন প্রয়োজন</h3>
+                <p className="text-muted-foreground mb-4">
+                  নোটিফিকেশন দেখতে অনুগ্রহ করে লগইন করুন।
                 </p>
+                <Button asChild>
+                  <Link href="/auth/login">লগইন করুন</Link>
+                </Button>
               </CardContent>
             </Card>
-          )}
+          ) : loading ? (
+            <div className="text-center py-16 text-muted-foreground">লোড হচ্ছে...</div>
+          ) : (
+            <>
+              {/* Action Buttons */}
+              <Card className="mb-6">
+                <CardContent className="p-4">
+                  <div className="flex flex-col gap-4">
+                    <div className="flex flex-wrap gap-2">
+                      <Button variant={filter === 'all' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('all')}>
+                        সব
+                      </Button>
+                      <Button variant={filter === 'unread' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('unread')}>
+                        পড়া হয়নি ({unreadCount})
+                      </Button>
+                      <Button variant={filter === 'job' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('job')}>
+                        চাকরি
+                      </Button>
+                      <Button variant={filter === 'message' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('message')}>
+                        মেসেজ
+                      </Button>
+                      <Button variant={filter === 'system' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('system')}>
+                        সিস্টেম
+                      </Button>
+                    </div>
 
-          {/* Pagination */}
-          {notifications.length > 0 && (
-            <div className="flex justify-center gap-2 mt-8">
-              <Button variant="outline">পূর্ববর্তী</Button>
-              <Button variant="outline">১</Button>
-              <Button>২</Button>
-              <Button variant="outline">৩</Button>
-              <Button variant="outline">পরবর্তী</Button>
-            </div>
+                    <div className="flex flex-wrap gap-2 pt-4 border-t border-border">
+                      <Button variant="ghost" size="sm" className="text-muted-foreground" onClick={handleMarkAllAsRead} disabled={unreadCount === 0}>
+                        <Check className="h-4 w-4 mr-2" />
+                        সব পড়া হয়েছে
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Notifications List */}
+              <div className="space-y-4">
+                {filteredNotifications.length > 0 ? (
+                  filteredNotifications.map((notification) => {
+                    const { icon: Icon, color, bgColor } = getIconAndColor(notification.type);
+                    
+                    return (
+                      <Card
+                        key={notification.id}
+                        className={`transition-colors hover:bg-muted/50 ${
+                          !notification.read ? 'border-primary/50 bg-primary/5' : ''
+                        }`}
+                      >
+                        <CardContent className="p-4 sm:p-6">
+                          <div className="flex items-start gap-4">
+                            <div
+                              className={`shrink-0 h-12 w-12 rounded-full ${bgColor} flex items-center justify-center`}
+                            >
+                              <Icon className={`h-6 w-6 ${color}`} />
+                            </div>
+                            <div className="flex-1 space-y-1">
+                              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                <h3
+                                  className={`font-semibold text-lg ${
+                                    !notification.read ? 'text-foreground' : 'text-muted-foreground'
+                                  }`}
+                                >
+                                  {notification.title_bn || notification.title}
+                                </h3>
+                                <div className="flex items-center text-xs text-muted-foreground whitespace-nowrap">
+                                  <Clock className="h-3 w-3 mr-1" />
+                                  {new Date(notification.created_at).toLocaleDateString()}
+                                </div>
+                              </div>
+                              <p
+                                className={`text-sm ${
+                                  !notification.read ? 'text-foreground/80' : 'text-muted-foreground'
+                                }`}
+                              >
+                                {notification.message_bn || notification.message}
+                              </p>
+                              {!notification.read && (
+                                <div className="pt-2 flex gap-2">
+                                  <Button variant="link" size="sm" className="h-auto p-0 text-primary" onClick={() => handleMarkAsRead(notification.id)}>
+                                    পড়া হয়েছে হিসেবে চিহ্নিত করুন
+                                  </Button>
+                                  {notification.link && (
+                                    <Button variant="link" size="sm" className="h-auto p-0" asChild>
+                                      <Link href={notification.link}>বিস্তারিত দেখুন</Link>
+                                    </Button>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })
+                ) : (
+                  <Card className="py-16">
+                    <CardContent className="text-center">
+                      <Bell className="h-16 w-16 mx-auto text-muted-foreground mb-4 opacity-50" />
+                      <h3 className="text-xl font-bold mb-2">কোন নোটিফিকেশন নেই</h3>
+                      <p className="text-muted-foreground">
+                        বর্তমানে দেখানোর মতো কোন নোটিফিকেশন নেই
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+            </>
           )}
         </div>
       </div>

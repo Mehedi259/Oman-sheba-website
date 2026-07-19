@@ -8,6 +8,7 @@ import {
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getJobById } from '@/lib/api'
+import { FavoriteButton } from '@/components/ui/favorite-button'
 
 // Dynamic rendering - fetch from API at request time
 export const dynamic = 'force-dynamic'
@@ -233,9 +234,12 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
                     </Button>
                   </a>
                 )}
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-2">
-                  এখনই আবেদন করুন
-                </Button>
+                <div className="flex gap-2 mt-2">
+                  <Button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white">
+                    এখনই আবেদন করুন
+                  </Button>
+                  <FavoriteButton type="job" id={job.id} />
+                </div>
               </CardContent>
             </Card>
           </div>

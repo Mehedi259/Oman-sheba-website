@@ -7,6 +7,7 @@ import {
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getVehicleById } from '@/lib/api'
+import { FavoriteButton } from '@/components/ui/favorite-button'
 
 export const dynamic = 'force-dynamic'
 
@@ -253,13 +254,19 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
                   </a>
                 )}
                 {vehicle.contact_whatsapp && (
-                  <a href={`https://wa.me/${vehicle.contact_whatsapp.replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer" className="block">
+                  <a href={`https://wa.me/${vehicle.contact_whatsapp.replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer" className="block mb-2">
                     <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
                       <MessageSquare className="h-4 w-4 mr-2" />
                       WhatsApp-এ যোগাযোগ করুন
                     </Button>
                   </a>
                 )}
+                <div className="flex justify-end pt-2 border-t">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">পছন্দের তালিকায় রাখুন:</span>
+                    <FavoriteButton type="vehicle" id={vehicle.id} />
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>

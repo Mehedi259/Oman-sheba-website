@@ -1,54 +1,58 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Search, Filter, MapPin, Briefcase, Home, Car, Wrench, Tag } from 'lucide-react';
 import Link from 'next/link';
+import { getGlobalSearch } from '@/lib/api';
+import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-export default function SearchPage() {
-  const [searchQuery, setSearchQuery] = useState('');
+function SearchContent() {
+  const searchParams = useSearchParams();
+  const initialQuery = searchParams.get('q') || '';
+  
+  const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [results, setResults] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const categories = [
     { id: 'all', name: 'সব', icon: Search },
-    { id: 'jobs', name: 'চাকরি', icon: Briefcase },
-    { id: 'properties', name: 'প্রপার্টি', icon: Home },
-    { id: 'vehicles', name: 'গাড়ি', icon: Car },
-    { id: 'services', name: 'সেবা', icon: Wrench },
-    { id: 'classifieds', name: 'মার্কেট', icon: Tag },
+    { id: 'job', name: 'চাকরি', icon: Briefcase },
+    { id: 'property', name: 'প্রপার্টি', icon: Home },
+    { id: 'vehicle', name: 'গাড়ি', icon: Car },
+    { id: 'service', name: 'সেবা', icon: Wrench },
+    { id: 'classified', name: 'মার্কেট', icon: Tag },
   ];
 
-  const mockResults = [
-    {
-      id: 1,
-      type: 'job',
-      title: 'সিনিয়র সফটওয়্যার ইঞ্জিনিয়ার',
-      description: 'টেক সলিউশন্স ওমান',
-      location: 'মাস্কাট',
-      price: '৮০০-১২০০ রিয়াল',
-      icon: '💼',
-    },
-    {
-      id: 2,
-      type: 'property',
-      title: '২ বেডরুম অ্যাপার্টমেন্ট',
-      description: 'আল খুয়াইর',
-      location: 'মাস্কাট',
-      price: '৩৫০ রিয়াল/মাসিক',
-      icon: '🏠',
-    },
-    {
-      id: 3,
-      type: 'vehicle',
-      title: 'Toyota Corolla 2020',
-      description: 'চমৎকার অবস্থায়',
-      location: 'মাস্কাট',
-      price: '৫৫০০ রিয়াল',
-      icon: '🚗',
-    },
-  ];
+  const handleSearch = async (query: string) => {
+    if (!query.trim()) {
+      setResults([]);
+      return;
+    }
+    try {
+      setLoading(true);
+      const data = await getGlobalSearch(query);
+      setResults(data || []);
+    } catch (err) {
+      console.error('Search error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (initialQuery) {
+      handleSearch(initialQuery);
+    }
+  }, [initialQuery]);
+
+  const filteredResults = selectedCategory === 'all' 
+    ? results 
+    : results.filter(r => r.type === selectedCategory);
 
   return (
     <div className="min-h-screen bg-background">
@@ -60,15 +64,25 @@ export default function SearchPage() {
             <p className="text-xl mb-8 text-blue-100">
               আপনার প্রয়োজনীয় সব কিছু এক জায়গায়
             </p>
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="চাকরি, বাসা, গাড়ি বা সেবা খুঁজুন..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 h-14 bg-white text-black text-lg"
-              />
+            <div className="relative flex gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder="চাকরি, বাসা, গাড়ি বা সেবা খুঁজুন..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSearch(searchQuery)}
+                  className="pl-12 h-14 bg-white text-black text-lg w-full"
+                />
+              </div>
+              <Button 
+                onClick={() => handleSearch(searchQuery)} 
+                className="h-14 px-8 text-lg bg-black hover:bg-gray-800"
+                disabled={loading}
+              >
+                {loading ? 'খুঁজছে...' : 'খুঁজুন'}
+              </Button>
             </div>
           </div>
         </div>
@@ -102,39 +116,53 @@ export default function SearchPage() {
           <div>
             <h2 className="text-2xl font-bold">সার্চ ফলাফল</h2>
             <p className="text-muted-foreground">
-              {mockResults.length} টি ফলাফল পাওয়া গেছে
+              {filteredResults.length} টি ফলাফল পাওয়া গেছে
             </p>
           </div>
-          <Button variant="outline">
-            <Filter className="h-4 w-4 mr-2" />
-            ফিল্টার
-          </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockResults.map((result) => (
-            <Card key={result.id} className="hover:shadow-lg transition-shadow">
-              <div className="h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                <span className="text-6xl">{result.icon}</span>
-              </div>
-              <CardHeader>
-                <h3 className="font-bold text-lg">{result.title}</h3>
-                <p className="text-sm text-muted-foreground">{result.description}</p>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center text-sm text-muted-foreground mb-2">
-                  <MapPin className="h-4 w-4 mr-2" />
-                  {result.location}
+        {filteredResults.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredResults.map((result, i) => (
+              <Card key={`${result.id}-${i}`} className="hover:shadow-lg transition-shadow flex flex-col h-full">
+                <div className="h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center shrink-0">
+                  <span className="text-6xl">{result.icon}</span>
                 </div>
-                <p className="text-xl font-bold text-primary">{result.price}</p>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full">বিস্তারিত দেখুন</Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+                <CardHeader>
+                  <h3 className="font-bold text-lg line-clamp-1">{result.title_bn || result.title}</h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">{result.description}</p>
+                </CardHeader>
+                <CardContent className="flex-1">
+                  <div className="flex items-center text-sm text-muted-foreground mb-2">
+                    <MapPin className="h-4 w-4 mr-2" />
+                    {result.location || 'অজানা স্থান'}
+                  </div>
+                  {result.price && <p className="text-xl font-bold text-primary">{result.price} রিয়াল</p>}
+                </CardContent>
+                <CardFooter className="mt-auto">
+                  <Button className="w-full" asChild>
+                    <Link href={`/${result.type}s/${result.id}`}>বিস্তারিত দেখুন</Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16">
+            <Search className="h-16 w-16 mx-auto text-muted-foreground mb-4 opacity-50" />
+            <h3 className="text-xl font-bold mb-2">কোন ফলাফল পাওয়া যায়নি</h3>
+            <p className="text-muted-foreground">অন্য কোন শব্দ দিয়ে আবার চেষ্টা করুন</p>
+          </div>
+        )}
       </div>
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">লোড হচ্ছে...</div>}>
+      <SearchContent />
+    </Suspense>
   );
 }
