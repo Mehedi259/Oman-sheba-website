@@ -264,7 +264,7 @@ export async function getNewsById(id: string) {
 }
 
 export async function getCommunityPostById(id: string) {
-  return fetchApi<any>(`/community/posts/${id}/`, {}, { cache: 'no-store' });
+  return fetchApi<any>(`/community/forum/posts/${id}/`, {}, { cache: 'no-store' });
 }
 
 export async function getClassifiedById(id: string) {
