@@ -61,7 +61,7 @@ export function DiscussionPostForm() {
         description: 'আপনার আলোচনা সফলভাবে পোস্ট হয়েছে।',
       });
       
-      router.push('/forum');
+      router.push('/community');
     } catch (error: any) {
       toast({
         title: 'ত্রুটি',

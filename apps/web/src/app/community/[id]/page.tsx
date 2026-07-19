@@ -1,132 +1,133 @@
-import { getCommunityPostById } from '@/lib/api'
-import { formatRelativeTime } from '@/lib/utils'
-import { notFound } from 'next/navigation'
-import Link from 'next/link'
-import { ArrowLeft, User, Calendar, MessageSquare, Tag, ThumbsUp, Heart, Share2 } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { getCommunityPostById, getForumComments } from '@/lib/api';
+import { formatRelativeTime, getMediaUrl } from '@/lib/utils';
+import { MessageSquare, Clock, Eye, MapPin, Tag } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { ForumCommentForm, ForumLikeButton } from './ForumInteractions';
 
-export const dynamic = 'force-dynamic'
-
-export default async function CommunityPostDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
+export default async function ForumPostDetailPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
+  const post = await getCommunityPostById(params.id);
   
-  let post: any
-  try {
-    post = await getCommunityPostById(id)
-  } catch (error) {
-    notFound()
-  }
-
   if (!post) {
-    notFound()
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-violet-700 text-white py-12">
-        <div className="container max-w-4xl">
-          <Link href="/community" className="inline-flex items-center text-blue-200 hover:text-white mb-6 transition-colors">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            কমিউনিটিতে ফিরে যান
+    return (
+      <div className="min-h-[50vh] flex items-center justify-center text-center">
+        <div>
+          <h2 className="text-2xl font-bold mb-2">পোস্টটি পাওয়া যায়নি</h2>
+          <Link href="/community">
+            <Button variant="outline">ফোরামে ফিরে যান</Button>
           </Link>
-          <div className="flex items-center gap-3 mb-4">
-            <span className="bg-white/20 text-white px-3 py-1 rounded-full text-sm font-medium">
-              {post.category?.nameBn || post.category?.name || 'আলোচনা'}
-            </span>
-          </div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">{post.titleBn || post.title}</h1>
-          <div className="flex flex-wrap items-center gap-6 text-sm text-blue-100">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-                <User className="h-4 w-4" />
-              </div>
-              <span>{post.author?.name || 'অজ্ঞাত'}</span>
-            </div>
-            <span className="flex items-center gap-1.5"><Calendar className="h-4 w-4" /> {formatRelativeTime(post.createdAt || post.created_at)}</span>
-            <span className="flex items-center gap-1.5"><MessageSquare className="h-4 w-4" /> {(post.comments_count || post.replies || 0)} টি মন্তব্য</span>
-          </div>
         </div>
       </div>
+    );
+  }
 
-      <div className="container max-w-4xl py-8 space-y-8">
-        {/* Main Post Content */}
-        <Card className="border-0 shadow-md">
-          <CardContent className="pt-8 pb-6">
-            <div className="prose max-w-none">
-              {(post.contentBn || post.content || '').split('\n').map((paragraph: string, i: number) => (
-                <p key={i} className="text-muted-foreground leading-relaxed mb-4 last:mb-0 whitespace-pre-line text-lg">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          </CardContent>
-          <CardFooter className="bg-slate-50 border-t flex flex-wrap items-center justify-between py-4">
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="sm" className="text-slate-600 hover:text-blue-600 hover:bg-blue-50">
-                <ThumbsUp className="h-4 w-4 mr-2" />
-                {(post.likes || post.likes_count || 0)} লাইক
-              </Button>
-              <Button variant="ghost" size="sm" className="text-slate-600 hover:text-blue-600 hover:bg-blue-50">
-                <Share2 className="h-4 w-4 mr-2" />
-                শেয়ার
-              </Button>
-            </div>
-          </CardFooter>
-        </Card>
+  const commentsData = await getForumComments(params.id);
+  const comments = Array.isArray(commentsData) ? commentsData : (commentsData as any).results || [];
 
-        {/* Comments Section */}
-        <div className="space-y-6">
-          <h3 className="text-2xl font-bold">মন্তব্যসমূহ ({(post.comments_count || post.replies || 0)})</h3>
+  return (
+    <div className="min-h-screen bg-background py-8">
+      <div className="container max-w-4xl">
+        <div className="mb-6">
+          <Link href="/community" className="text-violet-600 hover:underline text-sm font-medium">
+            &larr; ফোরামে ফিরে যান
+          </Link>
+        </div>
+
+        {/* Post Content */}
+        <div className="bg-card rounded-lg shadow-sm border p-6 md:p-8 mb-8">
+          <div className="flex flex-wrap items-center gap-2 mb-4">
+            {post.category && (
+              <span className="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-medium">
+                {post.category?.nameBn || post.category?.name || post.category}
+              </span>
+            )}
+            {post.pinned && (
+              <span className="text-xs bg-violet-100 text-violet-700 px-3 py-1 rounded-full font-medium">
+                📌 পিন করা
+              </span>
+            )}
+          </div>
           
-          {post.comments && post.comments.length > 0 ? (
-            <div className="space-y-4">
-              {post.comments.map((comment: any, idx: number) => (
-                <Card key={idx} className="bg-slate-50 border-slate-100">
-                  <CardContent className="p-4 sm:p-6">
-                    <div className="flex gap-4">
-                      <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 font-bold">
-                        {comment.author?.name ? comment.author.name.charAt(0).toUpperCase() : 'U'}
-                      </div>
-                      <div className="flex-1 space-y-2">
-                        <div className="flex flex-wrap items-center justify-between gap-2">
-                          <span className="font-semibold text-slate-800">{comment.author?.name || 'অজ্ঞাত ব্যবহারকারী'}</span>
-                          <span className="text-xs text-muted-foreground">{formatRelativeTime(comment.createdAt || comment.created_at)}</span>
-                        </div>
-                        <p className="text-slate-600 leading-relaxed">{comment.content}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+          <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
+          
+          <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground mb-8 border-b pb-6">
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-full bg-violet-100 text-violet-700 flex items-center justify-center font-bold">
+                {(post.authorName || post.author_name || post.author || 'U').charAt(0).toUpperCase()}
+              </div>
+              <span className="font-medium text-foreground">{post.authorName || post.author_name || post.author}</span>
             </div>
-          ) : (
-            <Card className="bg-slate-50 border-dashed">
-              <CardContent className="py-12 text-center text-muted-foreground">
-                <MessageSquare className="h-12 w-12 mx-auto mb-4 text-slate-300" />
-                <p>এখনো কোনো মন্তব্য নেই। প্রথম মন্তব্যটি করুন!</p>
-              </CardContent>
-            </Card>
+            <span className="flex items-center gap-1"><Clock className="h-4 w-4" /> {formatRelativeTime(post.createdAt || post.created_at)}</span>
+            <span className="flex items-center gap-1"><Eye className="h-4 w-4" /> {post.views || 0} বার দেখা হয়েছে</span>
+          </div>
+
+          <div className="prose max-w-none mb-8 whitespace-pre-wrap">
+            {post.content}
+          </div>
+
+          {post.image && (
+            <div className="mb-8 rounded-lg overflow-hidden border">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={getMediaUrl(post.image)} alt={post.title} className="w-full h-auto object-cover max-h-[500px]" />
+            </div>
           )}
 
-          {/* Comment Form (Visual Only for now) */}
-          <Card>
-            <CardContent className="p-6">
-              <h4 className="font-semibold mb-4 text-lg">আপনার মতামত দিন</h4>
-              <textarea 
-                className="w-full min-h-[120px] p-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none bg-slate-50 transition-all"
-                placeholder="এখানে আপনার মন্তব্য লিখুন..."
-              ></textarea>
-              <div className="mt-4 flex justify-end">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8">
-                  পোস্ট করুন
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          {post.tags && post.tags.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2 mb-6">
+              <Tag className="h-4 w-4 text-muted-foreground" />
+              {post.tags.map((tag: string, index: number) => (
+                <span key={index} className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded-md">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <div className="flex items-center justify-between border-t pt-4 mt-6">
+            <ForumLikeButton postId={post.id} initialLikes={post.likes || 0} />
+            <div className="text-sm text-muted-foreground">
+              {comments.length} টি উত্তর
+            </div>
+          </div>
+        </div>
+
+        {/* Comments Section */}
+        <div className="bg-card rounded-lg shadow-sm border p-6 md:p-8">
+          <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+            <MessageSquare className="h-6 w-6 text-violet-600" />
+            উত্তরসমূহ ({comments.length})
+          </h2>
+
+          <div className="space-y-6 mb-8">
+            {comments.length === 0 ? (
+              <p className="text-muted-foreground italic text-center py-4">এখনো কোনো উত্তর নেই। প্রথম উত্তরটি দিন!</p>
+            ) : (
+              comments.map((comment: any) => (
+                <div key={comment.id} className="border-b pb-6 last:border-0 last:pb-0">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="h-8 w-8 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center font-bold">
+                      {(comment.authorName || comment.author_name || comment.author || 'U').charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <div className="font-medium">{comment.authorName || comment.author_name || comment.author}</div>
+                      <div className="text-xs text-muted-foreground">{formatRelativeTime(comment.createdAt || comment.created_at)}</div>
+                    </div>
+                  </div>
+                  <div className="pl-11 whitespace-pre-wrap text-gray-800">
+                    {comment.content}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+          <div className="bg-muted/30 p-6 rounded-lg">
+            <h3 className="font-semibold text-lg mb-2">আপনার মতামত দিন</h3>
+            <ForumCommentForm postId={post.id} />
+          </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
