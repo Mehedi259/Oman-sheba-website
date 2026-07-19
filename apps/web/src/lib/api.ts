@@ -206,10 +206,35 @@ export async function getServiceById(id: string) {
   return fetchApi<any>(`/service-providers/${id}/`, {}, { cache: 'no-store' });
 }
 
-export async function getCommunityPosts(filters?: { limit?: number }) {
+export async function getCommunityPosts(filters?: { limit?: number; search?: string; category?: string; sort?: string; page?: string }) {
   const params: Record<string, string> = {};
   if (filters?.limit) params.page_size = filters.limit.toString();
+  if (filters?.search) params.search = filters.search;
+  if (filters?.category) params.category = filters.category;
+  if (filters?.sort) params.ordering = filters.sort;
+  if (filters?.page) params.page = filters.page;
   return fetchApi<any>('/community/forum/posts/', params);
+}
+
+export async function getForumCategories() {
+  return fetchApi<any[]>('/community/forum/categories/');
+}
+
+export async function getForumComments(postId: string | number) {
+  return fetchApi<any[]>(`/community/forum/posts/${postId}/comments/`);
+}
+
+export async function createForumComment(postId: string | number, content: string) {
+  return fetchApi<any>(`/community/forum/posts/${postId}/comments/`, {}, {
+    method: 'POST',
+    body: JSON.stringify({ content })
+  });
+}
+
+export async function likeForumPost(postId: string | number) {
+  return fetchApi<any>(`/community/forum/posts/${postId}/like/`, {}, {
+    method: 'POST'
+  });
 }
 
 export async function getFeaturedForumPosts(limit = 3) {

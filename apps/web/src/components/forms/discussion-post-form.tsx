@@ -1,17 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Upload } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
-import { createCommunityPost } from '@/lib/api';
+import { createCommunityPost, getForumCategories } from '@/lib/api';
 import { Label } from '@/components/ui/label';
 
 export function DiscussionPostForm() {
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -21,6 +22,22 @@ export function DiscussionPostForm() {
     content: '',
     tags: '',
   });
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const data = await getForumCategories();
+        if (Array.isArray(data)) {
+          setCategories(data);
+        } else if (data && Array.isArray((data as any).results)) {
+          setCategories((data as any).results);
+        }
+      } catch (err) {
+        console.error("Failed to load forum categories", err);
+      }
+    }
+    fetchCategories();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +61,7 @@ export function DiscussionPostForm() {
         description: 'আপনার আলোচনা সফলভাবে পোস্ট হয়েছে।',
       });
       
-      router.push('/community');
+      router.push('/forum');
     } catch (error: any) {
       toast({
         title: 'ত্রুটি',
@@ -85,15 +102,11 @@ export function DiscussionPostForm() {
           required
         >
           <option value="">নির্বাচন করুন</option>
-          <option value="visa">ভিসা সম্পর্কিত</option>
-          <option value="job">চাকরি সম্পর্কিত</option>
-          <option value="housing">বাসস্থান সম্পর্কিত</option>
-          <option value="legal">আইনি পরামর্শ</option>
-          <option value="medical">চিকিৎসা সেবা</option>
-          <option value="education">শিক্ষা</option>
-          <option value="travel">ভ্রমণ</option>
-          <option value="lifestyle">জীবনযাত্রা</option>
-          <option value="general">সাধারণ</option>
+          {categories.map(cat => (
+            <option key={cat.id} value={cat.slug || cat.id}>
+              {cat.nameBn || cat.name}
+            </option>
+          ))}
         </select>
       </div>
 
