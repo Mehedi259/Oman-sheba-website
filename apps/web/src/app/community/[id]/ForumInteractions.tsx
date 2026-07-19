@@ -17,8 +17,14 @@ export function ForumLikeButton({ postId, initialLikes }: { postId: number, init
     try {
       setLoading(true);
       const res = await likeForumPost(postId);
-      setLikes(res.likes || likes + 1);
-      toast({ title: 'সফল', description: 'পোস্টটি লাইক করা হয়েছে।' });
+      setLikes(res.likes !== undefined ? res.likes : likes + 1);
+      
+      const messageMap: Record<string, string> = {
+        'Forum post liked': 'পোস্টটি লাইক করা হয়েছে।',
+        'Forum post unliked': 'পোস্টটি থেকে লাইক সরানো হয়েছে।'
+      };
+      
+      toast({ title: 'সফল', description: messageMap[res.message] || res.message || 'সফলভাবে সম্পন্ন হয়েছে।' });
     } catch (err: any) {
       toast({ title: 'ত্রুটি', description: 'লগইন করুন অথবা আবার চেষ্টা করুন।', variant: 'destructive' });
     } finally {
