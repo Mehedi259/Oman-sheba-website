@@ -214,9 +214,13 @@ export async function getFeaturedCommunityPosts(limit = 3) {
   return fetchApi<any[]>('/community/posts/', { page_size: limit.toString() }, { cache: 'no-store' });
 }
 
-export async function getClassifieds(filters?: { limit?: number }) {
+export async function getClassifieds(filters?: { limit?: number; search?: string; category?: string; sort?: string }) {
   const params: Record<string, string> = {};
   if (filters?.limit) params.page_size = filters.limit.toString();
+  if (filters?.search) params.search = filters.search;
+  if (filters?.category) params.category = filters.category;
+  if (filters?.sort) params.ordering = filters.sort;
+  
   return fetchApi<any>('/community/classifieds/', params);
 }
 
