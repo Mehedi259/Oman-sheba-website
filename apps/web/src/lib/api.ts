@@ -1,10 +1,9 @@
 // API Client for fetching data
-import * as mockData from '@hello-oman-sheba/database/mock-data';
 
 const getApiUrl = (endpoint: string) => {
   if (typeof window !== 'undefined') {
-    // If endpoint is /news or /emergency, it's not under classifieds
-    if (endpoint.startsWith('/news') || endpoint.startsWith('/emergency')) {
+    // If endpoint is /news, /emergency or /community, it's not under classifieds
+    if (endpoint.startsWith('/news') || endpoint.startsWith('/emergency') || endpoint.startsWith('/community')) {
       return `/api/proxy${endpoint}`;
     }
     // Default to classifieds
@@ -12,18 +11,29 @@ const getApiUrl = (endpoint: string) => {
   }
   
   const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
-  if (endpoint.startsWith('/news') || endpoint.startsWith('/emergency')) {
+  if (endpoint.startsWith('/news') || endpoint.startsWith('/emergency') || endpoint.startsWith('/community')) {
     return `${baseUrl}/api${endpoint}`;
   }
   return `${baseUrl}/api/classifieds${endpoint}`;
 };
 
-// Helper to get auth token from localStorage
-const getAuthToken = () => {
+import { tokenStorage } from './auth';
+
+// Helper to get auth token
+const getAuthToken = async () => {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem('access_token');
+    // Client-side
+    return tokenStorage.getAccess();
+  } else {
+    // Server-side
+    try {
+      const { auth } = await import('@/auth');
+      const session = await auth();
+      return (session as any)?.accessToken || null;
+    } catch (e) {
+      return null;
+    }
   }
-  return null;
 };
 
 interface ApiResponse<T> {
@@ -52,7 +62,7 @@ async function fetchApi<T>(
     });
   }
   
-  const token = getAuthToken();
+  const token = await getAuthToken();
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -75,62 +85,29 @@ async function fetchApi<T>(
     if (!response.ok) {
       const errorText = await response.text();
       console.error(`API Error ${response.status}:`, errorText);
-      throw new Error(`API Error: ${response.status} - ${errorText}`);
+      // Return empty array/object to prevent whole page crash
+      return [] as unknown as T;
     }
     
-    // Django REST Framework may return paginated response
-    const result = await response.json();
-    
-    // Check if it's a paginated response
-    if (result && typeof result === 'object' && 'results' in result) {
-      return result.results as T;
+    // Check if the response is JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      const result = await response.json();
+      
+      // Check if it's a paginated response
+      if (result && typeof result === 'object' && 'results' in result) {
+        return result.results as T;
+      }
+      
+      return result as T;
+    } else {
+      // If not JSON (e.g. 404 HTML page), return empty
+      console.error('API Error: Non-JSON response received');
+      return [] as unknown as T;
     }
-    
-    return result as T;
   } catch (error) {
     console.warn(`Fetch to ${endpoint} failed.`, error);
-    
-    // Don't fallback to mock data for mutations
-    if (options?.method && options.method !== 'GET') {
-      throw error;
-    }
-    
-    // Fallback based on endpoint using the same methods from mock-data
-    if (endpoint === '/jobs' || endpoint === '/jobs/') {
-      const city = params?.city || undefined;
-      const type = params?.type || undefined;
-      const limit = params?.limit ? parseInt(params.limit) : undefined;
-      return mockData.getJobs({ city, type, limit }) as unknown as T;
-    }
-    if (endpoint === '/properties' || endpoint === '/properties/') {
-      const city = params?.city || undefined;
-      const purpose = params?.purpose || undefined;
-      const limit = params?.limit ? parseInt(params.limit) : undefined;
-      return mockData.getProperties({ city, purpose, limit }) as unknown as T;
-    }
-    if (endpoint === '/vehicles' || endpoint === '/vehicles/') {
-      const city = params?.city || undefined;
-      const type = params?.type || undefined;
-      const limit = params?.limit ? parseInt(params.limit) : undefined;
-      return mockData.getVehicles({ city, type, limit }) as unknown as T;
-    }
-    if (endpoint === '/services' || endpoint === '/service-providers/') {
-      const city = params?.city || undefined;
-      const category = params?.category || undefined;
-      const limit = params?.limit ? parseInt(params.limit) : undefined;
-      return mockData.getServices({ city, category, limit }) as unknown as T;
-    }
-    if (endpoint === '/news') {
-      const type = params?.type || undefined;
-      const featured = params?.featured === 'true' ? true : params?.featured === 'false' ? false : undefined;
-      const limit = params?.limit ? parseInt(params.limit) : undefined;
-      return mockData.getNews({ type, featured, limit }) as unknown as T;
-    }
-    if (endpoint === '/emergency') {
-      return mockData.getEmergencyContacts() as unknown as T;
-    }
-    
-    throw error;
+    return [] as unknown as T;
   }
 }
 
@@ -140,7 +117,7 @@ export async function getJobs(filters?: { city?: string; type?: string; limit?: 
   if (filters?.city) params.city = filters.city;
   if (filters?.type) params.type = filters.type;
   if (filters?.limit) params.page_size = filters.limit.toString();
-  return fetchApi<any[]>('/jobs/', params);
+  return fetchApi<any>('/jobs/', params);
 }
 
 export async function getFeaturedJobs(limit = 6) {
@@ -153,7 +130,7 @@ export async function getProperties(filters?: { city?: string; purpose?: string;
   if (filters?.city) params.city = filters.city;
   if (filters?.purpose) params.purpose = filters.purpose;
   if (filters?.limit) params.page_size = filters.limit.toString();
-  return fetchApi<any[]>('/properties/', params);
+  return fetchApi<any>('/properties/', params);
 }
 
 export async function getFeaturedProperties(limit = 6) {
@@ -166,7 +143,7 @@ export async function getVehicles(filters?: { city?: string; type?: string; limi
   if (filters?.city) params.city = filters.city;
   if (filters?.type) params.type = filters.type;
   if (filters?.limit) params.page_size = filters.limit.toString();
-  return fetchApi<any[]>('/vehicles/', params);
+  return fetchApi<any>('/vehicles/', params);
 }
 
 export async function getFeaturedVehicles(limit = 6) {
@@ -189,7 +166,7 @@ export async function getNews(filters?: { type?: string; featured?: boolean; lim
   if (filters?.featured !== undefined) params.featured = filters.featured.toString();
   if (filters?.limit) params.limit = filters.limit.toString();
   
-  return fetchApi<any[]>('/news', params);
+  return fetchApi<any>('/news', params);
 }
 
 export async function getFeaturedNews(limit = 4) {
@@ -214,6 +191,46 @@ export async function getVehicleById(id: string) {
   return fetchApi<any>(`/vehicles/${id}/`, {}, { cache: 'no-store' });
 }
 
+export async function getServiceById(id: string) {
+  return fetchApi<any>(`/service-providers/${id}/`, {}, { cache: 'no-store' });
+}
+
+export async function getCommunityPosts(filters?: { limit?: number }) {
+  const params: Record<string, string> = {};
+  if (filters?.limit) params.page_size = filters.limit.toString();
+  return fetchApi<any>('/community/posts/', params);
+}
+
+export async function getFeaturedForumPosts(limit = 3) {
+  return fetchApi<any[]>('/community/forum/', { page_size: limit.toString() }, { cache: 'no-store' });
+}
+
+export async function getFeaturedCommunityPosts(limit = 3) {
+  return fetchApi<any[]>('/community/posts/', { page_size: limit.toString() }, { cache: 'no-store' });
+}
+
+export async function getClassifieds(filters?: { limit?: number }) {
+  const params: Record<string, string> = {};
+  if (filters?.limit) params.page_size = filters.limit.toString();
+  return fetchApi<any>('/community/classifieds/', params);
+}
+
+export async function getFeaturedClassifieds(limit = 4) {
+  return fetchApi<any[]>('/community/classifieds/', { page_size: limit.toString() }, { cache: 'no-store' });
+}
+
+export async function getNewsById(id: string) {
+  return fetchApi<any>(`/news/${id}/`, {}, { cache: 'no-store' });
+}
+
+export async function getCommunityPostById(id: string) {
+  return fetchApi<any>(`/community/posts/${id}/`, {}, { cache: 'no-store' });
+}
+
+export async function getClassifiedById(id: string) {
+  return fetchApi<any>(`/community/classifieds/${id}/`, {}, { cache: 'no-store' });
+}
+
 export async function createJob(data: any) {
   return fetchApi<any>('/jobs/', {}, {
     method: 'POST',
@@ -235,6 +252,38 @@ export async function createVehicle(data: any) {
   });
 }
 
+export async function createService(data: any) {
+  return fetchApi<any>('/services/', {}, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function createCommunityPost(formData: FormData) {
+  const COMMUNITY_BASE = typeof window !== 'undefined'
+    ? '/api/proxy/community'
+    : (process.env.NEXT_PUBLIC_BACKEND_URL 
+      ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/community`
+      : 'http://localhost:8000/api/community');
+  
+  const token = await getAuthToken();
+  const response = await fetch(`${COMMUNITY_BASE}/posts/`, {
+    method: 'POST',
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      // No Content-Type header so browser sets multipart/form-data with boundary
+    },
+    body: formData,
+  });
+  
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to create post: ${response.statusText} - ${errorText}`);
+  }
+  
+  return response.json();
+}
+
 export async function createClassified(data: any) {
   // Classifieds go through community API
   const COMMUNITY_BASE = typeof window !== 'undefined'
@@ -243,7 +292,7 @@ export async function createClassified(data: any) {
       ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/community`
       : 'http://localhost:8000/api/community');
   
-  const token = getAuthToken();
+  const token = await getAuthToken();
   const response = await fetch(`${COMMUNITY_BASE}/classifieds/`, {
     method: 'POST',
     headers: {
@@ -261,7 +310,7 @@ export async function createClassified(data: any) {
 }
 
 export async function uploadClassifiedImage(file: File, contentType: string, contentId: number, isPrimary: boolean = false) {
-  const apiUrl = getApiUrl('/images/');
+  const apiUrl = getApiUrl('/images');
   const url = typeof window !== 'undefined' && apiUrl.startsWith('/') 
     ? new URL(apiUrl, window.location.origin)
     : new URL(apiUrl);
@@ -272,7 +321,7 @@ export async function uploadClassifiedImage(file: File, contentType: string, con
   formData.append('content_id', contentId.toString());
   formData.append('is_primary', isPrimary.toString());
 
-  const token = getAuthToken();
+  const token = await getAuthToken();
   const response = await fetch(url.toString(), {
     method: 'POST',
     headers: {
