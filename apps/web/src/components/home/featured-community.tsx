@@ -3,40 +3,11 @@ import { MessageSquare, ThumbsUp, MessageCircle, ArrowRight, User, Clock } from 
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
-const discussions = [
-  {
-    id: 1,
-    title: 'ওমানে ড্রাইভিং লাইসেন্স নবায়ন কিভাবে করবো?',
-    category: 'ভিসা সম্পর্কিত',
-    author: 'মোঃ রহিম',
-    timeAgo: '২ ঘন্টা আগে',
-    likes: 24,
-    comments: 12,
-    excerpt: 'আমার ড্রাইভিং লাইসেন্সের মেয়াদ শেষ হয়ে গেছে। কেউ কি জানেন কিভাবে নবায়ন করতে হয়...',
-  },
-  {
-    id: 2,
-    title: 'মাস্কাটে ভালো বাংলাদেশী রেস্টুরেন্ট কোথায় পাবো?',
-    category: 'জীবনযাত্রা',
-    author: 'করিম আহমেদ',
-    timeAgo: '৫ ঘন্টা আগে',
-    likes: 18,
-    comments: 23,
-    excerpt: 'আল খুয়াইর এলাকায় থাকি। কাছাকাছি ভালো বাংলাদেশী খাবারের দোকান...',
-  },
-  {
-    id: 3,
-    title: 'ওয়ার্ক পারমিট রিনিউয়ালের জন্য কি কি লাগবে?',
-    category: 'আইনি পরামর্শ',
-    author: 'সাকিব হোসেন',
-    timeAgo: '১ দিন আগে',
-    likes: 35,
-    comments: 18,
-    excerpt: 'আমার ওয়ার্ক পারমিট আগামী মাসে শেষ হবে। রিনিউয়ালের জন্য কি কাগজপত্র...',
-  },
-];
+import { getFeaturedForumPosts } from '@/lib/api';
+import { formatRelativeTime } from '@/lib/utils';
 
-export function FeaturedCommunity() {
+export async function FeaturedCommunity() {
+  const discussions = await getFeaturedForumPosts(3);
   return (
     <section className="py-16 bg-gradient-to-br from-pink-50 to-rose-50">
       <div className="container">
@@ -53,40 +24,40 @@ export function FeaturedCommunity() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {discussions.map((discussion) => (
+          {discussions.map((discussion: any) => (
             <Link key={discussion.id} href={`/community/${discussion.id}`}>
-              <Card className="hover:shadow-lg transition-all group h-full">
-                <CardContent className="p-6">
+              <Card className="hover:shadow-lg transition-all group h-full flex flex-col">
+                <CardContent className="p-6 flex-1 flex flex-col">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="px-3 py-1 bg-pink-100 text-pink-700 rounded-full text-xs font-medium">
-                      {discussion.category}
+                      {discussion.category?.nameBn || discussion.category?.name || 'সাধারণ'}
                     </span>
                   </div>
 
                   <h3 className="font-bold text-lg mb-3 group-hover:text-pink-600 transition-colors line-clamp-2">
-                    {discussion.title}
+                    {discussion.titleBn || discussion.title}
                   </h3>
 
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                    {discussion.excerpt}
+                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2 flex-1">
+                    {discussion.contentBn || discussion.content}
                   </p>
 
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4 mt-auto">
                     <User className="h-4 w-4" />
-                    <span>{discussion.author}</span>
+                    <span>{discussion.author?.first_name || discussion.author?.username || 'অজ্ঞাত'}</span>
                     <span>•</span>
                     <Clock className="h-4 w-4" />
-                    <span>{discussion.timeAgo}</span>
+                    <span>{formatRelativeTime(discussion.created_at)}</span>
                   </div>
 
                   <div className="flex items-center gap-4 pt-4 border-t text-sm">
                     <div className="flex items-center gap-1 text-muted-foreground">
                       <ThumbsUp className="h-4 w-4" />
-                      <span>{discussion.likes}</span>
+                      <span>{discussion.likes || 0}</span>
                     </div>
                     <div className="flex items-center gap-1 text-muted-foreground">
                       <MessageCircle className="h-4 w-4" />
-                      <span>{discussion.comments} মন্তব্য</span>
+                      <span>{discussion.comments_count || 0} মন্তব্য</span>
                     </div>
                   </div>
                 </CardContent>

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -21,54 +22,12 @@ const categories = [
   { id: 4, name: 'ভিসা সহায়তা', nameBn: 'ভিসা সহায়তা', count: 278, icon: MessageSquare },
 ];
 
-const trendingTopics = [
-  {
-    id: 1,
-    title: 'ওমানে নতুন ভিসা নিয়ম সম্পর্কে জানতে চাই',
-    author: 'করিম আহমেদ',
-    category: 'ভিসা সহায়তা',
-    replies: 45,
-    views: 1234,
-    likes: 89,
-    time: '২ ঘন্টা আগে',
-    tags: ['ভিসা', 'নিয়ম', 'আপডেট']
-  },
-  {
-    id: 2,
-    title: 'মাস্কাটে ভালো বাংলাদেশী রেস্টুরেন্টের তালিকা',
-    author: 'রহিম উদ্দিন',
-    category: 'সাধারণ আলোচনা',
-    replies: 67,
-    views: 2341,
-    likes: 134,
-    time: '৫ ঘন্টা আগে',
-    tags: ['খাবার', 'রেস্টুরেন্ট', 'মাস্কাট']
-  },
-  {
-    id: 3,
-    title: 'সোহারে ভাল চাকরির সুযোগ আছে কি?',
-    author: 'সাকিব হোসেন',
-    category: 'চাকরি সহায়তা',
-    replies: 23,
-    views: 876,
-    likes: 45,
-    time: '১ দিন আগে',
-    tags: ['চাকরি', 'সোহার', 'সুযোগ']
-  },
-  {
-    id: 4,
-    title: 'রুয়িতে কম খরচে রুম শেয়ার করার কেউ আছেন?',
-    author: 'নাজমুল ইসলাম',
-    category: 'বাসা ভাড়া',
-    replies: 34,
-    views: 1567,
-    likes: 67,
-    time: '৩ দিন আগে',
-    tags: ['রুম', 'শেয়ার', 'রুয়ি']
-  },
-];
+import { getCommunityPosts } from '@/lib/api';
+import { formatRelativeTime } from '@/lib/utils';
 
-export default function CommunityPage() {
+export default async function CommunityPage() {
+  const data = await getCommunityPosts();
+  const trendingTopics = Array.isArray(data) ? data : data.results || [];
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -158,24 +117,24 @@ export default function CommunityPage() {
             </div>
 
             <div className="space-y-4">
-              {trendingTopics.map((topic) => (
+              {trendingTopics.map((topic: any) => (
                 <Card key={topic.id} className="hover:shadow-lg transition-shadow">
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <Link href={`/community/topic/${topic.id}`}>
-                          <CardTitle className="text-xl hover:text-primary cursor-pointer">
-                            {topic.title}
+                        <Link href={`/community/${topic.id}`}>
+                          <CardTitle className="text-xl hover:text-primary cursor-pointer line-clamp-1">
+                            {topic.titleBn || topic.title || (topic.contentBn || topic.content)?.substring(0, 50)}
                           </CardTitle>
                         </Link>
                         <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
-                          <span>দ্বারা {topic.author}</span>
+                          <span>দ্বারা {topic.author?.first_name || topic.author?.username || 'অজ্ঞাত'}</span>
                           <span className="flex items-center gap-1">
                             <Calendar className="h-4 w-4" />
-                            {topic.time}
+                            {formatRelativeTime(topic.createdAt || topic.created_at)}
                           </span>
                           <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
-                            {topic.category}
+                            {topic.category?.nameBn || topic.category?.name || 'সাধারণ'}
                           </span>
                         </div>
                       </div>
@@ -183,7 +142,7 @@ export default function CommunityPage() {
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {topic.tags.map((tag, index) => (
+                      {topic.tags && Array.isArray(topic.tags) && topic.tags.map((tag: string, index: number) => (
                         <span
                           key={index}
                           className="inline-flex items-center gap-1 px-2 py-1 bg-muted rounded text-xs"
@@ -197,15 +156,15 @@ export default function CommunityPage() {
                   <CardFooter className="flex items-center gap-6 text-sm text-muted-foreground">
                     <div className="flex items-center gap-2">
                       <MessageCircle className="h-4 w-4" />
-                      <span>{topic.replies} উত্তর</span>
+                      <span>{topic.comments_count || topic.comments || 0} উত্তর</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Eye className="h-4 w-4" />
-                      <span>{topic.views} দেখা হয়েছে</span>
+                      <span>{topic.views || 0} দেখা হয়েছে</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <ThumbsUp className="h-4 w-4" />
-                      <span>{topic.likes} লাইক</span>
+                      <span>{topic.likes_count || topic.likes || 0} লাইক</span>
                     </div>
                   </CardFooter>
                 </Card>

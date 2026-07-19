@@ -45,6 +45,7 @@ export function PropertyPostForm() {
     currency: 'OMR',
     bedrooms: '',
     bathrooms: '',
+    contact_name: '',
     contact_phone: '',
   });
 
@@ -65,6 +66,7 @@ export function PropertyPostForm() {
         price: parseFloat(formData.price),
         bedrooms: formData.bedrooms ? parseInt(formData.bedrooms) : null,
         bathrooms: formData.bathrooms ? parseInt(formData.bathrooms) : null,
+        contact_name: formData.contact_name,
       };
       
       const response = await createProperty(payload);
@@ -83,10 +85,10 @@ export function PropertyPostForm() {
       });
       
       router.push('/properties');
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: 'ত্রুটি',
-        description: 'পোস্ট করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।',
+        description: error.message || 'পোস্ট করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।',
         variant: 'destructive',
       });
     } finally {
@@ -238,15 +240,28 @@ export function PropertyPostForm() {
         />
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="contact_phone">যোগাযোগ ফোন *</Label>
-        <Input
-          id="contact_phone"
-          value={formData.contact_phone}
-          onChange={(e) => handleChange('contact_phone', e.target.value)}
-          placeholder="+968 9XXXXXXX"
-          required
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="contact_name">যোগাযোগের নাম *</Label>
+          <Input
+            id="contact_name"
+            value={formData.contact_name}
+            onChange={(e) => handleChange('contact_name', e.target.value)}
+            placeholder="আপনার নাম"
+            required
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="contact_phone">যোগাযোগ ফোন *</Label>
+          <Input
+            id="contact_phone"
+            value={formData.contact_phone}
+            onChange={(e) => handleChange('contact_phone', e.target.value)}
+            placeholder="+968 9XXXXXXX"
+            required
+          />
+        </div>
       </div>
 
       <div className="space-y-2">

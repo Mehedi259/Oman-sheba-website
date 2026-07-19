@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -29,88 +30,12 @@ const categories = [
   { id: 8, name: 'অন্যান্য', icon: Heart, count: 234, color: 'text-red-600' },
 ];
 
-const listings = [
-  {
-    id: 1,
-    title: 'iPhone 13 Pro - চমৎকার অবস্থায়',
-    titleBn: 'iPhone 13 Pro - চমৎকার অবস্থায়',
-    price: 280,
-    currency: 'OMR',
-    category: 'ইলেকট্রনিক্স',
-    location: 'মাস্কাট, আল খুয়াইর',
-    condition: 'ব্যবহৃত - ভাল',
-    posted: '২ ঘন্টা আগে',
-    image: '📱',
-    negotiable: true,
-  },
-  {
-    id: 2,
-    title: 'Dell Laptop i7 16GB RAM',
-    titleBn: 'Dell ল্যাপটপ i7 16GB RAM',
-    price: 180,
-    currency: 'OMR',
-    category: 'কম্পিউটার',
-    location: 'মাস্কাট, রুয়ি',
-    condition: 'ব্যবহৃত - ভাল',
-    posted: '৫ ঘন্টা আগে',
-    image: '💻',
-    negotiable: true,
-  },
-  {
-    id: 3,
-    title: 'সোফা সেট - ৩ পিস',
-    titleBn: 'সোফা সেট - ৩ পিস',
-    price: 120,
-    currency: 'OMR',
-    category: 'ফার্নিচার',
-    location: 'মাস্কাট, বোশার',
-    condition: 'নতুনের মত',
-    posted: '১ দিন আগে',
-    image: '🛋️',
-    negotiable: true,
-  },
-  {
-    id: 4,
-    title: 'শিশুর খেলনা সেট',
-    titleBn: 'শিশুর খেলনা সেট',
-    price: 15,
-    currency: 'OMR',
-    category: 'শিশু সামগ্রী',
-    location: 'সোহার',
-    condition: 'নতুন',
-    posted: '২ দিন আগে',
-    image: '🧸',
-    negotiable: false,
-  },
-  {
-    id: 5,
-    title: 'Samsung Smart TV 55 inch',
-    titleBn: 'Samsung Smart TV 55 inch',
-    price: 200,
-    currency: 'OMR',
-    category: 'ইলেকট্রনিক্স',
-    location: 'মাস্কাট, কুরুম',
-    condition: 'ব্যবহৃত - চমৎকার',
-    posted: '৩ দিন আগে',
-    image: '📺',
-    negotiable: true,
-  },
-  {
-    id: 6,
-    title: 'ডাইনিং টেবিল সেট',
-    titleBn: 'ডাইনিং টেবিল সেট',
-    price: 80,
-    currency: 'OMR',
-    category: 'ফার্নিচার',
-    location: 'মাস্কাট, আল হাইল',
-    condition: 'ব্যবহৃত - ভাল',
-    posted: '৪ দিন আগে',
-    image: '🪑',
-    negotiable: true,
-  },
-];
+import { getClassifieds } from '@/lib/api';
+import { formatRelativeTime, getMediaUrl } from '@/lib/utils';
 
-export default function ClassifiedsPage() {
+export default async function ClassifiedsPage() {
+  const data = await getClassifieds();
+  const listings = Array.isArray(data) ? data : data.results || [];
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -176,43 +101,47 @@ export default function ClassifiedsPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {listings.map((item) => (
+          {listings.map((item: any) => (
             <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                <span className="text-6xl">{item.image}</span>
-                {item.negotiable && (
+              <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden">
+                {item.images && item.images.length > 0 ? (
+                  <img src={getMediaUrl(item.images[0])} alt={item.titleBn || item.title} className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-6xl">🛒</span>
+                )}
+                {item.price_negotiable && (
                   <div className="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded">
                     দরদাম সম্ভব
                   </div>
                 )}
                 <div className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">
-                  {item.condition}
+                  {item.condition || 'N/A'}
                 </div>
               </div>
               <CardHeader className="pb-3">
                 <Link href={`/classifieds/${item.id}`}>
                   <h3 className="font-bold text-lg hover:text-primary cursor-pointer line-clamp-1">
-                    {item.titleBn}
+                    {item.titleBn || item.title}
                   </h3>
                 </Link>
                 <div className="flex items-center gap-2 mt-2">
                   <span className="text-2xl font-bold text-primary">
-                    {item.price} রিয়াল
+                    {item.price ? item.price.toLocaleString() : 0} {item.currency || 'রিয়াল'}
                   </span>
                 </div>
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Tag className="h-4 w-4 mr-2" />
-                  {item.category}
+                  {item.category?.nameBn || item.category?.name || 'সাধারণ'}
                 </div>
                 <div className="flex items-center text-sm text-muted-foreground">
                   <MapPin className="h-4 w-4 mr-2" />
-                  {item.location}
+                  {item.city}{item.area ? `, ${item.area}` : ''}
                 </div>
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Clock className="h-4 w-4 mr-2" />
-                  {item.posted}
+                  {formatRelativeTime(item.createdAt || item.created_at)}
                 </div>
               </CardContent>
               <CardFooter className="flex gap-2">

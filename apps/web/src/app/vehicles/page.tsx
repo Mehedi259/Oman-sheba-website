@@ -1,69 +1,16 @@
+export const dynamic = 'force-dynamic';
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Search, Car, MapPin, Gauge, Calendar } from 'lucide-react'
 import Link from 'next/link'
 
-const vehicles = [
-  {
-    id: '1',
-    title: 'টয়োটা ক্যামরি ২০২০',
-    price: '৬,৫০০ রিয়াল',
-    type: 'বিক্রয়',
-    make: 'Toyota',
-    model: 'Camry',
-    year: 2020,
-    mileage: '45,000',
-    color: 'সাদা',
-    condition: 'চমৎকার',
-    location: 'মাস্কাট',
-    posted: '২ দিন আগে'
-  },
-  {
-    id: '2',
-    title: 'হোন্ডা সিভিক ২০১৮',
-    price: '৪,৮০০ রিয়াল',
-    type: 'বিক্রয়',
-    make: 'Honda',
-    model: 'Civic',
-    year: 2018,
-    mileage: '68,000',
-    color: 'কালো',
-    condition: 'ভালো',
-    location: 'মাস্কাট',
-    posted: '৪ দিন আগে'
-  },
-  {
-    id: '3',
-    title: 'নিসান এক্স-ট্রেইল ২০১৯',
-    price: '৫,২০০ রিয়াল',
-    type: 'বিক্রয়',
-    make: 'Nissan',
-    model: 'X-Trail',
-    year: 2019,
-    mileage: '52,000',
-    color: 'ধূসর',
-    condition: 'চমৎকার',
-    location: 'সোহার',
-    posted: '১ সপ্তাহ আগে'
-  },
-  {
-    id: '4',
-    title: 'হুন্ডাই এলান্ট্রা ২০২১',
-    price: '৭,২০০ রিয়াল',
-    type: 'বিক্রয়',
-    make: 'Hyundai',
-    model: 'Elantra',
-    year: 2021,
-    mileage: '28,000',
-    color: 'লাল',
-    condition: 'নতুনের মতো',
-    location: 'মাস্কাট',
-    posted: '৩ দিন আগে'
-  }
-]
+import { getVehicles } from '@/lib/api'
+import { formatRelativeTime, getMediaUrl } from '@/lib/utils'
 
-export default function VehiclesPage() {
+export default async function VehiclesPage() {
+  const data = await getVehicles();
+  const vehicles = Array.isArray(data) ? data : data.results || [];
   return (
     <div className="min-h-screen bg-background">
       <div className="bg-gradient-to-r from-orange-600 to-red-600 text-white py-12">
@@ -102,16 +49,20 @@ export default function VehiclesPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {vehicles.map((vehicle) => (
+          {vehicles.map((vehicle: any) => (
             <Card key={vehicle.id} className="overflow-hidden hover:shadow-lg transition-shadow hover-lift">
-              <div className="relative h-48 bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center">
-                <Car className="h-16 w-16 text-muted-foreground/30" />
+              <div className="relative h-48 bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center overflow-hidden">
+                {vehicle.images && vehicle.images.length > 0 ? (
+                  <img src={getMediaUrl(vehicle.images[0])} alt={vehicle.titleBn || vehicle.title} className="w-full h-full object-cover" />
+                ) : (
+                  <Car className="h-16 w-16 text-muted-foreground/30" />
+                )}
               </div>
               <CardHeader className="pb-3">
-                <h3 className="font-bold text-lg">{vehicle.title}</h3>
+                <h3 className="font-bold text-lg">{vehicle.titleBn || vehicle.title}</h3>
                 <div className="flex items-center text-sm text-muted-foreground">
                   <MapPin className="h-4 w-4 mr-1" />
-                  {vehicle.location}
+                  {vehicle.city}, {vehicle.area}
                 </div>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -122,13 +73,15 @@ export default function VehiclesPage() {
                   </div>
                   <div className="flex items-center">
                     <Gauge className="h-4 w-4 mr-1 text-muted-foreground" />
-                    <span>{vehicle.mileage} km</span>
+                    <span>{vehicle.mileage ? vehicle.mileage.toLocaleString() : 0} km</span>
                   </div>
                 </div>
-                <div className="text-sm"><span className="font-medium">রঙ:</span> {vehicle.color}</div>
-                <div className="text-sm"><span className="font-medium">অবস্থা:</span> {vehicle.condition}</div>
-                <div className="text-2xl font-bold text-orange-600">{vehicle.price}</div>
-                <div className="text-xs text-muted-foreground">{vehicle.posted}</div>
+                <div className="text-sm"><span className="font-medium">রঙ:</span> {vehicle.color || 'N/A'}</div>
+                <div className="text-sm"><span className="font-medium">অবস্থা:</span> {vehicle.condition || 'N/A'}</div>
+                <div className="text-2xl font-bold text-orange-600">
+                  {vehicle.price ? vehicle.price.toLocaleString() : 0} {vehicle.currency || 'রিয়াল'}
+                </div>
+                <div className="text-xs text-muted-foreground">{formatRelativeTime(vehicle.createdAt || vehicle.created_at)}</div>
               </CardContent>
               <CardFooter className="flex gap-2">
                 <Link href={`/vehicles/${vehicle.id}`} className="flex-1">

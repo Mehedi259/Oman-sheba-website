@@ -1,5 +1,7 @@
+export const dynamic = 'force-dynamic';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, Users, Briefcase, Home, MessageSquare, Shield } from 'lucide-react';
+import Link from 'next/link';
 
 export default function AboutPage() {
   return (
@@ -138,9 +140,9 @@ export default function AboutPage() {
               <a href="mailto:info@helloomansheba.com" className="px-6 py-3 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors">
                 ইমেইল পাঠান
               </a>
-              <a href="/community" className="px-6 py-3 border border-violet-600 text-violet-600 rounded-lg hover:bg-violet-50 transition-colors">
+              <Link href="/community" className="px-6 py-3 border border-violet-600 text-violet-600 rounded-lg hover:bg-violet-50 transition-colors">
                 কমিউনিটিতে যোগ দিন
-              </a>
+              </Link>
             </div>
           </div>
         </div>

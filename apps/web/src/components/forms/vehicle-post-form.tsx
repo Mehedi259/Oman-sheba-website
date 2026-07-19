@@ -43,6 +43,11 @@ const CITIES = [
   'Muscat', 'Salalah', 'Sohar', 'Nizwa', 'Sur', 'Ibri', 'Barka', 'Rustaq'
 ];
 
+const VEHICLE_PURPOSES = [
+  { value: 'SALE', label: 'বিক্রয়' },
+  { value: 'RENT', label: 'ভাড়া' },
+];
+
 export function VehiclePostForm() {
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
@@ -52,6 +57,7 @@ export function VehiclePostForm() {
   const [formData, setFormData] = useState({
     title_bn: '',
     description_bn: '',
+    purpose: '',
     vehicle_type: '',
     brand: '',
     model: '',
@@ -64,6 +70,7 @@ export function VehiclePostForm() {
     currency: 'OMR',
     city: '',
     area: '',
+    contact_name: '',
     contact_phone: '',
   });
 
@@ -78,12 +85,15 @@ export function VehiclePostForm() {
         title_bn: formData.title_bn,
         description: formData.description_bn,
         description_bn: formData.description_bn,
+        purpose: formData.purpose,
         type: formData.vehicle_type,
         make: formData.brand,
+        model: formData.model,
         year: parseInt(formData.year),
         status: 'PUBLISHED',
         mileage: formData.mileage ? parseInt(formData.mileage) : null,
         price: parseFloat(formData.price),
+        contact_name: formData.contact_name,
       };
       
       const response = await createVehicle(payload);
@@ -102,10 +112,10 @@ export function VehiclePostForm() {
       });
       
       router.push('/vehicles');
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: 'ত্রুটি',
-        description: 'পোস্ট করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।',
+        description: error.message || 'পোস্ট করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।',
         variant: 'destructive',
       });
     } finally {
@@ -128,6 +138,22 @@ export function VehiclePostForm() {
           placeholder="যেমন: টয়োটা কামরি ২০২০"
           required
         />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="purpose">উদ্দেশ্য *</Label>
+        <Select value={formData.purpose} onValueChange={(value) => handleChange('purpose', value)}>
+          <SelectTrigger>
+            <SelectValue placeholder="নির্বাচন করুন" />
+          </SelectTrigger>
+          <SelectContent>
+            {VEHICLE_PURPOSES.map((purpose) => (
+              <SelectItem key={purpose.value} value={purpose.value}>
+                {purpose.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -312,15 +338,28 @@ export function VehiclePostForm() {
         />
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="contact_phone">যোগাযোগ ফোন *</Label>
-        <Input
-          id="contact_phone"
-          value={formData.contact_phone}
-          onChange={(e) => handleChange('contact_phone', e.target.value)}
-          placeholder="+968 9XXXXXXX"
-          required
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="contact_name">যোগাযোগের নাম *</Label>
+          <Input
+            id="contact_name"
+            value={formData.contact_name}
+            onChange={(e) => handleChange('contact_name', e.target.value)}
+            placeholder="আপনার নাম"
+            required
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="contact_phone">যোগাযোগ ফোন *</Label>
+          <Input
+            id="contact_phone"
+            value={formData.contact_phone}
+            onChange={(e) => handleChange('contact_phone', e.target.value)}
+            placeholder="+968 9XXXXXXX"
+            required
+          />
+        </div>
       </div>
 
       <div className="space-y-2">

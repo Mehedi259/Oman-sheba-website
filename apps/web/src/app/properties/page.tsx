@@ -1,91 +1,16 @@
+export const dynamic = 'force-dynamic';
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Search, MapPin, Bed, Bath, Home, Square } from 'lucide-react'
 import Link from 'next/link'
 
-const properties = [
-  {
-    id: '1',
-    title: '২ বেডরুম ফ্ল্যাট',
-    location: 'রুয়ি, মাস্কাট',
-    price: '৩০০ রিয়াল',
-    period: 'মাসিক',
-    bedrooms: 2,
-    bathrooms: 2,
-    area: '1200',
-    furnished: 'ফার্নিশড',
-    posted: '২ দিন আগে',
-    featured: true
-  },
-  {
-    id: '2',
-    title: 'শেয়ারড রুম (শুধুমাত্র বাংলাদেশী)',
-    location: 'আল খুওয়ার',
-    price: '৮০ রিয়াল',
-    period: 'মাসিক',
-    bedrooms: 1,
-    bathrooms: 1,
-    area: '300',
-    furnished: 'ফার্নিশড',
-    posted: '১ দিন আগে',
-    featured: false
-  },
-  {
-    id: '3',
-    title: '৩ বেডরুম ভিলা',
-    location: 'আল মাওয়ালেহ',
-    price: '৬০০ রিয়াল',
-    period: 'মাসিক',
-    bedrooms: 3,
-    bathrooms: 3,
-    area: '2000',
-    furnished: 'সেমি-ফার্নিশড',
-    posted: '৩ দিন আগে',
-    featured: true
-  },
-  {
-    id: '4',
-    title: 'স্টুডিও অ্যাপার্টমেন্ট',
-    location: 'বোশার',
-    price: '২০০ রিয়াল',
-    period: 'মাসিক',
-    bedrooms: 1,
-    bathrooms: 1,
-    area: '500',
-    furnished: 'ফার্নিশড',
-    posted: '৫ দিন আগে',
-    featured: false
-  },
-  {
-    id: '5',
-    title: 'বেড স্পেস (বাংলাদেশী পছন্দনীয়)',
-    location: 'রুয়ি',
-    price: '৫০ রিয়াল',
-    period: 'মাসিক',
-    bedrooms: 1,
-    bathrooms: 1,
-    area: '150',
-    furnished: 'ফার্নিশড',
-    posted: '১ দিন আগে',
-    featured: false
-  },
-  {
-    id: '6',
-    title: '৪ বেডরুম পেন্টহাউজ',
-    location: 'আল কুরুম',
-    price: '৯০০ রিয়াল',
-    period: 'মাসিক',
-    bedrooms: 4,
-    bathrooms: 4,
-    area: '3000',
-    furnished: 'ফুল ফার্নিশড',
-    posted: '১ সপ্তাহ আগে',
-    featured: true
-  }
-]
+import { getProperties } from '@/lib/api'
+import { formatRelativeTime, getMediaUrl } from '@/lib/utils'
 
-export default function PropertiesPage() {
+export default async function PropertiesPage() {
+  const data = await getProperties();
+  const properties = Array.isArray(data) ? data : data.results || [];
   return (
     <div className="min-h-screen bg-background">
       {/* Search Header */}
@@ -126,44 +51,54 @@ export default function PropertiesPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {properties.map((property) => (
+          {properties.map((property: any) => (
             <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow hover-lift">
-              <div className="relative h-48 bg-gradient-to-br from-green-50 to-teal-50 flex items-center justify-center">
+              <div className="relative h-48 bg-gradient-to-br from-green-50 to-teal-50 flex items-center justify-center overflow-hidden">
                 {property.featured && (
                   <div className="absolute top-2 right-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded z-10">
                     ফিচার্ড
                   </div>
                 )}
-                <Home className="h-16 w-16 text-muted-foreground/30" />
+                {property.images && property.images.length > 0 ? (
+                  <img src={getMediaUrl(property.images[0])} alt={property.titleBn || property.title} className="w-full h-full object-cover" />
+                ) : (
+                  <Home className="h-16 w-16 text-muted-foreground/30" />
+                )}
               </div>
               <CardHeader className="pb-3">
-                <h3 className="font-bold text-lg">{property.title}</h3>
+                <h3 className="font-bold text-lg">{property.titleBn || property.title}</h3>
                 <div className="flex items-center text-sm text-muted-foreground">
                   <MapPin className="h-4 w-4 mr-1" />
-                  {property.location}
+                  {property.city}, {property.area}
                 </div>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center">
-                    <Bed className="h-4 w-4 mr-1 text-muted-foreground" />
-                    <span>{property.bedrooms}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Bath className="h-4 w-4 mr-1 text-muted-foreground" />
-                    <span>{property.bathrooms}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Square className="h-4 w-4 mr-1 text-muted-foreground" />
-                    <span>{property.area} sqft</span>
-                  </div>
+                  {property.bedrooms && (
+                    <div className="flex items-center">
+                      <Bed className="h-4 w-4 mr-1 text-muted-foreground" />
+                      <span>{property.bedrooms}</span>
+                    </div>
+                  )}
+                  {property.bathrooms && (
+                    <div className="flex items-center">
+                      <Bath className="h-4 w-4 mr-1 text-muted-foreground" />
+                      <span>{property.bathrooms}</span>
+                    </div>
+                  )}
+                  {property.size && (
+                    <div className="flex items-center">
+                      <Square className="h-4 w-4 mr-1 text-muted-foreground" />
+                      <span>{property.size} {property.sizeUnit || 'sqft'}</span>
+                    </div>
+                  )}
                 </div>
-                <div className="text-sm text-muted-foreground">{property.furnished}</div>
+                <div className="text-sm text-muted-foreground">{property.furnishing || 'N/A'}</div>
                 <div className="text-2xl font-bold text-green-600">
-                  {property.price}
-                  <span className="text-sm text-muted-foreground font-normal">/{property.period}</span>
+                  {property.price ? property.price.toLocaleString() : 0} {property.currency || 'রিয়াল'}
+                  {property.purpose === 'RENT' && <span className="text-sm text-muted-foreground font-normal">/মাসিক</span>}
                 </div>
-                <div className="text-xs text-muted-foreground">{property.posted}</div>
+                <div className="text-xs text-muted-foreground">{formatRelativeTime(property.createdAt || property.created_at)}</div>
               </CardContent>
               <CardFooter className="flex gap-2">
                 <Link href={`/properties/${property.id}`} className="flex-1">

@@ -19,12 +19,15 @@ import { PropertyPostForm } from '@/components/forms/property-post-form';
 import { VehiclePostForm } from '@/components/forms/vehicle-post-form';
 import { ClassifiedPostForm } from '@/components/forms/classified-post-form';
 import { DiscussionPostForm } from '@/components/forms/discussion-post-form';
+import { ServicePostForm } from '@/components/forms/service-post-form';
+import { Wrench } from 'lucide-react';
 
 const categories = [
   { id: 'job', name: 'চাকরি পোস্ট', icon: Briefcase, color: 'bg-blue-500' },
   { id: 'property', name: 'প্রপার্টি', icon: Home, color: 'bg-green-500' },
   { id: 'vehicle', name: 'গাড়ি', icon: Car, color: 'bg-purple-500' },
   { id: 'classified', name: 'মার্কেট', icon: Tag, color: 'bg-orange-500' },
+  { id: 'service', name: 'সেবা প্রদানকারী', icon: Wrench, color: 'bg-teal-500' },
   { id: 'discussion', name: 'আলোচনা', icon: MessageSquare, color: 'bg-pink-500' },
 ];
 
@@ -117,6 +120,7 @@ export default function CreatePostPage() {
                 {selectedCategory === 'property' && <PropertyPostForm />}
                 {selectedCategory === 'vehicle' && <VehiclePostForm />}
                 {selectedCategory === 'classified' && <ClassifiedPostForm />}
+                {selectedCategory === 'service' && <ServicePostForm />}
                 {selectedCategory === 'discussion' && <DiscussionPostForm />}
               </CardContent>
             </Card>

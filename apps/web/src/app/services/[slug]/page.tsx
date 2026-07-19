@@ -6,7 +6,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getServiceById, getServices } from '@hello-oman-sheba/database/mock-data'
+import { getServices, getServiceById } from '@/lib/api'
 
 // Category definitions used on the services listing page
 const serviceCategories: Record<string, { name: string; nameBn: string; icon: string; description: string }> = {
@@ -27,39 +27,10 @@ const serviceCategories: Record<string, { name: string; nameBn: string; icon: st
   'healthcare': { name: 'Healthcare', nameBn: 'স্বাস্থ্যসেবা', icon: '🏥', description: 'স্বাস্থ্যসেবা, ক্লিনিক এবং মেডিকেল সহায়তা।' },
 }
 
-export function generateStaticParams() {
-  return [
-    // Category slugs
-    { slug: 'embassy' },
-    { slug: 'ambulance' },
-    { slug: 'doctors' },
-    { slug: 'hospitals' },
-    { slug: 'maktab' },
-    { slug: 'travel-agency' },
-    { slug: 'tourist-places' },
-    { slug: 'lawyers' },
-    { slug: 'legal' },
-    { slug: 'hotels' },
-    { slug: 'money-exchange' },
-    { slug: 'police' },
-    { slug: 'passport' },
-    { slug: 'visa' },
-    { slug: 'healthcare' },
-    // Service provider IDs
-    { slug: 's1' },
-    { slug: 's2' },
-    { slug: 's3' },
-    // Numeric IDs from inline data
-    { slug: '1' },
-    { slug: '2' },
-    { slug: '3' },
-    { slug: '4' },
-  ]
-}
+export const dynamic = 'force-dynamic';
 
-function CategoryPage({ categorySlug, category }: { categorySlug: string; category: { name: string; nameBn: string; icon: string; description: string } }) {
-  const { getServicesByCategory } = require('@hello-oman-sheba/database/mock-data');
-  const categoryServices = getServicesByCategory(categorySlug);
+async function CategoryPage({ categorySlug, category }: { categorySlug: string; category: { name: string; nameBn: string; icon: string; description: string } }) {
+  const categoryServices = await getServices({ category: categorySlug });
   
   return (
     <div className="min-h-screen bg-background">
@@ -149,7 +120,7 @@ function CategoryPage({ categorySlug, category }: { categorySlug: string; catego
   )
 }
 
-function ServiceDetailPage({ service }: { service: NonNullable<ReturnType<typeof getServiceById>> }) {
+function ServiceDetailPage({ service }: { service: any }) {
   return (
     <div className="min-h-screen bg-background">
       <div className="bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-700 text-white py-12">
@@ -210,7 +181,7 @@ function ServiceDetailPage({ service }: { service: NonNullable<ReturnType<typeof
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {service.services.map((s, i) => (
+                  {service.services.map((s: string, i: number) => (
                     <div key={i} className="flex items-center gap-2 p-3 bg-purple-50 rounded-lg">
                       <CheckCircle className="h-5 w-5 text-purple-500 shrink-0" />
                       <span className="font-medium">{s}</span>
@@ -309,7 +280,7 @@ export default async function ServicesDynamicPage({ params }: { params: Promise<
   }
 
   // Otherwise, treat as a service provider ID
-  const service = getServiceById(slug)
+  const service = await getServiceById(slug)
   if (service) {
     return <ServiceDetailPage service={service} />
   }

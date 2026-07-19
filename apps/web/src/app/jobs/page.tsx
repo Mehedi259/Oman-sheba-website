@@ -1,91 +1,16 @@
+export const dynamic = 'force-dynamic';
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Search, MapPin, Briefcase, Clock, Filter } from 'lucide-react'
 import Link from 'next/link'
 
-const jobs = [
-  {
-    id: '1',
-    title: 'সফটওয়্যার ইঞ্জিনিয়ার',
-    titleEn: 'Software Engineer',
-    company: 'টেক সলিউশনস ওমান',
-    location: 'মাস্কাট, রুয়ি',
-    type: 'ফুল টাইম',
-    salary: '৮০০-১২০০ রিয়াল',
-    experience: '৩-৫ বছর',
-    posted: '২ দিন আগে',
-    logo: '🏢',
-    featured: true
-  },
-  {
-    id: '2',
-    title: 'রেজিস্টার্ড নার্স',
-    titleEn: 'Registered Nurse',
-    company: 'আল নূর হাসপাতাল',
-    location: 'মাস্কাট',
-    type: 'ফুল টাইম',
-    salary: '৬০০-৯০০ রিয়াল',
-    experience: '২-৪ বছর',
-    posted: '৩ দিন আগে',
-    logo: '🏥',
-    featured: false
-  },
-  {
-    id: '3',
-    title: 'সিভিল ইঞ্জিনিয়ার',
-    titleEn: 'Civil Engineer',
-    company: 'কনস্ট্রাকশন কোম্পানি',
-    location: 'সোহার',
-    type: 'ফুল টাইম',
-    salary: '৭০০-১০০০ রিয়াল',
-    experience: '৫+ বছর',
-    posted: '১ সপ্তাহ আগে',
-    logo: '🏗️',
-    featured: false
-  },
-  {
-    id: '4',
-    title: 'সেলস এক্সিকিউটিভ',
-    titleEn: 'Sales Executive',
-    company: 'রিটেইল গ্রুপ',
-    location: 'মাস্কাট',
-    type: 'ফুল টাইম',
-    salary: '৫০০-৮০০ রিয়াল',
-    experience: '১-৩ বছর',
-    posted: '৪ দিন আগে',
-    logo: '🏪',
-    featured: false
-  },
-  {
-    id: '5',
-    title: 'ইলেকট্রিশিয়ান',
-    titleEn: 'Electrician',
-    company: 'মেইনটেন্যান্স কোম্পানি',
-    location: 'মাস্কাট',
-    type: 'ফুল টাইম',
-    salary: '৪০০-৬০০ রিয়াল',
-    experience: '২-৪ বছর',
-    posted: '৫ দিন আগে',
-    logo: '⚡',
-    featured: false
-  },
-  {
-    id: '6',
-    title: 'অ্যাকাউন্ট্যান্ট',
-    titleEn: 'Accountant',
-    company: 'ফাইন্যান্স ফার্ম',
-    location: 'মাস্কাট, বোশার',
-    type: 'ফুল টাইম',
-    salary: '৬০০-৯০০ রিয়াল',
-    experience: '৩-৫ বছর',
-    posted: '১ সপ্তাহ আগে',
-    logo: '💼',
-    featured: true
-  }
-]
+import { getJobs } from '@/lib/api'
+import { formatRelativeTime, getMediaUrl } from '@/lib/utils'
 
-export default function JobsPage() {
+export default async function JobsPage() {
+  const data = await getJobs();
+  const jobs = Array.isArray(data) ? data : data.results || [];
   return (
     <div className="min-h-screen bg-background">
       {/* Search Header */}
@@ -180,17 +105,23 @@ export default function JobsPage() {
             </div>
 
             <div className="space-y-4">
-              {jobs.map((job) => (
+              {jobs.map((job: any) => (
                 <Card key={job.id} className="hover:shadow-lg transition-shadow hover-lift">
                   <div className="p-6">
                     <div className="flex items-start justify-between">
                       <div className="flex gap-4 flex-1">
-                        <div className="text-5xl">{job.logo}</div>
+                        <div className="w-16 h-16 rounded-lg bg-muted/50 flex items-center justify-center overflow-hidden shrink-0">
+                          {job.images && job.images.length > 0 ? (
+                            <img src={getMediaUrl(job.images[0])} alt="" className="h-full w-full object-cover" />
+                          ) : (
+                            <div className="text-3xl">🏢</div>
+                          )}
+                        </div>
                         <div className="flex-1">
                           <div className="flex items-start justify-between mb-2">
                             <div>
-                              <h2 className="text-xl font-bold mb-1">{job.title}</h2>
-                              <p className="text-muted-foreground">{job.company}</p>
+                              <h2 className="text-xl font-bold mb-1">{job.titleBn || job.title}</h2>
+                              <p className="text-muted-foreground">{job.company?.nameBn || job.company?.name || job.company_name_bn}</p>
                             </div>
                             {job.featured && (
                               <span className="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded">
@@ -201,21 +132,23 @@ export default function JobsPage() {
                           <div className="flex flex-wrap gap-4 mt-3 text-sm text-muted-foreground">
                             <div className="flex items-center">
                               <MapPin className="h-4 w-4 mr-1" />
-                              {job.location}
+                              {job.city}, {job.area}
                             </div>
                             <div className="flex items-center">
                               <Briefcase className="h-4 w-4 mr-1" />
-                              {job.type}
+                              {job.employmentType || job.employment_type || 'ফুল টাইম'}
                             </div>
                             <div className="flex items-center">
                               <Clock className="h-4 w-4 mr-1" />
-                              {job.posted}
+                              {formatRelativeTime(job.createdAt || job.created_at)}
                             </div>
                           </div>
                           <div className="flex items-center justify-between mt-4">
                             <div>
-                              <span className="text-lg font-bold text-primary">{job.salary}</span>
-                              <span className="text-sm text-muted-foreground ml-2">• {job.experience} অভিজ্ঞতা</span>
+                              <span className="text-lg font-bold text-primary">
+                                {job.salaryMin && job.salaryMax ? `${job.salaryMin}-${job.salaryMax} ${job.salaryCurrency || 'রিয়াল'}` : 'আলোচনা সাপেক্ষে'}
+                              </span>
+                              <span className="text-sm text-muted-foreground ml-2">• {job.experienceLevel || job.experience_level || 'ফ্রেশার'} অভিজ্ঞতা</span>
                             </div>
                             <div className="flex gap-2">
                               <Link href={`/jobs/${job.id}`}>

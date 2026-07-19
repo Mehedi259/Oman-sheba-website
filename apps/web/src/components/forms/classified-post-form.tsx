@@ -37,6 +37,7 @@ export function ClassifiedPostForm() {
     currency: 'OMR',
     city: '',
     area: '',
+    contact_name: '',
     contact_phone: '',
   });
 
@@ -53,6 +54,7 @@ export function ClassifiedPostForm() {
         description_bn: formData.description_bn,
         status: 'PUBLISHED',
         price: parseFloat(formData.price),
+        contact_name: formData.contact_name,
       };
       const response = await createClassified(payload);
       
@@ -70,10 +72,10 @@ export function ClassifiedPostForm() {
       });
       
       router.push('/community/classifieds');
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: 'ত্রুটি',
-        description: 'পোস্ট করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।',
+        description: error.message || 'পোস্ট করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।',
         variant: 'destructive',
       });
     } finally {
@@ -183,15 +185,28 @@ export function ClassifiedPostForm() {
         />
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="contact_phone">যোগাযোগ ফোন *</Label>
-        <Input
-          id="contact_phone"
-          value={formData.contact_phone}
-          onChange={(e) => handleChange('contact_phone', e.target.value)}
-          placeholder="+968 9XXXXXXX"
-          required
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="contact_name">যোগাযোগের নাম *</Label>
+          <Input
+            id="contact_name"
+            value={formData.contact_name}
+            onChange={(e) => handleChange('contact_name', e.target.value)}
+            placeholder="আপনার নাম"
+            required
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="contact_phone">যোগাযোগ ফোন *</Label>
+          <Input
+            id="contact_phone"
+            value={formData.contact_phone}
+            onChange={(e) => handleChange('contact_phone', e.target.value)}
+            placeholder="+968 9XXXXXXX"
+            required
+          />
+        </div>
       </div>
 
       <div className="space-y-2">

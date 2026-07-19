@@ -6,23 +6,26 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { createJob, uploadClassifiedImage } from '@/lib/api';
+import { createService, uploadClassifiedImage } from '@/lib/api';
 import { useToast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 
-const JOB_TYPES = [
-  { value: 'FULL_TIME', label: 'ফুল টাইম' },
-  { value: 'PART_TIME', label: 'পার্ট টাইম' },
-  { value: 'CONTRACT', label: 'চুক্তিভিত্তিক' },
-  { value: 'TEMPORARY', label: 'অস্থায়ী' },
-  { value: 'INTERNSHIP', label: 'ইন্টার্নশিপ' },
+const CATEGORIES = [
+  { value: 'AC_REPAIR', label: 'এসি মেরামত' },
+  { value: 'PLUMBING', label: 'প্লাম্বিং' },
+  { value: 'ELECTRICAL', label: 'ইলেকট্রিক্যাল' },
+  { value: 'CLEANING', label: 'ক্লিনিং' },
+  { value: 'CARPENTRY', label: 'কাঠের কাজ' },
+  { value: 'PAINTING', label: 'রংয়ের কাজ' },
+  { value: 'APPLIANCE_REPAIR', label: 'অ্যাপ্লায়েন্স মেরামত' },
+  { value: 'OTHER', label: 'অন্যান্য' },
 ];
 
 const CITIES = [
   'Muscat', 'Salalah', 'Sohar', 'Nizwa', 'Sur', 'Ibri', 'Barka', 'Rustaq'
 ];
 
-export function JobPostForm() {
+export function ServicePostForm() {
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const { toast } = useToast();
@@ -31,17 +34,15 @@ export function JobPostForm() {
   const [formData, setFormData] = useState({
     title_bn: '',
     description_bn: '',
-    job_type: '',
+    category: '',
+    service_type: '',
+    availability: '',
+    price: '',
+    currency: 'OMR',
     city: '',
     area: '',
-    salary_min: '',
-    salary_max: '',
-    salary_currency: 'OMR',
-    requirements_bn: '',
-    benefits_bn: '',
     contact_name: '',
     contact_phone: '',
-    company_name_bn: '',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -55,30 +56,27 @@ export function JobPostForm() {
         title_bn: formData.title_bn,
         description: formData.description_bn,
         description_bn: formData.description_bn,
-        type: formData.job_type,
-        company_name_en: formData.company_name_bn,
         status: 'PUBLISHED',
-        salary_min: formData.salary_min ? parseFloat(formData.salary_min) : null,
-        salary_max: formData.salary_max ? parseFloat(formData.salary_max) : null,
-        contact_name: formData.contact_name,
+        price: parseFloat(formData.price),
       };
       
-      const response = await createJob(payload);
+      const response = await createService(payload);
       
       if (files.length > 0 && response.id) {
         await Promise.all(
           files.map((file, index) => 
-            uploadClassifiedImage(file, 'job', response.id, index === 0)
+            uploadClassifiedImage(file, 'service', response.id, index === 0)
           )
         );
       }
       
       toast({
         title: 'সফল!',
-        description: 'আপনার চাকরির পোস্ট সফলভাবে জমা হয়েছে।',
+        description: 'আপনার সার্ভিস পোস্ট সফলভাবে জমা হয়েছে।',
       });
       
-      router.push('/jobs');
+      // router.push('/services'); // Update when you have a services page
+      router.push('/');
     } catch (error: any) {
       toast({
         title: 'ত্রুটি',
@@ -96,47 +94,47 @@ export function JobPostForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="title_bn">চাকরির শিরোনাম *</Label>
-          <Input
-            id="title_bn"
-            value={formData.title_bn}
-            onChange={(e) => handleChange('title_bn', e.target.value)}
-            placeholder="যেমন: সফটওয়্যার ইঞ্জিনিয়ার"
-            required
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="company_name_bn">কোম্পানির নাম *</Label>
-          <Input
-            id="company_name_bn"
-            value={formData.company_name_bn}
-            onChange={(e) => handleChange('company_name_bn', e.target.value)}
-            placeholder="কোম্পানির নাম লিখুন"
-            required
-          />
-        </div>
+      <div className="space-y-2">
+        <Label htmlFor="title_bn">শিরোনাম *</Label>
+        <Input
+          id="title_bn"
+          value={formData.title_bn}
+          onChange={(e) => handleChange('title_bn', e.target.value)}
+          placeholder="যেমন: প্রফেশনাল এসি মেরামত"
+          required
+        />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="job_type">চাকরির ধরন *</Label>
-          <Select value={formData.job_type} onValueChange={(value) => handleChange('job_type', value)}>
+          <Label htmlFor="category">সার্ভিস ক্যাটাগরি *</Label>
+          <Select value={formData.category} onValueChange={(value) => handleChange('category', value)}>
             <SelectTrigger>
               <SelectValue placeholder="নির্বাচন করুন" />
             </SelectTrigger>
             <SelectContent>
-              {JOB_TYPES.map((type) => (
-                <SelectItem key={type.value} value={type.value}>
-                  {type.label}
+              {CATEGORIES.map((category) => (
+                <SelectItem key={category.value} value={category.value}>
+                  {category.label}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
 
+        <div className="space-y-2">
+          <Label htmlFor="service_type">সার্ভিসের ধরন *</Label>
+          <Input
+            id="service_type"
+            value={formData.service_type}
+            onChange={(e) => handleChange('service_type', e.target.value)}
+            placeholder="যেমন: মেরামত, ইন্সটলেশন"
+            required
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="city">শহর *</Label>
           <Select value={formData.city} onValueChange={(value) => handleChange('city', value)}>
@@ -165,78 +163,42 @@ export function JobPostForm() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="salary_min">ন্যূনতম বেতন</Label>
+          <Label htmlFor="price">বেস ফি / মূল্য *</Label>
           <Input
-            id="salary_min"
+            id="price"
             type="number"
-            value={formData.salary_min}
-            onChange={(e) => handleChange('salary_min', e.target.value)}
-            placeholder="300"
+            value={formData.price}
+            onChange={(e) => handleChange('price', e.target.value)}
+            placeholder="10"
+            required
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="salary_max">সর্বোচ্চ বেতন</Label>
+          <Label htmlFor="availability">কখন এভেইলেবল?</Label>
           <Input
-            id="salary_max"
-            type="number"
-            value={formData.salary_max}
-            onChange={(e) => handleChange('salary_max', e.target.value)}
-            placeholder="500"
+            id="availability"
+            value={formData.availability}
+            onChange={(e) => handleChange('availability', e.target.value)}
+            placeholder="যেমন: শনি-বৃহস্পতি, সকাল ৯টা - রাত ৮টা"
           />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="salary_currency">মুদ্রা</Label>
-          <Select value={formData.salary_currency} onValueChange={(value) => handleChange('salary_currency', value)}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="OMR">OMR</SelectItem>
-              <SelectItem value="USD">USD</SelectItem>
-              <SelectItem value="BDT">BDT</SelectItem>
-            </SelectContent>
-          </Select>
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description_bn">বিবরণ *</Label>
+        <Label htmlFor="description_bn">বিস্তারিত বিবরণ *</Label>
         <Textarea
           id="description_bn"
           value={formData.description_bn}
           onChange={(e) => handleChange('description_bn', e.target.value)}
-          placeholder="চাকরির বিস্তারিত বিবরণ লিখুন"
+          placeholder="আপনার সার্ভিসের বিস্তারিত বিবরণ লিখুন"
           rows={4}
           required
         />
       </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="requirements_bn">যোগ্যতা</Label>
-        <Textarea
-          id="requirements_bn"
-          value={formData.requirements_bn}
-          onChange={(e) => handleChange('requirements_bn', e.target.value)}
-          placeholder="প্রয়োজনীয় যোগ্যতা লিখুন"
-          rows={3}
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="benefits_bn">সুবিধা</Label>
-        <Textarea
-          id="benefits_bn"
-          value={formData.benefits_bn}
-          onChange={(e) => handleChange('benefits_bn', e.target.value)}
-          placeholder="চাকরির সুবিধা লিখুন"
-          rows={2}
-        />
-      </div>
-
+      
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="contact_name">যোগাযোগের নাম *</Label>
