@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Calendar, Search, TrendingUp, Eye, Tag } from 'lucide-react';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
-import { fetchApi } from '@/lib/api';
+import { getFeaturedNews } from '@/lib/api';
 
 const categories = [
   { id: 1, name: 'ভিসা সংবাদ', count: 45 },
@@ -18,7 +18,7 @@ const categories = [
 export default async function NewsPage() {
   let articles: any[] = [];
   try {
-    const data = await import('@/lib/api').then(m => m.getFeaturedNews(20));
+    const data = await getFeaturedNews(20);
     articles = Array.isArray(data) ? data : (data as any).results || [];
   } catch (e) {
     // fallback to empty
