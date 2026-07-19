@@ -110,6 +110,7 @@ async function CategoryPage({ categorySlug, category }: { categorySlug: string; 
                     <a href={`tel:${service.phone}`} className="flex-1">
                       <Button className="w-full">যোগাযোগ করুন</Button>
                     </a>
+                    <FavoriteButton type="service" id={service.id} />
                   </div>
                 </CardContent>
               </Card>

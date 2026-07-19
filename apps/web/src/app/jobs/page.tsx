@@ -6,6 +6,7 @@ import { Search, MapPin, Briefcase, Clock, Filter } from 'lucide-react'
 import Link from 'next/link'
 
 import { getJobs } from '@/lib/api'
+import { FavoriteButton } from '@/components/ui/favorite-button'
 import { formatRelativeTime, getMediaUrl } from '@/lib/utils'
 
 export default async function JobsPage(props: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
@@ -164,6 +165,7 @@ export default async function JobsPage(props: { searchParams: Promise<{ [key: st
                                 <Link href={`/jobs/${job.id}`} className="w-full">
                                   <Button className="w-full">বিস্তারিত দেখুন</Button>
                                 </Link>
+                                <FavoriteButton type="job" id={job.id} />
                               </div>
                             </div>
                           </div>

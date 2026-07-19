@@ -6,6 +6,7 @@ import { Search, MapPin, Bed, Bath, Home, Square } from 'lucide-react'
 import Link from 'next/link'
 
 import { getProperties } from '@/lib/api'
+import { FavoriteButton } from '@/components/ui/favorite-button'
 import { formatRelativeTime, getMediaUrl } from '@/lib/utils'
 
 export default async function PropertiesPage(props: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
@@ -135,6 +136,7 @@ export default async function PropertiesPage(props: { searchParams: Promise<{ [k
                     <Button variant="outline" className="w-full">বিস্তারিত</Button>
                   </Link>
                   <Button className="flex-1">যোগাযোগ</Button>
+                  <FavoriteButton type="property" id={property.id} />
                 </CardFooter>
               </Card>
             ))}

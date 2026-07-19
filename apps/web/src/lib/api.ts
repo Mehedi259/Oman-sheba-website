@@ -2,8 +2,8 @@
 
 const getApiUrl = (endpoint: string) => {
   if (typeof window !== 'undefined') {
-    // If endpoint is /news, /emergency, /community, or /system, it's not under classifieds
-    if (endpoint.startsWith('/news') || endpoint.startsWith('/emergency') || endpoint.startsWith('/community') || endpoint.startsWith('/system')) {
+    // If endpoint is /news, /emergency, /community, /system, or /users, it's not under classifieds
+    if (endpoint.startsWith('/news') || endpoint.startsWith('/emergency') || endpoint.startsWith('/community') || endpoint.startsWith('/system') || endpoint.startsWith('/users')) {
       return `/api/proxy${endpoint}`;
     }
     // Default to classifieds
@@ -11,7 +11,7 @@ const getApiUrl = (endpoint: string) => {
   }
   
   const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
-  if (endpoint.startsWith('/news') || endpoint.startsWith('/emergency') || endpoint.startsWith('/community') || endpoint.startsWith('/system')) {
+  if (endpoint.startsWith('/news') || endpoint.startsWith('/emergency') || endpoint.startsWith('/community') || endpoint.startsWith('/system') || endpoint.startsWith('/users')) {
     return `${baseUrl}/api${endpoint}`;
   }
   return `${baseUrl}/api/classifieds${endpoint}`;
@@ -383,4 +383,39 @@ export async function uploadClassifiedImage(file: File, contentType: string, con
   }
 
   return response.json();
+}
+
+// Global Search
+export async function getGlobalSearch(query: string) {
+  return fetchApi<any>(`/system/search/?q=${encodeURIComponent(query)}`);
+}
+
+// Favorites
+export async function getFavorites() {
+  return fetchApi<any>('/users/favorites/', undefined, { cache: 'no-store' });
+}
+
+export async function addFavorite(favoriteType: string, favoriteId: number) {
+  return fetchApi<any>('/users/favorites/', undefined, {
+    method: 'POST',
+    body: JSON.stringify({ favorite_type: favoriteType, favorite_id: favoriteId }),
+  });
+}
+
+export async function removeFavorite(id: number) {
+  return fetchApi<any>(`/users/favorites/${id}/`, undefined, {
+    method: 'DELETE',
+  });
+}
+
+// Notifications
+export async function getNotifications() {
+  return fetchApi<any>('/users/notifications/', undefined, { cache: 'no-store' });
+}
+
+export async function markNotificationRead(id: number) {
+  return fetchApi<any>(`/users/notifications/${id}/`, undefined, {
+    method: 'PATCH',
+    body: JSON.stringify({ read: true }),
+  });
 }
