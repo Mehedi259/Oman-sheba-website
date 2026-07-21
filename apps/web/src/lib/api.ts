@@ -164,7 +164,12 @@ export async function getFeaturedVehicles(limit = 6) {
 
 // Services API
 export async function getServices(filters?: { city?: string; category?: string; limit?: number }) {
-  return fetchApi<any[]>('/services', filters as any);
+  const apiFilters = { ...filters } as any;
+  if (apiFilters.category) {
+    apiFilters.category__slug = apiFilters.category;
+    delete apiFilters.category;
+  }
+  return fetchApi<any[]>('/services', apiFilters);
 }
 
 export async function getFeaturedServices(limit = 6) {
