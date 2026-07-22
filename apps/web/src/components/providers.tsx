@@ -7,7 +7,7 @@ import { Toaster } from '@/components/ui/toaster'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { AuthProvider } from './auth/auth-provider'
 
-const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''
+const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '426790430741-89du8066jkn0cjkbqugq7ej6v6s5ep5v.apps.googleusercontent.com'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(

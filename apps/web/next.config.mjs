@@ -56,16 +56,21 @@ const nextConfig = {
     optimizePackageImports: ['lucide-react', '@radix-ui'],
   },
   
-  // API proxy rewrites to fix Mixed Content errors
+  // API proxy rewrites to fix Mixed Content errors and avoid trailing slash redirects
   async rewrites() {
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://188.245.212.240';
     return [
       {
+        source: '/api/proxy/:path*/',
+        destination: `${backendUrl}/api/:path*/`,
+      },
+      {
         source: '/api/proxy/:path*',
-        destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/:path*/`,
+        destination: `${backendUrl}/api/:path*/`,
       },
       {
         source: '/media/:path*',
-        destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/media/:path*`,
+        destination: `${backendUrl}/media/:path*`,
       },
     ];
   },

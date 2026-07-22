@@ -49,6 +49,9 @@ export function JobPostForm() {
     setLoading(true);
 
     try {
+      const minSal = formData.salary_min ? parseFloat(formData.salary_min) : null;
+      const maxSal = formData.salary_max ? parseFloat(formData.salary_max) : null;
+      
       const payload = {
         ...formData,
         title: formData.title_bn,
@@ -58,8 +61,11 @@ export function JobPostForm() {
         type: formData.job_type,
         company_name_en: formData.company_name_bn,
         status: 'PUBLISHED',
-        salary_min: formData.salary_min ? parseFloat(formData.salary_min) : null,
-        salary_max: formData.salary_max ? parseFloat(formData.salary_max) : null,
+        salary_min: minSal,
+        salary_max: maxSal,
+        salary_currency: formData.salary_currency || 'OMR',
+        price: minSal || maxSal || null,
+        price_negotiable: !minSal && !maxSal,
         contact_name: formData.contact_name,
       };
       

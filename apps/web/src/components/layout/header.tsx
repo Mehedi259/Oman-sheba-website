@@ -71,13 +71,11 @@ export function Header() {
       ref={menuRef}
       className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
     >
-      <div className="container flex h-16 items-center justify-between">
+      <div className="container flex h-20 items-center justify-between py-2">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2">
-          <div className="flex items-center">
-            <span className="text-2xl font-bold text-primary">Hello Oman</span>
-            <span className="ml-2 text-2xl font-bold">Sheba</span>
-          </div>
+        <Link href="/" className="flex items-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/main-logo.png" alt="Hello Oman Sheba" className="h-12 md:h-14 lg:h-16 w-auto object-contain" />
         </Link>
 
         {/* Desktop Navigation */}

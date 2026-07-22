@@ -21,11 +21,15 @@ export interface AuthResponse {
 }
 
 const getAuthUrl = (endpoint: string) => {
-  if (typeof window !== 'undefined') {
-    return `/api/proxy${endpoint}`;
+  let clean = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  if (!clean.endsWith('/')) {
+    clean = `${clean}/`;
   }
-  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
-  return `${baseUrl}/api${endpoint}`;
+  if (typeof window !== 'undefined') {
+    return `/api/proxy${clean}`;
+  }
+  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://188.245.212.240';
+  return `${baseUrl}/api${clean}`;
 };
 
 export async function googleLogin(idToken: string): Promise<AuthResponse> {

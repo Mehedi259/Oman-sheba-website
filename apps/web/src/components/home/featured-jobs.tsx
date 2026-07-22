@@ -58,19 +58,26 @@ export async function FeaturedJobs() {
                     </span>
                   )}
                 </div>
-                <CardTitle className="text-lg">{job.titleBn}</CardTitle>
-                <p className="text-sm text-muted-foreground">{job.company?.nameBn || job.company?.name || job.company_name_bn || ''}</p>
+                <CardTitle className="text-lg">{job.title_bn || job.titleBn || job.title || 'চাকরি'}</CardTitle>
+                <p className="text-sm text-muted-foreground">{job.company?.name_bn || job.company?.nameBn || job.company?.name || job.company_name_bn || job.company_name || ''}</p>
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="flex items-center text-sm text-muted-foreground">
                   <MapPin className="h-4 w-4 mr-2" />
-                  {job.city}, {job.area}
+                  {job.city}{job.area ? `, ${job.area}` : ''}
                 </div>
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Briefcase className="h-4 w-4 mr-2" />
-                  {job.salaryMin && job.salaryMax 
-                    ? `${job.salaryMin}-${job.salaryMax} ${job.salaryCurrency}`
-                    : 'আলোচনা সাপেক্ষে'}
+                  {(() => {
+                    const min = job.salary_min ?? job.salaryMin;
+                    const max = job.salary_max ?? job.salaryMax;
+                    const curr = job.salary_currency || job.salaryCurrency || job.currency || 'OMR';
+                    if (min && max) return `${min} - ${max} ${curr}`;
+                    if (min) return `${min}+ ${curr}`;
+                    if (max) return `পর্যন্ত ${max} ${curr}`;
+                    if (job.price) return `${job.price} ${curr}`;
+                    return 'আলোচনা সাপেক্ষে';
+                  })()}
                 </div>
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Clock className="h-4 w-4 mr-2" />

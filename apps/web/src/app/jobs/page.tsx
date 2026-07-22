@@ -158,7 +158,16 @@ export default async function JobsPage(props: { searchParams: Promise<{ [key: st
                             <div className="flex flex-col md:flex-row items-start md:items-center justify-between mt-4 gap-4">
                               <div>
                                 <span className="text-lg font-bold text-primary">
-                                  {job.price ? `${job.price.toLocaleString()} ${job.currency || 'রিয়াল'}` : 'আলোচনা সাপেক্ষে'}
+                                  {(() => {
+                                    const min = job.salary_min ?? job.salaryMin;
+                                    const max = job.salary_max ?? job.salaryMax;
+                                    const curr = job.salary_currency || job.salaryCurrency || job.currency || 'OMR';
+                                    if (min && max) return `${min} - ${max} ${curr}`;
+                                    if (min) return `${min}+ ${curr}`;
+                                    if (max) return `পর্যন্ত ${max} ${curr}`;
+                                    if (job.price) return `${job.price.toLocaleString()} ${curr}`;
+                                    return 'আলোচনা সাপেক্ষে';
+                                  })()}
                                 </span>
                               </div>
                               <div className="flex gap-2 w-full md:w-auto">

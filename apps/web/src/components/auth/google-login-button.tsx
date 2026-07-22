@@ -43,6 +43,10 @@ export function GoogleLoginButton({ onSuccess }: GoogleLoginButtonProps) {
             if (onSuccess) {
               onSuccess()
             }
+            // Auto reload page to refresh session state everywhere
+            setTimeout(() => {
+              window.location.reload()
+            }, 500)
           } catch (error) {
             toast({
               title: "লগইন ব্যর্থ হয়েছে",

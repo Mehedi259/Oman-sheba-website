@@ -424,3 +424,51 @@ export async function markNotificationRead(id: number) {
     body: JSON.stringify({ read: true }),
   });
 }
+
+// User Profile & Management
+export async function getUserProfile() {
+  return fetchApi<any>('/users/profile/', undefined, { cache: 'no-store' });
+}
+
+export async function updateUserProfile(data: any) {
+  return fetchApi<any>('/users/profile/', undefined, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function changeUserPassword(data: any) {
+  return fetchApi<any>('/users/change-password/', undefined, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function getUserPosts() {
+  return fetchApi<any>('/users/my-posts/', undefined, { cache: 'no-store' });
+}
+
+export async function deleteUserPost(postType: string, id: number) {
+  let endpoint = `/classifieds/${postType}s/${id}/`;
+  if (postType === 'property') endpoint = `/classifieds/properties/${id}/`;
+  return fetchApi<any>(endpoint, undefined, {
+    method: 'DELETE',
+  });
+}
+
+export async function getUserApplications() {
+  return fetchApi<any>('/users/applications/', undefined, { cache: 'no-store' });
+}
+
+export async function applyForJob(jobId: number, coverLetter?: string) {
+  return fetchApi<any>(`/jobs/${jobId}/apply/`, undefined, {
+    method: 'POST',
+    body: JSON.stringify({ cover_letter: coverLetter || '' }),
+  });
+}
+
+export async function checkJobApplied(jobId: number) {
+  return fetchApi<any>(`/jobs/${jobId}/apply/`, undefined, { cache: 'no-store' });
+}
+
+

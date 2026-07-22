@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getJobById } from '@/lib/api'
 import { FavoriteButton } from '@/components/ui/favorite-button'
+import { JobApplySection } from '@/components/jobs/job-apply-section'
 
 // Dynamic rendering - fetch from API at request time
 export const dynamic = 'force-dynamic'
@@ -159,9 +160,16 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
                 <div>
                   <p className="text-sm text-muted-foreground mb-1">বেতন</p>
                   <p className="text-2xl font-bold text-blue-700">
-                    {job.salary_min && job.salary_max 
-                      ? `${job.salary_currency || 'OMR'} ${job.salary_min} - ${job.salary_max}`
-                      : 'আলোচনা সাপেক্ষে'}
+                    {(() => {
+                      const min = job.salary_min ?? job.salaryMin;
+                      const max = job.salary_max ?? job.salaryMax;
+                      const curr = job.salary_currency || job.salaryCurrency || job.currency || 'OMR';
+                      if (min && max) return `${min} - ${max} ${curr}`;
+                      if (min) return `${min}+ ${curr}`;
+                      if (max) return `পর্যন্ত ${max} ${curr}`;
+                      if (job.price) return `${job.price} ${curr}`;
+                      return 'আলোচনা সাপেক্ষে';
+                    })()}
                   </p>
                   <p className="text-sm text-muted-foreground">মাসিক</p>
                 </div>
@@ -234,12 +242,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
                     </Button>
                   </a>
                 )}
-                <div className="flex gap-2 mt-2">
-                  <Button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white">
-                    এখনই আবেদন করুন
-                  </Button>
-                  <FavoriteButton type="job" id={job.id} />
-                </div>
+                <JobApplySection jobId={job.id} jobTitle={job.title_bn || job.title} />
               </CardContent>
             </Card>
           </div>
