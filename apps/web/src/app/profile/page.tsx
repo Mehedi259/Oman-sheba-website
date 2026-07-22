@@ -388,20 +388,12 @@ export default function ProfilePage() {
                   <form onSubmit={handleProfileSave} className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="text-sm font-medium mb-1 block">পূর্ণ নাম (ইংরেজি) *</label>
+                        <label className="text-sm font-medium mb-1 block">পূর্ণ নাম *</label>
                         <Input 
                           value={profileData.name} 
                           onChange={e => setProfileData({ ...profileData, name: e.target.value })} 
-                          placeholder="Mohammed Ahmed"
+                          placeholder="আপনার নাম"
                           required 
-                        />
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium mb-1 block">পূর্ণ নাম (বাংলা)</label>
-                        <Input 
-                          value={profileData.name_bn} 
-                          onChange={e => setProfileData({ ...profileData, name_bn: e.target.value })} 
-                          placeholder="মোহাম্মদ আহমেদ" 
                         />
                       </div>
                       <div>
