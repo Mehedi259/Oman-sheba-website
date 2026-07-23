@@ -214,7 +214,7 @@ export async function getVehicleById(id: string) {
 }
 
 export async function getServiceById(id: string) {
-  return fetchApi<any>(`/service-providers/${id}/`, {}, { cache: 'no-store' });
+  return fetchApi<any>(`/services/${id}/`, {}, { cache: 'no-store' });
 }
 
 export async function getCommunityPosts(filters?: { limit?: number; search?: string; category?: string; sort?: string; page?: string }) {
