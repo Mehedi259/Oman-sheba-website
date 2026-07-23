@@ -9,7 +9,7 @@ export function Footer() {
           {/* About */}
           <div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/main-logo.png" alt="Hello Oman Sheba" className="h-12 md:h-14 w-auto object-contain mb-4" />
+            <img src="/main-logo.png" alt="Hello Oman Sheba" className="h-16 md:h-20 w-auto object-contain mb-4" />
             <p className="text-sm text-muted-foreground mb-4">
               ওমানে বসবাসরত বাংলাদেশীদের জন্য সম্পূর্ণ ডিজিটাল সেবা প্ল্যাটফর্ম
             </p>

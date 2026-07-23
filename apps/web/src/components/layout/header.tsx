@@ -75,7 +75,7 @@ export function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/main-logo.png" alt="Hello Oman Sheba" className="h-12 md:h-14 lg:h-16 w-auto object-contain" />
+          <img src="/main-logo.png" alt="Hello Oman Sheba" className="h-16 md:h-20 lg:h-24 w-auto object-contain" />
         </Link>
 
         {/* Desktop Navigation */}
