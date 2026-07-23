@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import { useState } from 'react'
 
 const categories = [
   { nameBn: 'চাকরি', href: '/jobs', icon: '💼', color: 'bg-gradient-to-br from-blue-50 to-blue-100' },
@@ -23,6 +26,10 @@ const categories = [
 ]
 
 export function CategoryGrid() {
+  const [showAll, setShowAll] = useState(false)
+
+  const visibleCategories = showAll ? categories : categories.slice(0, 11)
+
   return (
     <section className="py-6 sm:py-8 bg-background">
       <div className="container">
@@ -31,7 +38,7 @@ export function CategoryGrid() {
         </div>
 
         <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-4">
-          {categories.map((category) => (
+          {visibleCategories.map((category) => (
             <Link
               key={category.href}
               href={category.href}
@@ -45,6 +52,20 @@ export function CategoryGrid() {
               </span>
             </Link>
           ))}
+          
+          {!showAll && (
+            <button
+              onClick={() => setShowAll(true)}
+              className="group flex flex-col items-center p-3 sm:p-6 rounded-xl border border-dashed border-primary/50 bg-primary/5 hover:bg-primary/10 transition-all hover:-translate-y-1"
+            >
+              <div className="mb-2 sm:mb-3 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 p-2.5 sm:p-3 group-hover:scale-110 transition-transform shadow-sm">
+                <span className="text-2xl sm:text-3xl">➡️</span>
+              </div>
+              <span className="text-xs sm:text-sm font-medium text-center leading-tight text-primary">
+                আরও সেবা
+              </span>
+            </button>
+          )}
         </div>
       </div>
     </section>
