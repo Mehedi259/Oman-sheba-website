@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic';
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 
@@ -7,36 +8,31 @@ const allCategories = [
   { 
     nameBn: 'চাকরি', 
     href: '/jobs', 
-    icon: '💼',
-    color: 'bg-gradient-to-br from-blue-50 to-blue-100',
+    image: '/images/categories/jobs.jpg',
     description: 'চাকরি খুঁজুন এবং আবেদন করুন'
   },
   { 
     nameBn: 'বাসা ভাড়া', 
     href: '/properties', 
-    icon: '🏠',
-    color: 'bg-gradient-to-br from-emerald-50 to-green-100',
+    image: '/images/categories/properties.jpg',
     description: 'ফ্ল্যাট, রুম এবং বেড স্পেস'
   },
   { 
     nameBn: 'গাড়ি', 
     href: '/vehicles', 
-    icon: '🚗',
-    color: 'bg-gradient-to-br from-purple-50 to-violet-100',
+    image: '/images/categories/vehicles.jpg',
     description: 'গাড়ি কিনুন বা ভাড়া নিন'
   },
   { 
     nameBn: 'মার্কেট', 
     href: '/classifieds', 
-    icon: '🛒',
-    color: 'bg-gradient-to-br from-orange-50 to-amber-100',
+    image: '/images/categories/classifieds.jpg',
     description: 'কিনুন এবং বিক্রি করুন'
   },
   { 
     nameBn: 'কমিউনিটি', 
     href: '/community', 
-    icon: '👥',
-    color: 'bg-gradient-to-br from-pink-50 to-rose-100',
+    image: '/images/categories/community.jpg',
     description: 'আলোচনা এবং সহযোগিতা'
   },
   
@@ -44,99 +40,85 @@ const allCategories = [
   { 
     nameBn: 'ওমান - বাংলাদেশ দূতাবাস', 
     href: '/services/embassy', 
-    icon: '🏛️',
-    color: 'bg-gradient-to-br from-indigo-50 to-blue-100',
+    image: '/images/categories/embassy.jpg',
     description: 'দূতাবাস সেবা এবং সহায়তা'
   },
   { 
     nameBn: 'বিশেষজ্ঞ ডাক্তার', 
     href: '/services/doctors', 
-    icon: '👨‍⚕️',
-    color: 'bg-gradient-to-br from-red-50 to-pink-100',
+    image: '/images/categories/doctors.jpg',
     description: 'বিশেষজ্ঞ চিকিৎসক এবং পরামর্শ'
   },
   { 
     nameBn: 'হাসপাতাল', 
     href: '/services/hospitals', 
-    icon: '🏥',
-    color: 'bg-gradient-to-br from-rose-50 to-red-100',
+    image: '/images/categories/hospitals.jpg',
     description: 'হাসপাতাল এবং ক্লিনিক'
   },
   { 
-    nameBn: 'আম্বুলেন্স', 
+    nameBn: 'অ্যাম্বুলেন্স', 
     href: '/services/ambulance', 
-    icon: '🚑',
-    color: 'bg-gradient-to-br from-red-50 to-orange-100',
+    image: '/images/categories/ambulance.jpg',
     description: 'জরুরী অ্যাম্বুলেন্স সেবা'
   },
   { 
     nameBn: 'আইনজীবী', 
     href: '/services/lawyers', 
-    icon: '⚖️',
-    color: 'bg-gradient-to-br from-amber-50 to-yellow-100',
+    image: '/images/categories/lawyers.jpg',
     description: 'আইনি পরামর্শ এবং সহায়তা'
   },
   { 
     nameBn: 'ট্রাভেল এজেন্সি', 
     href: '/services/travel-agency', 
-    icon: '✈️',
-    color: 'bg-gradient-to-br from-sky-50 to-cyan-100',
+    image: '/images/categories/travel.jpg',
     description: 'ফ্লাইট এবং ট্যুর বুকিং'
   },
   { 
     nameBn: 'হোটেল', 
     href: '/services/hotels', 
-    icon: '🏨',
-    color: 'bg-gradient-to-br from-indigo-50 to-purple-100',
+    image: '/images/categories/hotels.jpg',
     description: 'হোটেল এবং আবাসন'
   },
   { 
     nameBn: 'মানি এক্সচেঞ্জ', 
     href: '/services/money-exchange', 
-    icon: '💱',
-    color: 'bg-gradient-to-br from-teal-50 to-emerald-100',
+    image: '/images/categories/money.jpg',
     description: 'মানি ট্রান্সফার এবং এক্সচেঞ্জ'
   },
   { 
     nameBn: 'মক্তব সানাদ', 
     href: '/services/maktab', 
-    icon: '📜',
-    color: 'bg-gradient-to-br from-cyan-50 to-teal-100',
+    image: '/images/categories/maktab.jpg',
     description: 'মক্তব সার্টিফিকেট সেবা'
   },
   { 
     nameBn: 'দর্শনীয় স্থান', 
     href: '/services/tourist-places', 
-    icon: '🗿',
-    color: 'bg-gradient-to-br from-lime-50 to-green-100',
+    image: '/images/categories/tourist.jpg',
     description: 'ওমানের পর্যটন স্থান'
   },
   { 
     nameBn: 'পুলিশ স্টেশন', 
     href: '/services/police', 
-    icon: '👮',
-    color: 'bg-gradient-to-br from-slate-50 to-gray-100',
+    image: '/images/categories/police.jpg',
     description: 'পুলিশ স্টেশন তথ্য'
   },
   { 
     nameBn: 'জরুরী নম্বর', 
     href: '/emergency', 
-    icon: '🚨',
-    color: 'bg-gradient-to-br from-rose-50 to-pink-100',
+    image: '/images/categories/emergency.jpg',
     description: 'জরুরী যোগাযোগ নম্বর'
   },
   { 
     nameBn: 'সংবাদ', 
     href: '/news', 
-    icon: '📰',
-    color: 'bg-gradient-to-br from-gray-50 to-slate-100',
+    image: '/images/categories/news.jpg',
     description: 'সর্বশেষ সংবাদ'
   },
   { 
     nameBn: 'হ্যালো ওমান', 
     href: 'https://www.facebook.com/helloomanbangla/', 
-    icon: '💫',
-    color: 'bg-gradient-to-br from-violet-100 to-purple-100',
+    image: '/images/categories/hello_oman.jpg',
     description: 'আমাদের Facebook পেজ'
   },
 ]
@@ -177,18 +159,27 @@ export default function AllServicesPage() {
                   {...linkProps}
                   className="group"
                 >
-                  <div className="flex flex-col items-center p-6 rounded-2xl border-2 border-border bg-card hover:shadow-xl transition-all hover:-translate-y-2 h-full">
-                    <div className={`mb-4 rounded-2xl ${category.color} p-4 group-hover:scale-110 transition-transform shadow-sm`}>
-                      <span className="text-4xl">{category.icon}</span>
+                  <div className="flex flex-col rounded-2xl border-2 border-border bg-card hover:shadow-xl transition-all hover:-translate-y-2 overflow-hidden h-full">
+                    <div className="relative w-full h-32 sm:h-40 overflow-hidden bg-muted">
+                      <Image 
+                        src={category.image} 
+                        alt={category.nameBn} 
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                     </div>
-                    <h3 className="text-sm sm:text-base font-bold text-center mb-2">
-                      {category.nameBn}
-                    </h3>
-                    <p className="text-xs text-muted-foreground text-center line-clamp-2">
-                      {category.description}
-                    </p>
-                    <div className="mt-4 flex items-center text-violet-600 group-hover:text-violet-700 text-sm font-medium">
-                      বিস্তারিত <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                    <div className="flex flex-col p-4 sm:p-5 flex-grow">
+                      <h3 className="text-sm sm:text-base font-bold mb-2 group-hover:text-violet-600 transition-colors">
+                        {category.nameBn}
+                      </h3>
+                      <p className="text-xs text-muted-foreground line-clamp-2 mb-4 flex-grow">
+                        {category.description}
+                      </p>
+                      <div className="mt-auto flex items-center text-violet-600 group-hover:text-violet-700 text-sm font-medium">
+                        বিস্তারিত <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                      </div>
                     </div>
                   </div>
                 </LinkComponent>
