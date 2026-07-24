@@ -38,39 +38,46 @@ export function CategoryGrid() {
           <h2 className="text-2xl md:text-4xl font-bold">আমাদের সেবাসমূহ</h2>
         </div>
 
-        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-5">
           {visibleCategories.map((category) => (
             <Link
               key={category.href}
               href={category.href}
-              className="group flex flex-col items-center p-3 sm:p-5 rounded-2xl border bg-card hover:shadow-xl transition-all hover:-translate-y-1.5 duration-300"
+              className="group flex flex-col rounded-2xl border bg-card hover:shadow-xl transition-all hover:-translate-y-1.5 duration-300 overflow-hidden"
             >
-              <div className={`relative mb-3 sm:mb-4 rounded-full w-14 h-14 sm:w-16 sm:h-16 overflow-hidden group-hover:scale-110 transition-transform duration-300 shadow-md ring-4 ring-white`}>
+              <div className="relative w-full h-28 sm:h-36 overflow-hidden bg-muted">
                 <Image 
                   src={category.image} 
                   alt={category.nameBn} 
                   fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 56px, 64px"
+                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  sizes="(max-width: 768px) 50vw, 20vw"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
-              <span className="text-xs sm:text-sm font-semibold text-center leading-tight group-hover:text-primary transition-colors">
-                {category.nameBn}
-              </span>
+              <div className="p-3 sm:p-4 flex items-center justify-center flex-grow bg-card">
+                <span className="text-sm sm:text-base font-bold text-center leading-tight group-hover:text-primary transition-colors">
+                  {category.nameBn}
+                </span>
+              </div>
             </Link>
           ))}
           
           {!showAll && (
             <button
               onClick={() => setShowAll(true)}
-              className="group flex flex-col items-center p-3 sm:p-5 rounded-2xl border border-dashed border-primary/40 bg-primary/5 hover:bg-primary/10 transition-all hover:-translate-y-1.5 duration-300"
+              className="group flex flex-col rounded-2xl border border-dashed border-primary/40 bg-primary/5 hover:bg-primary/10 transition-all hover:-translate-y-1.5 duration-300 overflow-hidden"
             >
-              <div className="flex items-center justify-center mb-3 sm:mb-4 rounded-full w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-primary/10 to-primary/20 group-hover:scale-110 transition-transform duration-300 shadow-sm ring-4 ring-white">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              <div className="relative w-full h-28 sm:h-36 flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/20">
+                <div className="w-12 h-12 rounded-full bg-white/50 flex items-center justify-center group-hover:scale-125 transition-transform duration-500 shadow-sm">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </div>
               </div>
-              <span className="text-xs sm:text-sm font-semibold text-center leading-tight text-primary">
-                আরও সেবা
-              </span>
+              <div className="p-3 sm:p-4 flex items-center justify-center flex-grow">
+                <span className="text-sm sm:text-base font-bold text-center leading-tight text-primary">
+                  আরও সেবা
+                </span>
+              </div>
             </button>
           )}
         </div>
