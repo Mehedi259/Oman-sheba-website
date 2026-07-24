@@ -61,14 +61,6 @@ const nextConfig = {
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://188.245.212.240';
     return [
       {
-        source: '/api/proxy/:path*/',
-        destination: `${backendUrl}/api/:path*/`,
-      },
-      {
-        source: '/api/proxy/:path*',
-        destination: `${backendUrl}/api/:path*/`,
-      },
-      {
         source: '/media/:path*',
         destination: `${backendUrl}/media/:path*`,
       },
