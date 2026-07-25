@@ -9,26 +9,28 @@ import { formatCurrency, formatRelativeTime, getMediaUrl } from '@/lib/utils'
 const jobIcons: Record<string, string> = {
   'তথ্য প্রযুক্তি': '/icons/jobs/it.svg',
   'প্রকৌশল': '/icons/jobs/engineering.svg',
-  'আতিথেয়তা': '/icons/restaurant.svg',
+  'রেস্টুরেন্ট': '/icons/restaurant.svg',
 }
 
-const getJobIcon = (job: any) =>
-  jobIcons[job.category?.nameBn] || '/icons/jobs.svg'
+const getJobIcon = (job: any) => {
+  const catName = typeof job.category === 'object' ? (job.category?.name_bn || job.category?.nameBn || job.category?.name) : job.category;
+  return jobIcons[catName] || '/icons/jobs.svg';
+}
 
 export async function FeaturedJobs() {
   const jobs = await getFeaturedJobs(3);
   return (
     <section className="py-16 bg-muted/50">
       <div className="container">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-start sm:items-center justify-between mb-5 sm:mb-8">
           <div>
-            <h2 className="text-3xl font-bold mb-2">সর্বশেষ চাকরি</h2>
-            <p className="text-muted-foreground">আপনার স্বপ্নের চাকরি খুঁজুন</p>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">সর্বশেষ চাকরি</h2>
+            <p className="text-xs sm:text-sm text-muted-foreground">আপনার স্বপ্নের চাকরি খুঁজুন</p>
           </div>
-          <Link href="/jobs">
-            <Button variant="outline">
+          <Link href="/jobs" className="shrink-0 mt-1 sm:mt-0">
+            <Button variant="outline" size="sm" className="h-8 sm:h-10 text-xs sm:text-sm">
               সব দেখুন
-              <ArrowRight className="ml-2 h-4 w-4" />
+              <ArrowRight className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
             </Button>
           </Link>
         </div>
@@ -58,8 +60,8 @@ export async function FeaturedJobs() {
                     </span>
                   )}
                 </div>
-                <CardTitle className="text-sm sm:text-lg line-clamp-1 sm:line-clamp-2">{job.title_bn || job.titleBn || job.title || 'চাকরি'}</CardTitle>
-                <p className="text-xs sm:text-sm text-muted-foreground line-clamp-1">{job.company?.name_bn || job.company?.nameBn || job.company?.name || job.company_name_bn || job.company_name || ''}</p>
+                <CardTitle className="text-xs sm:text-base font-bold leading-snug line-clamp-2 min-h-[2.5rem] sm:min-h-[3rem]">{job.title_bn || job.titleBn || job.title || 'চাকরি'}</CardTitle>
+                <p className="text-[10px] sm:text-sm text-muted-foreground line-clamp-1 mt-1">{job.company?.name_bn || job.company?.nameBn || job.company?.name || job.company_name_bn || job.company_name || ''}</p>
               </CardHeader>
               <CardContent className="p-3 sm:p-6 pt-0 space-y-1.5 sm:space-y-2 flex-grow">
                 <div className="flex items-center text-xs sm:text-sm text-muted-foreground">

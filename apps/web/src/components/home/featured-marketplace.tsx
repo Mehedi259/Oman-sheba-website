@@ -11,14 +11,14 @@ export async function FeaturedMarketplace() {
   return (
     <section className="py-16 bg-gradient-to-br from-orange-50 to-amber-50">
       <div className="container">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-start sm:items-center justify-between mb-5 sm:mb-8">
           <div>
-            <h2 className="text-3xl font-bold mb-2">মার্কেট</h2>
-            <p className="text-muted-foreground">কিনুন, বিক্রি করুন সহজেই</p>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">মার্কেট</h2>
+            <p className="text-xs sm:text-sm text-muted-foreground">কিনুন, বিক্রি করুন সহজেই</p>
           </div>
-          <Link href="/classifieds">
-            <Button variant="outline" className="gap-2">
-              সব দেখুন <ArrowRight className="h-4 w-4" />
+          <Link href="/classifieds" className="shrink-0 mt-1 sm:mt-0">
+            <Button variant="outline" size="sm" className="gap-1 sm:gap-2 h-8 sm:h-10 text-xs sm:text-sm">
+              সব দেখুন <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
             </Button>
           </Link>
         </div>
