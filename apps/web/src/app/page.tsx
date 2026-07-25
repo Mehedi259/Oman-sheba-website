@@ -3,7 +3,7 @@ import { CategoryGrid } from '@/components/home/category-grid'
 import { FeaturedJobs } from '@/components/home/featured-jobs'
 import { FeaturedProperties } from '@/components/home/featured-properties'
 import { FeaturedVehicles } from '@/components/home/featured-vehicles'
-import { FeaturedServices } from '@/components/home/featured-services'
+
 import { FeaturedCommunity } from '@/components/home/featured-community'
 import { FeaturedMarketplace } from '@/components/home/featured-marketplace'
 import { NewsSection } from '@/components/home/news-section'
@@ -29,7 +29,7 @@ export default async function HomePage() {
       <FeaturedJobs />
       <FeaturedProperties />
       <FeaturedVehicles />
-      <FeaturedServices />
+
       <FeaturedCommunity />
       <FeaturedMarketplace />
       <NewsSection />
