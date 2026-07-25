@@ -23,7 +23,7 @@ const categories = [
   { nameBn: 'পুলিশ স্টেশন', href: '/services/police', image: '/images/categories/police.png', color: 'bg-gradient-to-br from-blue-100 to-indigo-100' },
   { nameBn: 'জরুরী নম্বর', href: '/emergency', image: '/images/categories/emergency.png', color: 'bg-gradient-to-br from-rose-50 to-pink-100' },
   { nameBn: 'সংবাদ', href: '/news', image: '/images/categories/news.png', color: 'bg-gradient-to-br from-gray-50 to-slate-100' },
-  { nameBn: 'হ্যালো ওমান', href: '#', image: '/images/categories/hello_oman.jpg', color: 'bg-gradient-to-br from-yellow-50 to-amber-100' },
+  { nameBn: 'হ্যালো ওমান', href: '#', image: '/main-logo.png', isLogo: true },
 ]
 
 export function CategoryGrid() {
@@ -37,16 +37,16 @@ export function CategoryGrid() {
         <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 sm:gap-4">
           {categories.map((category) => (
             <Link
-              key={category.href}
+              key={category.nameBn}
               href={category.href}
-              className="group flex flex-col rounded-xl border bg-card shadow-sm hover:shadow-md transition-all hover:-translate-y-1 overflow-hidden p-2 sm:p-3"
+              className={`group flex flex-col rounded-xl border bg-card shadow-sm hover:shadow-md transition-all hover:-translate-y-1 overflow-hidden p-2 sm:p-3 ${(category as any).isLogo ? 'col-span-2' : ''}`}
             >
-              <div className="relative w-full aspect-square overflow-hidden flex items-center justify-center mb-2">
+              <div className={`relative w-full overflow-hidden flex items-center justify-center mb-2 ${(category as any).isLogo ? 'h-16 sm:h-20' : 'aspect-square'}`}>
                 <Image 
                   src={category.image} 
                   alt={category.nameBn} 
                   fill
-                  className="object-contain p-1 group-hover:scale-110 transition-transform duration-300"
+                  className={`object-contain ${(category as any).isLogo ? 'p-1' : 'p-1 group-hover:scale-110 transition-transform duration-300'}`}
                   sizes="(max-width: 768px) 25vw, 15vw"
                 />
               </div>

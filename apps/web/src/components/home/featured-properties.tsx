@@ -55,7 +55,7 @@ export async function FeaturedProperties() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={getMediaUrl(property.images[0])}
-                    alt={property.titleBn}
+                    alt={property.title_bn || property.titleBn || property.title || 'বাসা ভাড়া'}
                     className="h-full w-full object-cover"
                   />
                 ) : (
@@ -65,7 +65,7 @@ export async function FeaturedProperties() {
                 )}
               </div>
               <CardHeader className="p-3 sm:p-6 pb-2 sm:pb-3">
-                <h3 className="font-bold text-sm sm:text-lg line-clamp-1 sm:line-clamp-2">{property.titleBn}</h3>
+                <h3 className="font-bold text-sm sm:text-lg line-clamp-1 sm:line-clamp-2">{property.title_bn || property.titleBn || property.title || 'বাসা ভাড়া'}</h3>
                 <div className="flex items-center text-xs sm:text-sm text-muted-foreground">
                   <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1 flex-shrink-0" />
                   <span className="line-clamp-1">{property.city}, {property.area}</span>

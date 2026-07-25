@@ -30,7 +30,7 @@ export async function FeaturedVehicles() {
                 <div className="relative h-48 bg-muted overflow-hidden">
                   <img
                     src={getMediaUrl(vehicle.images?.[0]) || 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=500'}
-                    alt={vehicle.titleBn}
+                    alt={vehicle.title_bn || vehicle.titleBn || vehicle.title || 'গাড়ি'}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute top-3 right-3 bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
@@ -39,7 +39,7 @@ export async function FeaturedVehicles() {
                 </div>
                 <CardContent className="p-3 sm:p-4">
                   <h3 className="font-bold text-sm sm:text-lg mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-2 group-hover:text-purple-600 transition-colors">
-                    {vehicle.titleBn}
+                    {vehicle.title_bn || vehicle.titleBn || vehicle.title || 'গাড়ি'}
                   </h3>
                   
                   <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3">

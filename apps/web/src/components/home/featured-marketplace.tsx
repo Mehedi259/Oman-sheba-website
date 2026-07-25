@@ -29,8 +29,8 @@ export async function FeaturedMarketplace() {
               <Card className="overflow-hidden hover:shadow-lg transition-all group">
                 <div className="relative h-48 bg-muted overflow-hidden">
                   <img
-                    src={getMediaUrl(item.images?.[0]) || 'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=500'}
-                    alt={item.titleBn || item.title}
+                    src={getMediaUrl(item.images?.[0]) || 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?w=500'}
+                    alt={item.title_bn || item.titleBn || item.title || 'পণ্য'}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute top-3 left-3 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
@@ -43,8 +43,8 @@ export async function FeaturedMarketplace() {
                   )}
                 </div>
                 <CardContent className="p-4">
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-orange-600 transition-colors line-clamp-1">
-                    {item.titleBn || item.title}
+                  <h3 className="font-bold text-lg mb-2 line-clamp-1 group-hover:text-primary transition-colors">
+                    {item.title_bn || item.titleBn || item.title || 'পণ্য'}
                   </h3>
                   
                   <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">

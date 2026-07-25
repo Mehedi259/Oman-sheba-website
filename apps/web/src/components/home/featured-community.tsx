@@ -34,8 +34,8 @@ export async function FeaturedCommunity() {
                     </span>
                   </div>
 
-                  <h3 className="font-bold text-lg mb-3 group-hover:text-pink-600 transition-colors line-clamp-2">
-                    {discussion.titleBn || discussion.title}
+                  <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                    {discussion.title_bn || discussion.titleBn || discussion.title || 'আলোচনা'}
                   </h3>
 
                   <p className="text-sm text-muted-foreground mb-4 line-clamp-2 flex-1">

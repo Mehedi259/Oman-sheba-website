@@ -56,7 +56,7 @@ export function HeroSlider({ sliders }: { sliders: SliderItem[] }) {
 
   return (
     <section className="mx-auto w-full max-w-7xl px-3 pt-4 sm:px-4 md:px-6">
-      <div className="relative h-36 overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5 sm:h-44 md:h-56 md:rounded-3xl">
+      <div className="relative h-48 sm:h-64 md:h-80 lg:h-[400px] overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5 md:rounded-3xl">
         {/* Sliding track */}
         <div
           className="flex h-full transition-transform duration-700 ease-out"
