@@ -23,7 +23,7 @@ export async function FeaturedCommunity() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
           {discussions.map((discussion: any) => (
             <Link key={discussion.id} href={`/community/${discussion.id}`}>
               <Card className="hover:shadow-lg transition-all group h-full flex flex-col">

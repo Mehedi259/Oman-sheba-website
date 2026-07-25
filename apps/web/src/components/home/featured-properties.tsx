@@ -36,7 +36,7 @@ export async function FeaturedProperties() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
           {properties.map((property: any) => (
             <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow hover-lift">
               <div className="relative h-48 bg-muted">
