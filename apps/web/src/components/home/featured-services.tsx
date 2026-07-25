@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Button } from '@/components/ui/button'
 import { MapPin, Star, Phone, ArrowRight, Shield, CheckCircle2 } from 'lucide-react'
 import { getFeaturedServices } from '@/lib/api'
+import { getMediaUrl } from '@/lib/utils'
 
 // Colorful flat icon per service category
 const serviceIcons: Record<string, string> = {
@@ -63,22 +64,23 @@ export async function FeaturedServices() {
             const phone = service.phone || service.contact_phone || 'নম্বর নেই';
 
             return (
-              <Card key={service.id || service.slug || Math.random()} className="hover:shadow-lg transition-shadow hover-lift h-full flex flex-col">
-                <CardHeader className="p-3 sm:p-6 pb-2 sm:pb-3">
-                  <div className="flex items-start justify-between mb-2 sm:mb-3">
-                    <div className="w-14 h-14 rounded-lg bg-muted/50 flex items-center justify-center p-2.5">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={getServiceIcon(service)} alt="" className="h-9 w-9" />
+              <Card key={service.id || service.slug || Math.random()} className="hover:shadow-lg transition-shadow hover-lift h-full flex flex-col overflow-hidden">
+                <div className="relative h-28 sm:h-48 bg-muted shrink-0">
+                  <img
+                    src={service.images?.[0] ? getMediaUrl(service.images[0]) : getServiceIcon(service)}
+                    alt={title}
+                    className="h-full w-full object-cover"
+                  />
+                  {service.verified && (
+                    <div className="absolute top-2 left-2 bg-green-500 text-white text-[10px] sm:text-xs px-2 py-0.5 sm:py-1 rounded-full z-10 flex items-center gap-1 font-medium">
+                      <CheckCircle2 className="h-2 w-2 sm:h-3 sm:w-3" />
+                      যাচাইকৃত
                     </div>
-                    {service.verified && (
-                      <div className="bg-green-100 text-green-700 px-2 py-1 rounded-full flex items-center text-xs font-medium">
-                        <CheckCircle2 className="h-3 w-3 mr-1" />
-                        যাচাইকৃত
-                      </div>
-                    )}
-                  </div>
-                  <CardTitle className="text-sm sm:text-lg line-clamp-1">{title}</CardTitle>
-                  <p className="text-xs sm:text-sm text-muted-foreground line-clamp-1">{catName}</p>
+                  )}
+                </div>
+                <CardHeader className="p-3 sm:p-6 pb-2 sm:pb-3">
+                  <CardTitle className="text-sm sm:text-lg line-clamp-1 leading-tight">{title}</CardTitle>
+                  <p className="text-[10px] sm:text-sm text-muted-foreground line-clamp-1 mt-1">{catName}</p>
                 </CardHeader>
                 <CardContent className="p-3 sm:p-6 pt-0 space-y-2 sm:space-y-3 flex-grow">
                   <div className="flex items-center text-xs sm:text-sm text-muted-foreground">
