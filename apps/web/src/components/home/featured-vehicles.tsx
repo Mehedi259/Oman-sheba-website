@@ -26,23 +26,23 @@ export async function FeaturedVehicles() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {vehicles.map((vehicle: any) => (
             <Link key={vehicle.id} href={`/vehicles/${vehicle.id}`}>
-              <Card className="overflow-hidden hover:shadow-lg transition-all group">
-                <div className="relative h-48 bg-muted overflow-hidden">
+              <Card className="overflow-hidden hover:shadow-lg transition-all group h-full flex flex-col">
+                <div className="relative h-28 sm:h-48 bg-muted overflow-hidden shrink-0">
                   <img
                     src={getMediaUrl(vehicle.images?.[0]) || 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=500'}
                     alt={vehicle.title_bn || vehicle.titleBn || vehicle.title || 'গাড়ি'}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  <div className="absolute top-3 right-3 bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                  <div className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-purple-600 text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold">
                     {vehicle.year}
                   </div>
                 </div>
-                <CardContent className="p-3 sm:p-4">
-                  <h3 className="font-bold text-sm sm:text-lg mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-2 group-hover:text-purple-600 transition-colors">
+                <CardContent className="p-3 sm:p-4 flex-grow flex flex-col">
+                  <h3 className="font-bold text-xs sm:text-lg mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-2 group-hover:text-purple-600 transition-colors leading-tight min-h-[1.2rem] sm:min-h-[2.8rem]">
                     {vehicle.title_bn || vehicle.titleBn || vehicle.title || 'গাড়ি'}
                   </h3>
                   
-                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-[10px] sm:text-sm text-muted-foreground mb-1 sm:mb-3">
                     <span className="flex items-center gap-1">
                       <Gauge className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                       <span className="line-clamp-1">{vehicle.mileage ? vehicle.mileage.toLocaleString() : 0} কিমি</span>
@@ -53,13 +53,13 @@ export async function FeaturedVehicles() {
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3">
+                  <div className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-sm text-muted-foreground mb-2 sm:mb-3">
                     <Car className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                     <span className="line-clamp-1">{vehicle.transmission || 'N/A'}</span>
                   </div>
                   
-                  <div className="flex items-center justify-between pt-2 sm:pt-3 border-t">
-                    <div className="flex items-center gap-1 text-purple-600 font-bold text-base sm:text-xl line-clamp-1">
+                  <div className="flex items-center justify-between pt-2 sm:pt-3 border-t mt-auto">
+                    <div className="flex items-center gap-1 text-purple-600 font-bold text-sm sm:text-xl line-clamp-1">
                       {vehicle.price ? vehicle.price.toLocaleString() : 0} {vehicle.currency || 'রিয়াল'}
                     </div>
                   </div>

@@ -38,16 +38,16 @@ export async function FeaturedProperties() {
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {properties.map((property: any) => (
-            <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow hover-lift">
-              <div className="relative h-48 bg-muted">
+            <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow hover-lift h-full flex flex-col">
+              <div className="relative h-28 sm:h-48 bg-muted shrink-0">
                 {property.featured && (
-                  <div className="absolute top-2 right-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs px-2 py-1 rounded-full z-10 font-medium">
+                  <div className="absolute top-2 right-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-[10px] sm:text-xs px-2 py-0.5 sm:py-1 rounded-full z-10 font-medium">
                     ফিচার্ড
                   </div>
                 )}
                 {property.verified && (
-                  <div className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full z-10 flex items-center gap-1">
-                    <CheckCircle2 className="h-3 w-3" />
+                  <div className="absolute top-2 left-2 bg-green-500 text-white text-[10px] sm:text-xs px-2 py-0.5 sm:py-1 rounded-full z-10 flex items-center gap-1">
+                    <CheckCircle2 className="h-2 w-2 sm:h-3 sm:w-3" />
                     যাচাইকৃত
                   </div>
                 )}
@@ -60,18 +60,18 @@ export async function FeaturedProperties() {
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                    <Home className="h-16 w-16 text-muted-foreground/30" />
+                    <Home className="h-8 w-8 sm:h-16 sm:w-16 text-muted-foreground/30" />
                   </div>
                 )}
               </div>
-              <CardHeader className="p-3 sm:p-6 pb-2 sm:pb-3">
-                <h3 className="font-bold text-sm sm:text-lg line-clamp-1 sm:line-clamp-2">{property.title_bn || property.titleBn || property.title || 'বাসা ভাড়া'}</h3>
-                <div className="flex items-center text-xs sm:text-sm text-muted-foreground">
+              <CardHeader className="p-3 sm:p-6 pb-1 sm:pb-3">
+                <h3 className="font-bold text-xs sm:text-lg line-clamp-1 sm:line-clamp-2 leading-tight min-h-[1.2rem] sm:min-h-[2.8rem]">{property.title_bn || property.titleBn || property.title || 'বাসা ভাড়া'}</h3>
+                <div className="flex items-center text-[10px] sm:text-sm text-muted-foreground mt-1">
                   <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1 flex-shrink-0" />
                   <span className="line-clamp-1">{property.city}, {property.area}</span>
                 </div>
               </CardHeader>
-              <CardContent className="p-3 sm:p-6 pt-0 space-y-2 sm:space-y-3">
+              <CardContent className="p-3 sm:p-6 pt-0 space-y-1.5 sm:space-y-3 flex-grow flex flex-col justify-end">
                 <div className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm">
                   {property.bedrooms && (
                     <div className="flex items-center">
@@ -91,17 +91,17 @@ export async function FeaturedProperties() {
                     </div>
                   )}
                 </div>
-                <div className="flex items-baseline justify-between flex-wrap gap-1">
-                  <div className="text-lg sm:text-2xl font-bold text-primary">
+                <div className="flex items-baseline justify-between flex-wrap gap-1 mt-1 sm:mt-2">
+                  <div className="text-sm sm:text-2xl font-bold text-primary">
                     {property.price} {property.currency}
-                    <span className="text-[10px] sm:text-sm text-muted-foreground font-normal">/মাসিক</span>
+                    <span className="text-[9px] sm:text-sm text-muted-foreground font-normal">/মাসিক</span>
                   </div>
-                  <span className="text-[10px] sm:text-xs bg-blue-100 text-blue-700 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">
+                  <span className="text-[9px] sm:text-xs bg-blue-100 text-blue-700 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded font-medium">
                     {purposeLabels[property.purpose] || property.purpose}
                   </span>
                 </div>
               </CardContent>
-              <CardFooter className="p-3 sm:p-6 pt-0">
+              <CardFooter className="p-3 sm:p-6 pt-0 mt-auto hidden sm:flex">
                 <Link href={`/properties/${property.id}`} className="w-full">
                   <Button variant="outline" className="w-full">বিস্তারিত</Button>
                 </Link>

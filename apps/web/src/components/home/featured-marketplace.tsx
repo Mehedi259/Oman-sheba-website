@@ -26,39 +26,39 @@ export async function FeaturedMarketplace() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {items.map((item: any) => (
             <Link key={item.id} href={`/classifieds/${item.id}`}>
-              <Card className="overflow-hidden hover:shadow-lg transition-all group">
-                <div className="relative h-48 bg-muted overflow-hidden">
+              <Card className="overflow-hidden hover:shadow-lg transition-all group h-full flex flex-col">
+                <div className="relative h-28 sm:h-48 bg-muted overflow-hidden shrink-0">
                   <img
                     src={getMediaUrl(item.images?.[0]) || 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?w=500'}
                     alt={item.title_bn || item.titleBn || item.title || 'পণ্য'}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  <div className="absolute top-3 left-3 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                  <div className="absolute top-2 sm:top-3 left-2 sm:left-3 bg-orange-600 text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold">
                     {item.category?.nameBn || item.category?.name || 'সাধারণ'}
                   </div>
                   {item.price_negotiable && (
-                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-medium">
+                    <div className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-white/90 backdrop-blur-sm px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-[9px] sm:text-xs font-medium">
                       দর আলোচনা সাপেক্ষ
                     </div>
                   )}
                 </div>
-                <CardContent className="p-4">
-                  <h3 className="font-bold text-lg mb-2 line-clamp-1 group-hover:text-primary transition-colors">
+                <CardContent className="p-3 sm:p-4 flex-grow flex flex-col">
+                  <h3 className="font-bold text-sm sm:text-lg mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-2 group-hover:text-primary transition-colors leading-tight min-h-[1.2rem] sm:min-h-[2.8rem]">
                     {item.title_bn || item.titleBn || item.title || 'পণ্য'}
                   </h3>
                   
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-                    <Tag className="h-4 w-4" />
-                    <span>অবস্থা: {item.condition || 'N/A'}</span>
+                  <div className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-sm text-muted-foreground mb-1.5 sm:mb-3">
+                    <Tag className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <span className="line-clamp-1">অবস্থা: {item.condition || 'N/A'}</span>
                   </div>
 
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-                    <MapPin className="h-4 w-4" />
-                    <span>{item.city}{item.area ? `, ${item.area}` : ''}</span>
+                  <div className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-sm text-muted-foreground mb-2 sm:mb-3">
+                    <MapPin className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <span className="line-clamp-1">{item.city}{item.area ? `, ${item.area}` : ''}</span>
                   </div>
                   
-                  <div className="flex items-center justify-between pt-3 border-t">
-                    <div className="flex items-center gap-1 text-orange-600 font-bold text-xl">
+                  <div className="flex items-center justify-between pt-2 sm:pt-3 border-t mt-auto">
+                    <div className="flex items-center gap-1 text-orange-600 font-bold text-sm sm:text-xl line-clamp-1">
                       {item.price ? item.price.toLocaleString() : 0} {item.currency || 'রিয়াল'}
                     </div>
                   </div>

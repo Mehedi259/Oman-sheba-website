@@ -27,36 +27,36 @@ export async function FeaturedCommunity() {
           {discussions.map((discussion: any) => (
             <Link key={discussion.id} href={`/community/${discussion.id}`}>
               <Card className="hover:shadow-lg transition-all group h-full flex flex-col">
-                <CardContent className="p-6 flex-1 flex flex-col">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="px-3 py-1 bg-pink-100 text-pink-700 rounded-full text-xs font-medium">
+                <CardContent className="p-3 sm:p-6 flex-1 flex flex-col">
+                  <div className="flex items-center gap-2 mb-1.5 sm:mb-3">
+                    <span className="px-2 sm:px-3 py-0.5 sm:py-1 bg-pink-100 text-pink-700 rounded-full text-[10px] sm:text-xs font-medium line-clamp-1">
                       {discussion.category?.nameBn || discussion.category?.name || 'সাধারণ'}
                     </span>
                   </div>
 
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                  <h3 className="font-bold text-sm sm:text-lg mb-1.5 sm:mb-2 group-hover:text-primary transition-colors line-clamp-2 leading-tight min-h-[2.4rem] sm:min-h-[2.8rem]">
                     {discussion.title_bn || discussion.titleBn || discussion.title || 'আলোচনা'}
                   </h3>
 
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2 flex-1">
+                  <p className="text-[10px] sm:text-sm text-muted-foreground mb-2 sm:mb-4 line-clamp-1 sm:line-clamp-2 flex-1">
                     {discussion.contentBn || discussion.content}
                   </p>
 
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4 mt-auto">
-                    <User className="h-4 w-4" />
-                    <span>{discussion.author?.first_name || discussion.author?.username || 'অজ্ঞাত'}</span>
+                  <div className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-sm text-muted-foreground mb-2 sm:mb-4 mt-auto">
+                    <User className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <span className="line-clamp-1">{discussion.author?.first_name || discussion.author?.username || 'অজ্ঞাত'}</span>
                     <span>•</span>
-                    <Clock className="h-4 w-4" />
-                    <span>{formatRelativeTime(discussion.created_at)}</span>
+                    <Clock className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="whitespace-nowrap">{formatRelativeTime(discussion.created_at)}</span>
                   </div>
 
-                  <div className="flex items-center gap-4 pt-4 border-t text-sm">
+                  <div className="flex items-center gap-3 sm:gap-4 pt-2 sm:pt-4 border-t text-[10px] sm:text-sm">
                     <div className="flex items-center gap-1 text-muted-foreground">
-                      <ThumbsUp className="h-4 w-4" />
+                      <ThumbsUp className="h-3 w-3 sm:h-4 sm:w-4" />
                       <span>{discussion.likes || 0}</span>
                     </div>
                     <div className="flex items-center gap-1 text-muted-foreground">
-                      <MessageCircle className="h-4 w-4" />
+                      <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4" />
                       <span>{discussion.comments_count || 0} মন্তব্য</span>
                     </div>
                   </div>
