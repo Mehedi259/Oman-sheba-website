@@ -20,7 +20,7 @@ export async function NewsSection() {
   }
 
   return (
-    <section className="py-16 bg-background">
+    <section className="py-8 sm:py-16 bg-background">
       <div className="container">
         <div className="flex items-start sm:items-center justify-between mb-5 sm:mb-8">
           <div>
@@ -57,7 +57,9 @@ export async function NewsSection() {
                 )}
               </div>
               <CardHeader className="p-3 sm:p-6 pb-1 sm:pb-3">
-                <h3 className="font-bold text-sm sm:text-lg line-clamp-2 leading-tight min-h-[2.4rem] sm:min-h-[2.8rem]">{article.title_bn || article.title}</h3>
+                <h3 className="font-bold text-xs sm:text-lg mb-1 sm:mb-2 line-clamp-2 group-hover:text-primary transition-colors leading-tight">
+                  {article.title_bn || article.title}
+                </h3>
               </CardHeader>
               <CardContent className="p-3 sm:p-6 pt-0 flex-grow flex flex-col">
                 <p className="text-[10px] sm:text-sm text-muted-foreground line-clamp-2 sm:line-clamp-3 mb-2 flex-1">

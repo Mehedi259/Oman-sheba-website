@@ -9,7 +9,7 @@ import { formatRelativeTime } from '@/lib/utils';
 export async function FeaturedCommunity() {
   const discussions = await getFeaturedForumPosts(3);
   return (
-    <section className="py-16 bg-gradient-to-br from-pink-50 to-rose-50">
+    <section className="py-8 sm:py-16 bg-gradient-to-br from-pink-50 to-rose-50">
       <div className="container">
         <div className="flex items-start sm:items-center justify-between mb-5 sm:mb-8">
           <div>

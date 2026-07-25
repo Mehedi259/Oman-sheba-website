@@ -9,7 +9,7 @@ import { getMediaUrl } from '@/lib/utils';
 export async function FeaturedVehicles() {
   const vehicles = await getFeaturedVehicles(3);
   return (
-    <section className="py-16 bg-gradient-to-br from-purple-50 to-pink-50">
+    <section className="py-8 sm:py-16 bg-gradient-to-br from-purple-50 to-pink-50">
       <div className="container">
         <div className="flex items-start sm:items-center justify-between mb-5 sm:mb-8">
           <div>
@@ -38,7 +38,7 @@ export async function FeaturedVehicles() {
                   </div>
                 </div>
                 <CardContent className="p-3 sm:p-4 flex-grow flex flex-col">
-                  <h3 className="font-bold text-xs sm:text-lg mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-2 group-hover:text-purple-600 transition-colors leading-tight min-h-[1.2rem] sm:min-h-[2.8rem]">
+                  <h3 className="font-bold text-xs sm:text-lg mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-2 group-hover:text-purple-600 transition-colors leading-tight">
                     {vehicle.title_bn || vehicle.titleBn || vehicle.title || 'গাড়ি'}
                   </h3>
                   

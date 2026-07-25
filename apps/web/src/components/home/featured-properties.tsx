@@ -21,7 +21,7 @@ const purposeLabels: Record<string, string> = {
 export async function FeaturedProperties() {
   const properties = await getFeaturedProperties(3);
   return (
-    <section className="py-16 bg-background">
+    <section className="py-8 sm:py-16 bg-background">
       <div className="container">
         <div className="flex items-start sm:items-center justify-between mb-5 sm:mb-8">
           <div>
@@ -65,7 +65,7 @@ export async function FeaturedProperties() {
                 )}
               </div>
               <CardHeader className="p-3 sm:p-6 pb-1 sm:pb-3">
-                <h3 className="font-bold text-xs sm:text-lg line-clamp-1 sm:line-clamp-2 leading-tight min-h-[1.2rem] sm:min-h-[2.8rem]">{property.title_bn || property.titleBn || property.title || 'বাসা ভাড়া'}</h3>
+                <h3 className="font-bold text-xs sm:text-lg line-clamp-1 sm:line-clamp-2 leading-tight">{property.title_bn || property.titleBn || property.title || 'বাসা ভাড়া'}</h3>
                 <div className="flex items-center text-[10px] sm:text-sm text-muted-foreground mt-1">
                   <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1 flex-shrink-0" />
                   <span className="line-clamp-1">{property.city}, {property.area}</span>

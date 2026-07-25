@@ -42,17 +42,20 @@ const categoryLabels: Record<string, string> = {
 export async function FeaturedServices() {
   const services = await getFeaturedServices(3);
   return (
-    <section className="py-16 bg-muted/50">
+    <section className="py-8 sm:py-16 bg-muted/50">
       <div className="container">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-start sm:items-center justify-between mb-5 sm:mb-8">
           <div>
-            <h2 className="text-3xl font-bold mb-2">সেবা প্রদানকারী</h2>
-            <p className="text-muted-foreground">বিশ্বস্ত এবং যাচাইকৃত সেবা</p>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">সেবা প্রদানকারী</h2>
+            <p className="text-xs sm:text-sm text-muted-foreground">বিশ্বস্ত এবং যাচাইকৃত সেবা</p>
           </div>
           <Link href="/services">
-            <Button variant="outline">
+            <Button variant="outline" className="hidden sm:flex h-8 sm:h-10 text-xs sm:text-sm px-3 sm:px-4">
               সব দেখুন
-              <ArrowRight className="ml-2 h-4 w-4" />
+              <ArrowRight className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
+            </Button>
+            <Button variant="outline" size="sm" className="sm:hidden h-8 text-xs px-2">
+              সব দেখুন <ArrowRight className="ml-1 h-3 w-3" />
             </Button>
           </Link>
         </div>

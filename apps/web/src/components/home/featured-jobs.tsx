@@ -20,7 +20,7 @@ const getJobIcon = (job: any) => {
 export async function FeaturedJobs() {
   const jobs = await getFeaturedJobs(3);
   return (
-    <section className="py-16 bg-muted/50">
+    <section className="py-8 sm:py-16 bg-muted/50">
       <div className="container">
         <div className="flex items-start sm:items-center justify-between mb-5 sm:mb-8">
           <div>
