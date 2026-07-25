@@ -8,31 +8,36 @@ const allCategories = [
   { 
     nameBn: 'চাকরি', 
     href: '/jobs', 
-    image: '/images/categories/jobs.jpg',
+    image: '/images/categories/jobs.png',
+    color: 'bg-gradient-to-br from-blue-50 to-blue-100',
     description: 'চাকরি খুঁজুন এবং আবেদন করুন'
   },
   { 
     nameBn: 'বাসা ভাড়া', 
     href: '/properties', 
-    image: '/images/categories/properties.jpg',
+    image: '/images/categories/properties.png',
+    color: 'bg-gradient-to-br from-emerald-50 to-green-100',
     description: 'ফ্ল্যাট, রুম এবং বেড স্পেস'
   },
   { 
     nameBn: 'গাড়ি', 
     href: '/vehicles', 
-    image: '/images/categories/vehicles.jpg',
+    image: '/images/categories/vehicles.png',
+    color: 'bg-gradient-to-br from-purple-50 to-violet-100',
     description: 'গাড়ি কিনুন বা ভাড়া নিন'
   },
   { 
     nameBn: 'মার্কেট', 
     href: '/classifieds', 
-    image: '/images/categories/classifieds.jpg',
+    image: '/images/categories/classifieds.png',
+    color: 'bg-gradient-to-br from-orange-50 to-amber-100',
     description: 'কিনুন এবং বিক্রি করুন'
   },
   { 
     nameBn: 'কমিউনিটি', 
     href: '/community', 
-    image: '/images/categories/community.jpg',
+    image: '/images/categories/community.png',
+    color: 'bg-gradient-to-br from-pink-50 to-rose-100',
     description: 'আলোচনা এবং সহযোগিতা'
   },
   
@@ -40,85 +45,99 @@ const allCategories = [
   { 
     nameBn: 'ওমান - বাংলাদেশ দূতাবাস', 
     href: '/services/embassy', 
-    image: '/images/categories/embassy.jpg',
+    image: '/images/categories/embassy.png',
+    color: 'bg-gradient-to-br from-indigo-50 to-blue-100',
     description: 'দূতাবাস সেবা এবং সহায়তা'
   },
   { 
     nameBn: 'বিশেষজ্ঞ ডাক্তার', 
     href: '/services/doctors', 
-    image: '/images/categories/doctors.jpg',
+    image: '/images/categories/doctors.png',
+    color: 'bg-gradient-to-br from-red-50 to-pink-100',
     description: 'বিশেষজ্ঞ চিকিৎসক এবং পরামর্শ'
   },
   { 
     nameBn: 'হাসপাতাল', 
     href: '/services/hospitals', 
-    image: '/images/categories/hospitals.jpg',
+    image: '/images/categories/hospitals.png',
+    color: 'bg-gradient-to-br from-rose-50 to-red-100',
     description: 'হাসপাতাল এবং ক্লিনিক'
   },
   { 
     nameBn: 'অ্যাম্বুলেন্স', 
     href: '/services/ambulance', 
-    image: '/images/categories/ambulance.jpg',
+    image: '/images/categories/ambulance.png',
+    color: 'bg-gradient-to-br from-red-50 to-orange-100',
     description: 'জরুরী অ্যাম্বুলেন্স সেবা'
   },
   { 
     nameBn: 'আইনজীবী', 
     href: '/services/lawyers', 
-    image: '/images/categories/lawyers.jpg',
+    image: '/images/categories/lawyers.png',
+    color: 'bg-gradient-to-br from-amber-50 to-yellow-100',
     description: 'আইনি পরামর্শ এবং সহায়তা'
   },
   { 
     nameBn: 'ট্রাভেল এজেন্সি', 
     href: '/services/travel-agency', 
-    image: '/images/categories/travel.jpg',
+    image: '/images/categories/travel.png',
+    color: 'bg-gradient-to-br from-sky-50 to-cyan-100',
     description: 'ফ্লাইট এবং ট্যুর বুকিং'
   },
   { 
     nameBn: 'হোটেল', 
     href: '/services/hotels', 
-    image: '/images/categories/hotels.jpg',
+    image: '/images/categories/hotels.png',
+    color: 'bg-gradient-to-br from-indigo-50 to-purple-100',
     description: 'হোটেল এবং আবাসন'
   },
   { 
     nameBn: 'মানি এক্সচেঞ্জ', 
     href: '/services/money-exchange', 
-    image: '/images/categories/money.jpg',
+    image: '/images/categories/money.png',
+    color: 'bg-gradient-to-br from-teal-50 to-emerald-100',
     description: 'মানি ট্রান্সফার এবং এক্সচেঞ্জ'
   },
   { 
     nameBn: 'মক্তব সানাদ', 
     href: '/services/maktab', 
-    image: '/images/categories/maktab.jpg',
+    image: '/images/categories/maktab.png',
+    color: 'bg-gradient-to-br from-cyan-50 to-teal-100',
     description: 'মক্তব সার্টিফিকেট সেবা'
   },
   { 
     nameBn: 'দর্শনীয় স্থান', 
     href: '/services/tourist-places', 
-    image: '/images/categories/tourist.jpg',
+    image: '/images/categories/tourist.png',
+    color: 'bg-gradient-to-br from-lime-50 to-green-100',
     description: 'ওমানের পর্যটন স্থান'
   },
   { 
     nameBn: 'পুলিশ স্টেশন', 
     href: '/services/police', 
-    image: '/images/categories/police.jpg',
+    image: '/images/categories/police.png',
+    color: 'bg-gradient-to-br from-slate-50 to-gray-100',
     description: 'পুলিশ স্টেশন তথ্য'
   },
   { 
     nameBn: 'জরুরী নম্বর', 
     href: '/emergency', 
-    image: '/images/categories/emergency.jpg',
+    image: '/images/categories/emergency.png',
+    color: 'bg-gradient-to-br from-rose-50 to-pink-100',
     description: 'জরুরী যোগাযোগ নম্বর'
   },
   { 
     nameBn: 'সংবাদ', 
     href: '/news', 
-    image: '/images/categories/news.jpg',
+    image: '/images/categories/news.png',
+    color: 'bg-gradient-to-br from-gray-50 to-slate-100',
     description: 'সর্বশেষ সংবাদ'
   },
   { 
     nameBn: 'হ্যালো ওমান', 
     href: 'https://www.facebook.com/helloomanbangla/', 
     image: '/images/categories/hello_oman.jpg',
+    color: 'bg-gradient-to-br from-violet-100 to-purple-100',
     description: 'আমাদের Facebook পেজ'
   },
 ]
@@ -160,15 +179,14 @@ export default function AllServicesPage() {
                   className="group"
                 >
                   <div className="flex flex-col rounded-2xl border-2 border-border bg-card hover:shadow-xl transition-all hover:-translate-y-2 overflow-hidden h-full">
-                    <div className="relative w-full h-32 sm:h-40 overflow-hidden bg-muted">
+                    <div className={`relative w-full h-32 sm:h-40 overflow-hidden flex items-center justify-center p-4 ${category.color}`}>
                       <Image 
                         src={category.image} 
                         alt={category.nameBn} 
                         fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="object-contain p-6 sm:p-8 group-hover:scale-110 transition-transform duration-500 drop-shadow-sm"
                         sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                     </div>
                     <div className="flex flex-col p-4 sm:p-5 flex-grow">
                       <h3 className="text-sm sm:text-base font-bold mb-2 group-hover:text-violet-600 transition-colors">
