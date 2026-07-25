@@ -37,29 +37,29 @@ export async function FeaturedVehicles() {
                     {vehicle.year}
                   </div>
                 </div>
-                <CardContent className="p-4">
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-purple-600 transition-colors">
+                <CardContent className="p-3 sm:p-4">
+                  <h3 className="font-bold text-sm sm:text-lg mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-2 group-hover:text-purple-600 transition-colors">
                     {vehicle.titleBn}
                   </h3>
                   
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3">
                     <span className="flex items-center gap-1">
-                      <Gauge className="h-4 w-4" />
-                      {vehicle.mileage ? vehicle.mileage.toLocaleString() : 0} কিমি
+                      <Gauge className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                      <span className="line-clamp-1">{vehicle.mileage ? vehicle.mileage.toLocaleString() : 0} কিমি</span>
                     </span>
                     <span className="flex items-center gap-1">
-                      <Fuel className="h-4 w-4" />
-                      {vehicle.fuelType || vehicle.fuel_type || 'N/A'}
+                      <Fuel className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                      <span className="line-clamp-1">{vehicle.fuelType || vehicle.fuel_type || 'N/A'}</span>
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-                    <Car className="h-4 w-4" />
-                    <span>{vehicle.transmission || 'N/A'}</span>
+                  <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3">
+                    <Car className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="line-clamp-1">{vehicle.transmission || 'N/A'}</span>
                   </div>
                   
-                  <div className="flex items-center justify-between pt-3 border-t">
-                    <div className="flex items-center gap-1 text-purple-600 font-bold text-xl">
+                  <div className="flex items-center justify-between pt-2 sm:pt-3 border-t">
+                    <div className="flex items-center gap-1 text-purple-600 font-bold text-base sm:text-xl line-clamp-1">
                       {vehicle.price ? vehicle.price.toLocaleString() : 0} {vehicle.currency || 'রিয়াল'}
                     </div>
                   </div>

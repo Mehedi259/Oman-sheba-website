@@ -35,39 +35,40 @@ export async function FeaturedJobs() {
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {jobs.map((job: any) => (
-            <Card key={job.id} className="hover:shadow-lg transition-shadow hover-lift">
-              <CardHeader>
-                <div className="flex items-start justify-between mb-3">
+            <Card key={job.id} className="hover:shadow-lg transition-shadow hover-lift h-full flex flex-col">
+              <CardHeader className="p-3 sm:p-6 pb-2 sm:pb-3">
+                <div className="flex items-start justify-between mb-2 sm:mb-3">
                   <div className="flex items-center gap-2">
-                    <div className="w-12 h-12 rounded-lg bg-muted/50 flex items-center justify-center p-2 overflow-hidden shrink-0">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-muted/50 flex items-center justify-center p-1.5 sm:p-2 overflow-hidden shrink-0">
                       {job.images && job.images.length > 0 ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={getMediaUrl(job.images[0])} alt="" className="h-full w-full object-cover" />
                       ) : (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={getJobIcon(job)} alt="" className="h-8 w-8" />
+                        <img src={getJobIcon(job)} alt="" className="h-6 w-6 sm:h-8 sm:w-8" />
                       )}
                     </div>
                     {job.company?.verified && (
-                      <CheckCircle2 className="h-4 w-4 text-blue-500" />
+                      <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500" />
                     )}
                   </div>
                   {job.featured && (
-                    <span className="text-xs bg-gradient-to-r from-orange-500 to-pink-500 text-white px-2 py-1 rounded-full font-medium">
+                    <span className="text-[10px] sm:text-xs bg-gradient-to-r from-orange-500 to-pink-500 text-white px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full font-medium">
                       জরুরী
                     </span>
                   )}
                 </div>
-                <CardTitle className="text-lg">{job.title_bn || job.titleBn || job.title || 'চাকরি'}</CardTitle>
-                <p className="text-sm text-muted-foreground">{job.company?.name_bn || job.company?.nameBn || job.company?.name || job.company_name_bn || job.company_name || ''}</p>
+                <CardTitle className="text-sm sm:text-lg line-clamp-1 sm:line-clamp-2">{job.title_bn || job.titleBn || job.title || 'চাকরি'}</CardTitle>
+                <p className="text-xs sm:text-sm text-muted-foreground line-clamp-1">{job.company?.name_bn || job.company?.nameBn || job.company?.name || job.company_name_bn || job.company_name || ''}</p>
               </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="flex items-center text-sm text-muted-foreground">
-                  <MapPin className="h-4 w-4 mr-2" />
-                  {job.city}{job.area ? `, ${job.area}` : ''}
+              <CardContent className="p-3 sm:p-6 pt-0 space-y-1.5 sm:space-y-2 flex-grow">
+                <div className="flex items-center text-xs sm:text-sm text-muted-foreground">
+                  <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+                  <span className="line-clamp-1">{job.city}{job.area ? `, ${job.area}` : ''}</span>
                 </div>
-                <div className="flex items-center text-sm text-muted-foreground">
-                  <Briefcase className="h-4 w-4 mr-2" />
+                <div className="flex items-center text-xs sm:text-sm text-muted-foreground">
+                  <Briefcase className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+                  <span className="line-clamp-1">
                   {(() => {
                     const min = job.salary_min ?? job.salaryMin;
                     const max = job.salary_max ?? job.salaryMax;
@@ -78,15 +79,16 @@ export async function FeaturedJobs() {
                     if (job.price) return `${job.price} ${curr}`;
                     return 'আলোচনা সাপেক্ষে';
                   })()}
+                  </span>
                 </div>
-                <div className="flex items-center text-sm text-muted-foreground">
-                  <Clock className="h-4 w-4 mr-2" />
-                  {formatRelativeTime(job.createdAt || job.created_at)}
+                <div className="flex items-center text-xs sm:text-sm text-muted-foreground">
+                  <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+                  <span className="line-clamp-1">{formatRelativeTime(job.createdAt || job.created_at)}</span>
                 </div>
               </CardContent>
-              <CardFooter>
+              <CardFooter className="p-3 sm:p-6 pt-0 mt-auto">
                 <Link href={`/jobs/${job.id}`} className="w-full">
-                  <Button className="w-full">বিস্তারিত দেখুন</Button>
+                  <Button className="w-full text-xs sm:text-sm h-8 sm:h-10">বিস্তারিত দেখুন</Button>
                 </Link>
               </CardFooter>
             </Card>
