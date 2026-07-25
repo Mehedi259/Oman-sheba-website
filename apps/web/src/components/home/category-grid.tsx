@@ -51,7 +51,7 @@ export function CategoryGrid() {
                 />
               </div>
               <div className="flex items-center justify-center flex-grow">
-                <span className="text-[11px] sm:text-sm font-semibold text-center leading-tight group-hover:text-primary transition-colors">
+                <span className="text-[11px] sm:text-sm font-semibold text-center leading-tight text-black dark:text-white group-hover:text-primary transition-colors">
                   {category.nameBn}
                 </span>
               </div>

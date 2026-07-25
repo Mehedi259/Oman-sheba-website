@@ -189,7 +189,7 @@ export default function AllServicesPage() {
                       />
                     </div>
                     <div className="flex flex-col p-4 sm:p-5 flex-grow">
-                      <h3 className="text-sm sm:text-base font-bold mb-2 group-hover:text-violet-600 transition-colors">
+                      <h3 className="text-sm sm:text-base font-bold mb-2 text-black dark:text-white group-hover:text-violet-600 transition-colors">
                         {category.nameBn}
                       </h3>
                       <p className="text-xs text-muted-foreground line-clamp-2 mb-4 flex-grow">
