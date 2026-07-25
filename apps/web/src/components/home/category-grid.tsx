@@ -27,58 +27,36 @@ const categories = [
 ]
 
 export function CategoryGrid() {
-  const [showAll, setShowAll] = useState(false)
-
-  const visibleCategories = showAll ? categories : categories.slice(0, 11)
-
   return (
     <section className="py-6 sm:py-8 bg-background">
-      <div className="container">
+      <div className="container px-2 sm:px-4">
         <div className="text-center mb-5 sm:mb-6">
-          <h2 className="text-2xl md:text-4xl font-bold">আমাদের সেবাসমূহ</h2>
+          <h2 className="text-xl sm:text-2xl md:text-4xl font-bold">আমাদের সেবাসমূহ</h2>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-5">
-          {visibleCategories.map((category) => (
+        <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 sm:gap-4">
+          {categories.map((category) => (
             <Link
               key={category.href}
               href={category.href}
-              className="group flex flex-col rounded-2xl border bg-card hover:shadow-xl transition-all hover:-translate-y-1.5 duration-300 overflow-hidden"
+              className="group flex flex-col rounded-xl border bg-card shadow-sm hover:shadow-md transition-all hover:-translate-y-1 overflow-hidden p-2 sm:p-3"
             >
-              <div className={`relative w-full h-28 sm:h-36 overflow-hidden flex items-center justify-center p-4 ${category.color}`}>
+              <div className="relative w-full aspect-square overflow-hidden flex items-center justify-center mb-2">
                 <Image 
                   src={category.image} 
                   alt={category.nameBn} 
                   fill
-                  className="object-contain p-6 sm:p-8 group-hover:scale-110 transition-transform duration-500 drop-shadow-sm"
-                  sizes="(max-width: 768px) 50vw, 20vw"
+                  className="object-contain p-1 group-hover:scale-110 transition-transform duration-300"
+                  sizes="(max-width: 768px) 25vw, 15vw"
                 />
               </div>
-              <div className="p-3 sm:p-4 flex items-center justify-center flex-grow bg-card">
-                <span className="text-sm sm:text-base font-bold text-center leading-tight group-hover:text-primary transition-colors">
+              <div className="flex items-center justify-center flex-grow">
+                <span className="text-[11px] sm:text-sm font-semibold text-center leading-tight group-hover:text-primary transition-colors">
                   {category.nameBn}
                 </span>
               </div>
             </Link>
           ))}
-          
-          {!showAll && (
-            <button
-              onClick={() => setShowAll(true)}
-              className="group flex flex-col rounded-2xl border border-dashed border-primary/40 bg-primary/5 hover:bg-primary/10 transition-all hover:-translate-y-1.5 duration-300 overflow-hidden"
-            >
-              <div className="relative w-full h-28 sm:h-36 flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/20">
-                <div className="w-12 h-12 rounded-full bg-white/50 flex items-center justify-center group-hover:scale-125 transition-transform duration-500 shadow-sm">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                </div>
-              </div>
-              <div className="p-3 sm:p-4 flex items-center justify-center flex-grow">
-                <span className="text-sm sm:text-base font-bold text-center leading-tight text-primary">
-                  আরও সেবা
-                </span>
-              </div>
-            </button>
-          )}
         </div>
       </div>
     </section>

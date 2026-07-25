@@ -178,13 +178,13 @@ export default function AllServicesPage() {
                   {...linkProps}
                   className="group"
                 >
-                  <div className="flex flex-col rounded-2xl border-2 border-border bg-card hover:shadow-xl transition-all hover:-translate-y-2 overflow-hidden h-full">
-                    <div className={`relative w-full h-32 sm:h-40 overflow-hidden flex items-center justify-center p-4 ${category.color}`}>
+                  <div className="flex flex-col rounded-2xl border bg-card shadow-sm hover:shadow-md transition-all hover:-translate-y-1 overflow-hidden h-full">
+                    <div className="relative w-full h-32 sm:h-40 overflow-hidden flex items-center justify-center p-4 bg-muted/30">
                       <Image 
                         src={category.image} 
                         alt={category.nameBn} 
                         fill
-                        className="object-contain p-6 sm:p-8 group-hover:scale-110 transition-transform duration-500 drop-shadow-sm"
+                        className="object-contain p-4 sm:p-6 group-hover:scale-110 transition-transform duration-300"
                         sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
                       />
                     </div>
