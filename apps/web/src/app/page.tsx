@@ -8,7 +8,6 @@ import { FeaturedCommunity } from '@/components/home/featured-community'
 import { FeaturedMarketplace } from '@/components/home/featured-marketplace'
 import { NewsSection } from '@/components/home/news-section'
 import { CallToAction } from '@/components/home/call-to-action'
-import { EmergencyContacts } from '@/components/home/emergency-contacts'
 import { getHeroSliders } from '@/lib/api'
 
 // Force dynamic rendering to avoid build-time API calls
@@ -33,7 +32,6 @@ export default async function HomePage() {
       <FeaturedCommunity />
       <FeaturedMarketplace />
       <NewsSection />
-      <EmergencyContacts />
       <CallToAction />
     </div>
   )

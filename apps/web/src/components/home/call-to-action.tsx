@@ -1,8 +1,16 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import { ArrowRight, Smartphone } from 'lucide-react'
 import Link from 'next/link'
+import { useState } from 'react'
+import { AuthModal } from '../auth/auth-modal'
+import { useAuth } from '../auth/auth-provider'
 
 export function CallToAction() {
+  const [authModalOpen, setAuthModalOpen] = useState(false)
+  const { isAuthenticated } = useAuth()
+
   return (
     <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
       <div className="container">
@@ -14,12 +22,19 @@ export function CallToAction() {
             বিনামূল্যে রেজিস্ট্রেশন করুন এবং সম্পূর্ণ সেবা উপভোগ করুন
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/register">
-              <Button size="lg" variant="secondary" className="text-lg px-8">
+            {isAuthenticated ? (
+              <Link href="/profile">
+                <Button size="lg" variant="secondary" className="text-lg px-8">
+                  প্রোফাইল দেখুন
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+            ) : (
+              <Button size="lg" variant="secondary" className="text-lg px-8" onClick={() => setAuthModalOpen(true)}>
                 রেজিস্ট্রেশন করুন
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-            </Link>
+            )}
             <Link href="/about">
               <Button size="lg" variant="outline" className="text-lg px-8 bg-white/10 border-white text-white hover:bg-white hover:text-blue-600">
                 আরও জানুন
@@ -43,6 +58,9 @@ export function CallToAction() {
           </div>
         </div>
       </div>
+      
+      <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
     </section>
   )
 }
+
