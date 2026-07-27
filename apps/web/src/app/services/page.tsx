@@ -43,7 +43,7 @@ const allCategories = [
   
   // Services
   { 
-    nameBn: 'ওমান - বাংলাদেশ দূতাবাস', 
+    nameBn: 'বাংলাদেশ দূতাবাস', 
     href: '/services/embassy', 
     image: '/images/categories/embassy.png',
     color: 'bg-gradient-to-br from-indigo-50 to-blue-100',
@@ -139,6 +139,13 @@ const allCategories = [
     image: '/images/categories/hello_oman.jpg',
     color: 'bg-gradient-to-br from-violet-100 to-purple-100',
     description: 'আমাদের Facebook পেজ'
+  },
+  {
+    nameBn: 'সালতানাত ওমান',
+    href: '#',
+    image: '/images/categories/sultanate-oman.png',
+    color: 'bg-gradient-to-br from-emerald-50 to-teal-100',
+    description: 'ওমান সালতানাত সম্পর্কে জানুন'
   },
 ]
 

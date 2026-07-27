@@ -3,11 +3,11 @@ import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin } from 'luci
 
 export function Footer() {
   return (
-    <footer className="border-t bg-muted/50">
+    <footer className="border-t bg-muted/50 pb-20 lg:pb-0">
       <div className="container py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About */}
-          <div>
+          <div className="col-span-2 lg:col-span-1">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/main-logo.png" alt="Hello Oman Sheba" className="h-12 md:h-14 lg:h-16 w-auto object-contain mb-4" />
             <p className="text-sm text-muted-foreground mb-4">
@@ -50,7 +50,7 @@ export function Footer() {
           </div>
 
           {/* Quick Links */}
-          <div>
+          <div className="col-span-1">
             <h3 className="font-bold text-lg mb-4">দ্রুত লিংক</h3>
             <ul className="space-y-2 text-sm">
               <li><Link href="/jobs" className="text-muted-foreground hover:text-primary">চাকরি খুঁজুন</Link></li>
@@ -62,7 +62,7 @@ export function Footer() {
           </div>
 
           {/* Services */}
-          <div>
+          <div className="col-span-1">
             <h3 className="font-bold text-lg mb-4">সেবাসমূহ</h3>
             <ul className="space-y-2 text-sm">
               <li><Link href="/services/passport" className="text-muted-foreground hover:text-primary">পাসপোর্ট সেবা</Link></li>
@@ -74,7 +74,7 @@ export function Footer() {
           </div>
 
           {/* Contact */}
-          <div>
+          <div className="col-span-2 lg:col-span-1">
             <h3 className="font-bold text-lg mb-4">যোগাযোগ</h3>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start space-x-2">
@@ -94,7 +94,7 @@ export function Footer() {
         </div>
 
         <div className="mt-8 pt-8 border-t text-center text-sm text-muted-foreground">
-          <p>&copy; 2024 Hello Oman Sheba. সর্বস্বত্ব সংরক্ষিত।</p>
+          <p>&copy; 2026 Hello Oman Sheba. সর্বস্বত্ব সংরক্ষিত।</p>
         </div>
       </div>
     </footer>

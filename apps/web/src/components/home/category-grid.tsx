@@ -10,7 +10,7 @@ const categories = [
   { nameBn: 'গাড়ি', href: '/vehicles', image: '/images/categories/vehicles.png', color: 'bg-gradient-to-br from-purple-50 to-violet-100' },
   { nameBn: 'মার্কেট', href: '/classifieds', image: '/images/categories/classifieds.png', color: 'bg-gradient-to-br from-orange-50 to-amber-100' },
   { nameBn: 'কমিউনিটি', href: '/community', image: '/images/categories/community.png', color: 'bg-gradient-to-br from-indigo-50 to-blue-100' },
-  { nameBn: 'ওমান - বাংলাদেশ দূতাবাস', href: '/services/embassy', image: '/images/categories/embassy.png', color: 'bg-gradient-to-br from-slate-50 to-gray-100' },
+  { nameBn: 'বাংলাদেশ দূতাবাস', href: '/services/embassy', image: '/images/categories/embassy.png', color: 'bg-gradient-to-br from-slate-50 to-gray-100' },
   { nameBn: 'বিশেষজ্ঞ ডাক্তার', href: '/services/doctors', image: '/images/categories/doctors.png', color: 'bg-gradient-to-br from-red-50 to-pink-100' },
   { nameBn: 'হাসপাতাল', href: '/services/hospitals', image: '/images/categories/hospitals.png', color: 'bg-gradient-to-br from-rose-50 to-red-100' },
   { nameBn: 'অ্যাম্বুলেন্স', href: '/services/ambulance', image: '/images/categories/ambulance.png', color: 'bg-gradient-to-br from-red-100 to-red-200' },
@@ -23,7 +23,8 @@ const categories = [
   { nameBn: 'পুলিশ স্টেশন', href: '/services/police', image: '/images/categories/police.png', color: 'bg-gradient-to-br from-blue-100 to-indigo-100' },
   { nameBn: 'জরুরী নম্বর', href: '/emergency', image: '/images/categories/emergency.png', color: 'bg-gradient-to-br from-rose-50 to-pink-100' },
   { nameBn: 'সংবাদ', href: '/news', image: '/images/categories/news.png', color: 'bg-gradient-to-br from-gray-50 to-slate-100' },
-  { nameBn: 'হ্যালো ওমান', href: '#', image: '/main-logo.png', isLogo: true },
+  { nameBn: 'হ্যালো ওমান', href: '#', image: '/images/categories/hellowoman.png' },
+  { nameBn: 'সালতানাত ওমান', href: '#', image: '/images/categories/sultanate-oman.png' },
 ]
 
 export function CategoryGrid() {
@@ -39,14 +40,14 @@ export function CategoryGrid() {
             <Link
               key={category.nameBn}
               href={category.href}
-              className={`group flex flex-col rounded-xl border bg-card shadow-sm hover:shadow-md transition-all hover:-translate-y-1 overflow-hidden p-2 sm:p-3 ${(category as any).isLogo ? 'col-span-2' : ''}`}
+              className="group flex flex-col rounded-xl border bg-card shadow-sm hover:shadow-md transition-all hover:-translate-y-1 overflow-hidden p-2 sm:p-3"
             >
-              <div className={`relative w-full overflow-hidden flex items-center justify-center mb-2 ${(category as any).isLogo ? 'h-16 sm:h-20' : 'aspect-square'}`}>
+              <div className="relative w-full overflow-hidden flex items-center justify-center mb-2 aspect-square">
                 <Image 
                   src={category.image} 
                   alt={category.nameBn} 
                   fill
-                  className={`object-contain ${(category as any).isLogo ? 'p-1' : 'p-1 group-hover:scale-110 transition-transform duration-300'}`}
+                  className="object-contain p-3 group-hover:scale-110 transition-transform duration-300"
                   sizes="(max-width: 768px) 25vw, 15vw"
                 />
               </div>

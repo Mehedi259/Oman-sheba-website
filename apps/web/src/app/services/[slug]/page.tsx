@@ -11,7 +11,7 @@ import { FavoriteButton } from '@/components/ui/favorite-button'
 
 // Category definitions used on the services listing page
 const serviceCategories: Record<string, { name: string; nameBn: string; icon: string; description: string }> = {
-  'embassy': { name: 'Embassy', nameBn: 'ওমান - বাংলাদেশ দূতাবাস', icon: '🏛️', description: 'বাংলাদেশ দূতাবাস সেবা, কনস্যুলার সেবা এবং জরুরী সহায়তা।' },
+  'embassy': { name: 'Embassy', nameBn: 'বাংলাদেশ দূতাবাস', icon: '🏛️', description: 'বাংলাদেশ দূতাবাস সেবা, কনস্যুলার সেবা এবং জরুরী সহায়তা।' },
   'ambulance': { name: 'Ambulance', nameBn: 'অ্যাম্বুলেন্স', icon: '🚑', description: 'জরুরী অ্যাম্বুলেন্স সেবা এবং মেডিকেল ট্রান্সপোর্ট।' },
   'doctors': { name: 'Specialist Doctor', nameBn: 'বিশেষজ্ঞ ডাক্তার', icon: '👨‍⚕️', description: 'বিশেষজ্ঞ চিকিৎসক, পরামর্শ এবং চেকআপ সেবা।' },
   'hospitals': { name: 'Hospital', nameBn: 'হাসপাতাল', icon: '🏥', description: 'হাসপাতাল, ক্লিনিক এবং মেডিকেল সেন্টার।' },

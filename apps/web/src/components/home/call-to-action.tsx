@@ -7,10 +7,10 @@ export function CallToAction() {
     <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
       <div className="container">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6">
             আজই যুক্ত হোন Hello Oman Sheba-তে
           </h2>
-          <p className="text-lg md:text-xl mb-8 text-blue-100">
+          <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-blue-100">
             বিনামূল্যে রেজিস্ট্রেশন করুন এবং সম্পূর্ণ সেবা উপভোগ করুন
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

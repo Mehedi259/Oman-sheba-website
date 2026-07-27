@@ -5,6 +5,7 @@ import { Providers } from '@/components/providers'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { MobileBottomNav } from '@/components/layout/mobile-bottom-nav'
+import NextTopLoader from 'nextjs-toploader'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -51,6 +52,7 @@ export default function RootLayout({
   return (
     <html lang="bn" suppressHydrationWarning>
       <body className={inter.variable}>
+        <NextTopLoader color="#7c3aed" showSpinner={false} />
         <Providers>
           <div className="flex min-h-screen flex-col">
             <Header />
