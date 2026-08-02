@@ -270,6 +270,10 @@ export async function getFeaturedClassifieds(limit = 4) {
   return fetchApi<any[]>('/community/classifieds/', { page_size: limit.toString() }, { cache: 'no-store' });
 }
 
+export async function getClassifiedCategories() {
+  return fetchApi<any[]>('/community/classifieds/categories/', {}, { cache: 'no-store' });
+}
+
 export async function getNewsById(id: string) {
   return fetchApi<any>(`/news/${id}/`, {}, { cache: 'no-store' });
 }

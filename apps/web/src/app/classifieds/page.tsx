@@ -15,34 +15,31 @@ import {
   Baby,
   Wrench,
   BookOpen,
-  Heart
+  Heart,
+  Component
 } from 'lucide-react';
 import Link from 'next/link';
-
-const categories = [
-  { id: 1, name: 'ইলেকট্রনিক্স', icon: Smartphone, count: 234, color: 'text-blue-600' },
-  { id: 2, name: 'কম্পিউটার', icon: Laptop, count: 156, color: 'text-purple-600' },
-  { id: 3, name: 'ফার্নিচার', icon: HomeIcon, count: 189, color: 'text-green-600' },
-  { id: 4, name: 'পোশাক', icon: Shirt, count: 278, color: 'text-pink-600' },
-  { id: 5, name: 'শিশু সামগ্রী', icon: Baby, count: 145, color: 'text-yellow-600' },
-  { id: 6, name: 'যন্ত্রপাতি', icon: Wrench, count: 98, color: 'text-orange-600' },
-  { id: 7, name: 'বই', icon: BookOpen, count: 167, color: 'text-indigo-600' },
-  { id: 8, name: 'অন্যান্য', icon: Heart, count: 234, color: 'text-red-600' },
-];
-
-import { getClassifieds } from '@/lib/api';
+import { getClassifieds, getClassifiedCategories } from '@/lib/api';
 import { formatRelativeTime, getMediaUrl } from '@/lib/utils';
+
+const iconMap: Record<string, any> = {
+  Smartphone, Laptop, HomeIcon, Shirt, Baby, Wrench, BookOpen, Heart, Component
+};
 
 export default async function ClassifiedsPage(props: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
   const searchParams = await props.searchParams;
   
-  const data = await getClassifieds({
-    search: searchParams.search,
-    category: searchParams.category,
-    sort: searchParams.sort,
-  });
+  const [data, categoriesData] = await Promise.all([
+    getClassifieds({
+      search: searchParams.search,
+      category: searchParams.category,
+      sort: searchParams.sort,
+    }),
+    getClassifiedCategories()
+  ]);
   
   const listings = Array.isArray(data) ? data : data.results || [];
+  const categories = Array.isArray(categoriesData) ? categoriesData : (categoriesData as any).results || [];
   
   const buildUrl = (updates: Record<string, string>) => {
     const newParams = new URLSearchParams(searchParams as any);
@@ -91,18 +88,20 @@ export default async function ClassifiedsPage(props: { searchParams: Promise<{ [
       <section className="py-8 border-b">
         <div className="container">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
-            {categories.map((category) => {
-              const Icon = category.icon;
+            {categories.map((category: any, index: number) => {
+              const Icon = iconMap[category.icon] || iconMap.Component;
               const isActive = searchParams.category === category.id.toString();
+              const colors = ['text-blue-600', 'text-purple-600', 'text-green-600', 'text-pink-600', 'text-yellow-600', 'text-orange-600', 'text-indigo-600', 'text-red-600'];
+              const color = colors[index % colors.length];
               return (
                 <Link
                   key={category.id}
                   href={buildUrl({ category: category.id.toString() })}
                   className={`flex flex-col items-center gap-2 p-4 rounded-lg transition-colors ${isActive ? 'bg-muted ring-2 ring-primary' : 'hover:bg-muted'}`}
                 >
-                  <Icon className={`h-8 w-8 ${category.color}`} />
-                  <span className="text-sm font-medium text-center">{category.name}</span>
-                  <span className="text-xs text-muted-foreground">{category.count}</span>
+                  <Icon className={`h-8 w-8 ${color}`} />
+                  <span className="text-sm font-medium text-center">{category.name_bn || category.name}</span>
+                  <span className="text-xs text-muted-foreground">{category.count || 0}</span>
                 </Link>
               );
             })}
