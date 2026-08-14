@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin } from 'lucide-react'
+import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, MessageCircle } from 'lucide-react'
 
 export function Footer() {
   return (
@@ -90,11 +90,25 @@ export function Footer() {
                 <span className="text-muted-foreground">info@helloomansheba.com</span>
               </li>
             </ul>
+            
+            <div className="mt-6 pt-6 border-t border-muted-foreground/20">
+              <h4 className="font-semibold text-sm mb-3">বিজ্ঞাপনের জন্য যোগাযোগ করুন</h4>
+              <a 
+                href="https://wa.me/96878147442?text=আমি%20বিজ্ঞাপন%20দিতে%20চাই" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 text-muted-foreground hover:text-green-500 transition-colors"
+              >
+                <MessageCircle className="h-4 w-4" />
+                <span>+968 78147442 (WhatsApp)</span>
+              </a>
+            </div>
           </div>
         </div>
 
         <div className="mt-8 pt-8 border-t text-center text-sm text-muted-foreground">
           <p>&copy; 2026 Hello Oman Sheba. সর্বস্বত্ব সংরক্ষিত।</p>
+          <p className="mt-2 text-xs font-medium text-muted-foreground/80">Developed by Hello Oman Tech</p>
         </div>
       </div>
     </footer>
