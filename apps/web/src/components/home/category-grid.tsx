@@ -24,7 +24,7 @@ const categories = [
   { nameBn: 'জরুরী নম্বর', href: '/emergency', image: '/images/categories/emergency.png', color: 'bg-gradient-to-br from-rose-50 to-pink-100' },
   { nameBn: 'সংবাদ', href: '/news', image: '/images/categories/news.png', color: 'bg-gradient-to-br from-gray-50 to-slate-100' },
   { nameBn: 'হ্যালো ওমান', href: '#', image: '/images/categories/hellowoman.png' },
-  { nameBn: 'সালতানাত ওমান', href: '#', image: '/images/categories/sultanate-oman.png' },
+  { nameBn: 'সালতানাত ওমান', href: '/about-oman', image: '/images/categories/sultanate-oman.png' },
 ]
 
 export function CategoryGrid() {

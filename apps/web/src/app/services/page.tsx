@@ -142,7 +142,7 @@ const allCategories = [
   },
   {
     nameBn: 'সালতানাত ওমান',
-    href: '#',
+    href: '/about-oman',
     image: '/images/categories/sultanate-oman.png',
     color: 'bg-gradient-to-br from-emerald-50 to-teal-100',
     description: 'ওমান সালতানাত সম্পর্কে জানুন'

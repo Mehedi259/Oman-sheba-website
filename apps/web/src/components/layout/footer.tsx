@@ -91,7 +91,7 @@ export function Footer() {
               </li>
             </ul>
             
-            <div className="mt-6 pt-6 border-t border-muted-foreground/20">
+            <div className="hidden mt-6 pt-6 border-t border-muted-foreground/20">
               <h4 className="font-semibold text-sm mb-3">বিজ্ঞাপনের জন্য যোগাযোগ করুন</h4>
               <a 
                 href="https://wa.me/96878147442?text=আমি%20বিজ্ঞাপন%20দিতে%20চাই" 
