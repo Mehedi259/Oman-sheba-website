@@ -9,7 +9,7 @@ const categories = [
   { nameBn: 'বাসা ভাড়া', href: '/properties', image: '/images/categories/properties.png', color: 'bg-gradient-to-br from-emerald-50 to-green-100' },
   { nameBn: 'গাড়ি', href: '/vehicles', image: '/images/categories/vehicles.png', color: 'bg-gradient-to-br from-purple-50 to-violet-100' },
   { nameBn: 'মার্কেট', href: '/classifieds', image: '/images/categories/classifieds.png', color: 'bg-gradient-to-br from-orange-50 to-amber-100' },
-  { nameBn: 'কমিউনিটি', href: '/community', image: '/images/categories/community.png', color: 'bg-gradient-to-br from-indigo-50 to-blue-100' },
+  { nameBn: 'প্রশ্ন ও উত্তর', href: '/community', image: '/images/categories/community.png', color: 'bg-gradient-to-br from-indigo-50 to-blue-100' },
   { nameBn: 'বাংলাদেশ দূতাবাস', href: '/services/embassy', image: '/images/categories/embassy.png', color: 'bg-gradient-to-br from-slate-50 to-gray-100' },
   { nameBn: 'বিশেষজ্ঞ ডাক্তার', href: '/services/doctors', image: '/images/categories/doctors.png', color: 'bg-gradient-to-br from-red-50 to-pink-100' },
   { nameBn: 'হাসপাতাল', href: '/services/hospitals', image: '/images/categories/hospitals.png', color: 'bg-gradient-to-br from-rose-50 to-red-100' },
