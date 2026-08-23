@@ -22,7 +22,7 @@ export default async function ClassifiedDetailPage({ params }: { params: Promise
     notFound()
   }
 
-  const primaryImage = item.media?.find((m: any) => m.is_primary)?.file || item.media?.[0]?.file;
+  const primaryImage = item.images?.[0];
   const conditionMap: Record<string, string> = {
     'NEW': 'নতুন',
     'LIKE_NEW': 'তুলাদণ্ডে নতুন',
@@ -42,7 +42,7 @@ export default async function ClassifiedDetailPage({ params }: { params: Promise
           </Link>
           <div className="flex flex-wrap items-center gap-3 mb-4">
             <span className="bg-purple-500/30 text-purple-100 px-3 py-1 rounded-full text-sm font-medium">
-              {item.category?.nameBn || item.category?.name || 'সাধারণ'}
+              {item.category_name || 'সাধারণ'}
             </span>
             {item.condition && (
               <span className="bg-white/10 text-white px-3 py-1 rounded-full text-sm">
@@ -55,10 +55,10 @@ export default async function ClassifiedDetailPage({ params }: { params: Promise
               </span>
             )}
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">{item.titleBn || item.title}</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">{item.title_bn || item.title}</h1>
           <div className="flex flex-wrap items-center gap-4 text-sm text-purple-200">
-            <span className="flex items-center gap-1.5"><MapPin className="h-4 w-4" /> {item.location || item.area || 'ওমান'}</span>
-            <span className="flex items-center gap-1.5"><Calendar className="h-4 w-4" /> {formatRelativeTime(item.createdAt || item.created_at)}</span>
+            <span className="flex items-center gap-1.5"><MapPin className="h-4 w-4" /> {item.area ? `${item.area}, ${item.city}` : item.city || 'ওমান'}</span>
+            <span className="flex items-center gap-1.5"><Calendar className="h-4 w-4" /> {formatRelativeTime(item.created_at)}</span>
           </div>
         </div>
       </div>
@@ -73,7 +73,7 @@ export default async function ClassifiedDetailPage({ params }: { params: Promise
                 {primaryImage ? (
                   <img 
                     src={getMediaUrl(primaryImage)} 
-                    alt={item.titleBn || item.title}
+                    alt={item.title_bn || item.title}
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -84,12 +84,12 @@ export default async function ClassifiedDetailPage({ params }: { params: Promise
                 )}
               </div>
               {/* Thumbnail Gallery */}
-              {item.media && item.media.length > 1 && (
+              {item.images && item.images.length > 1 && (
                 <div className="p-4 flex gap-4 overflow-x-auto bg-slate-50 border-t">
-                  {item.media.map((mediaItem: any, idx: number) => (
-                    <div key={idx} className={`w-20 h-20 rounded-md overflow-hidden shrink-0 border-2 cursor-pointer transition-all ${mediaItem.is_primary ? 'border-purple-600' : 'border-transparent hover:border-purple-300'}`}>
+                  {item.images.map((imgUrl: string, idx: number) => (
+                    <div key={idx} className={`w-20 h-20 rounded-md overflow-hidden shrink-0 border-2 cursor-pointer transition-all ${idx === 0 ? 'border-purple-600' : 'border-transparent hover:border-purple-300'}`}>
                       <img 
-                        src={getMediaUrl(mediaItem.file)} 
+                        src={getMediaUrl(imgUrl)} 
                         alt={`Thumbnail ${idx + 1}`}
                         className="w-full h-full object-cover"
                       />
@@ -109,7 +109,7 @@ export default async function ClassifiedDetailPage({ params }: { params: Promise
               </CardHeader>
               <CardContent>
                 <div className="prose max-w-none text-slate-600">
-                  {(item.descriptionBn || item.description || '').split('\n').map((paragraph: string, i: number) => (
+                  {(item.description_bn || item.description || '').split('\n').map((paragraph: string, i: number) => (
                     <p key={i} className="mb-4 last:mb-0 whitespace-pre-line leading-relaxed">
                       {paragraph}
                     </p>
@@ -128,7 +128,7 @@ export default async function ClassifiedDetailPage({ params }: { params: Promise
                 <p className="text-4xl font-bold text-slate-800">
                   {item.currency || 'OMR'} {item.price ? Number(item.price).toLocaleString() : 'আলোচনা সাপেক্ষে'}
                 </p>
-                {item.isNegotiable && (
+                {item.price_negotiable && (
                   <p className="text-sm text-slate-500 mt-2 flex items-center justify-center gap-1">
                     <CheckCircle className="h-3.5 w-3.5 text-green-500" /> আলোচনাসাপেক্ষ
                   </p>
@@ -144,10 +144,10 @@ export default async function ClassifiedDetailPage({ params }: { params: Promise
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xl">
-                    {item.author?.name ? item.author.name.charAt(0).toUpperCase() : 'S'}
+                    {item.owner_name ? item.owner_name.charAt(0).toUpperCase() : 'S'}
                   </div>
                   <div>
-                    <p className="font-semibold text-slate-800">{item.author?.name || 'অজ্ঞাত বিক্রেতা'}</p>
+                    <p className="font-semibold text-slate-800">{item.owner_name || 'অজ্ঞাত বিক্রেতা'}</p>
                     <p className="text-sm text-slate-500 flex items-center gap-1">
                       <Shield className="h-3.5 w-3.5 text-green-500" /> যাচাইকৃত মেম্বার
                     </p>
@@ -157,16 +157,16 @@ export default async function ClassifiedDetailPage({ params }: { params: Promise
                 <hr className="my-2" />
 
                 <div className="space-y-3 pt-2">
-                  {item.contactPhone && (
-                    <a href={`tel:${item.contactPhone}`} className="block">
+                  {item.contact_phone && (
+                    <a href={`tel:${item.contact_phone}`} className="block">
                       <Button variant="outline" className="w-full justify-start py-6 text-base border-purple-200 hover:bg-purple-50 hover:text-purple-700">
                         <Phone className="h-5 w-5 mr-3 text-purple-600" />
-                        {item.contactPhone}
+                        {item.contact_phone}
                       </Button>
                     </a>
                   )}
-                  {item.contactWhatsapp && (
-                    <a href={`https://wa.me/${item.contactWhatsapp.replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer" className="block">
+                  {item.contact_whatsapp && (
+                    <a href={`https://wa.me/${item.contact_whatsapp.replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer" className="block">
                       <Button className="w-full bg-green-600 hover:bg-green-700 text-white py-6 text-base">
                         <MessageSquare className="h-5 w-5 mr-3" />
                         WhatsApp-এ মেসেজ দিন
@@ -174,7 +174,7 @@ export default async function ClassifiedDetailPage({ params }: { params: Promise
                     </a>
                   )}
                   
-                  {!item.contactPhone && !item.contactWhatsapp && (
+                  {!item.contact_phone && !item.contact_whatsapp && (
                     <Button disabled className="w-full py-6 text-base">
                       কোনো যোগাযোগ তথ্য নেই
                     </Button>

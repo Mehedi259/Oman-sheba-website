@@ -28,9 +28,9 @@ const serviceCategories: Record<string, { name: string; nameBn: string; icon: st
 export const dynamic = 'force-dynamic';
 
 async function CategoryPage({ categorySlug, category }: { categorySlug: string; category: { name: string; nameBn: string; icon: string; description: string } }) {
-  // Create the exact slug used in the backend database (e.g. "specialist-doctor" instead of "doctors")
-  const backendSlug = category.name.toLowerCase().replace(/ /g, '-');
-  const categoryServices = await getServices({ category: backendSlug });
+  // Use the exact category name used in the backend database (e.g. "Specialist Doctor")
+  const backendCategory = category.name;
+  const categoryServices = await getServices({ category: backendCategory });
   
   return (
     <div className="min-h-screen bg-background">
@@ -103,7 +103,7 @@ async function CategoryPage({ categorySlug, category }: { categorySlug: string; 
                     )}
                   </div>
                   <div className="flex gap-2 pt-2">
-                    <Link href={`/services/${service.slug || service.id}`} className="flex-1">
+                    <Link href={`/services/${service.id}`} className="flex-1">
                       <Button variant="outline" className="w-full">বিস্তারিত</Button>
                     </Link>
                     <a href={`tel:${service.contact_phone}`} className="flex-1">
@@ -233,22 +233,22 @@ function ServiceDetailPage({ service }: { service: any }) {
                 <CardTitle className="text-lg">যোগাযোগ করুন</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <a href={`tel:${service.phone}`} className="block">
+                <a href={`tel:${service.contact_phone}`} className="block">
                   <Button variant="outline" className="w-full justify-start">
                     <Phone className="h-4 w-4 mr-2" />
-                    {service.phone}
+                    {service.contact_phone}
                   </Button>
                 </a>
-                {service.email && (
-                  <a href={`mailto:${service.email}`} className="block">
+                {service.contact_email && (
+                  <a href={`mailto:${service.contact_email}`} className="block">
                     <Button variant="outline" className="w-full justify-start">
                       <Mail className="h-4 w-4 mr-2" />
-                      {service.email}
+                      {service.contact_email}
                     </Button>
                   </a>
                 )}
-                {service.whatsapp && (
-                  <a href={`https://wa.me/${service.whatsapp.replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer" className="block">
+                {service.contact_whatsapp && (
+                  <a href={`https://wa.me/${service.contact_whatsapp.replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer" className="block">
                     <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
                       <MessageSquare className="h-4 w-4 mr-2" />
                       WhatsApp
@@ -288,7 +288,7 @@ export default async function ServicesDynamicPage({ params }: { params: Promise<
 
   // Otherwise, treat as a service provider ID
   const service = await getServiceById(slug)
-  if (service) {
+  if (service && service.id) {
     return <ServiceDetailPage service={service} />
   }
 

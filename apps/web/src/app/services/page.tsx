@@ -34,7 +34,7 @@ const allCategories = [
     description: 'কিনুন এবং বিক্রি করুন'
   },
   { 
-    nameBn: 'কমিউনিটি', 
+    nameBn: 'প্রশ্ন-উত্তর', 
     href: '/community', 
     image: '/images/categories/community.png',
     color: 'bg-gradient-to-br from-pink-50 to-rose-100',
