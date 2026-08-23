@@ -1,5 +1,7 @@
 import { Button } from '@/components/ui/button'
+import { ImageGallery } from '@/components/classifieds/image-gallery'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { getMediaUrl } from '@/lib/utils'
 import { 
   MapPin, Star, Phone, Shield, ArrowLeft, Mail, 
   Globe, MessageSquare, CheckCircle, Eye
@@ -65,7 +67,13 @@ async function CategoryPage({ categorySlug, category }: { categorySlug: string; 
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {categoryServices.map((service: any) => (
-              <Card key={service.id} className="hover:shadow-lg transition-shadow">
+              <Card key={service.id} className="hover:shadow-lg transition-shadow overflow-hidden flex flex-col">
+                {service.images && service.images.length > 0 && (
+                  <div className="w-full h-48 relative overflow-hidden bg-muted">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={getMediaUrl(service.images[0])} alt={service.title_bn || service.title} className="w-full h-full object-cover" />
+                  </div>
+                )}
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div>
@@ -130,10 +138,17 @@ function ServiceDetailPage({ service }: { service: any }) {
             <ArrowLeft className="h-4 w-4 mr-2" />
             সব সেবা দেখুন
           </Link>
-          <div className="flex items-start gap-6">
-            <div className="bg-white/10 backdrop-blur-sm p-5 rounded-2xl text-5xl shrink-0">
-              🏢
-            </div>
+          <div className="flex flex-col md:flex-row items-start gap-6">
+            {service.images && service.images.length > 0 ? (
+              <div className="w-24 h-24 md:w-32 md:h-32 bg-white/10 rounded-2xl overflow-hidden shrink-0 border-4 border-white/20">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={getMediaUrl(service.images[0])} alt={service.title_bn || service.title} className="w-full h-full object-cover" />
+              </div>
+            ) : (
+              <div className="bg-white/10 backdrop-blur-sm w-24 h-24 md:w-32 md:h-32 flex items-center justify-center p-5 rounded-2xl text-5xl shrink-0 border-4 border-white/20">
+                🏢
+              </div>
+            )}
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
                 <span className="bg-purple-500/30 text-purple-100 px-3 py-1 rounded-full text-sm font-medium">
@@ -164,6 +179,11 @@ function ServiceDetailPage({ service }: { service: any }) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Image Gallery */}
+            {service.images && service.images.length > 0 && (
+              <ImageGallery images={service.images} title={service.title_bn || service.title || 'সেবা'} />
+            )}
+
             {/* Description */}
             <Card>
               <CardHeader>
