@@ -475,4 +475,14 @@ export async function checkJobApplied(jobId: number) {
   return fetchApi<any>(`/jobs/${jobId}/apply/`, undefined, { cache: 'no-store' });
 }
 
-
+export async function submitReview(reviewableType: string, reviewableId: number, rating: number, comment: string = '') {
+  return fetchApi<any>('/reviews/', undefined, {
+    method: 'POST',
+    body: JSON.stringify({
+      reviewable_type: reviewableType,
+      reviewable_id: reviewableId,
+      rating,
+      comment
+    })
+  });
+}

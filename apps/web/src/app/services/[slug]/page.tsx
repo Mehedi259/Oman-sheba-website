@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getServices, getServiceById } from '@/lib/api'
 import { FavoriteButton } from '@/components/ui/favorite-button'
+import { InteractiveRatingCard } from '@/components/ui/interactive-rating-card'
 
 // Category definitions used on the services listing page
 const serviceCategories: Record<string, { name: string; nameBn: string; icon: string; description: string }> = {
@@ -232,20 +233,12 @@ function ServiceDetailPage({ service }: { service: any }) {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Rating Card */}
-            <Card className="border-2 border-purple-200 bg-purple-50/30">
-              <CardContent className="pt-6 text-center">
-                <div className="flex items-center justify-center gap-1 mb-2">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star 
-                      key={star} 
-                      className={`h-6 w-6 ${star <= Math.floor(service.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`} 
-                    />
-                  ))}
-                </div>
-                <p className="text-3xl font-bold text-purple-700">{service.rating}</p>
-                <p className="text-sm text-muted-foreground">{service.reviewCount} রিভিউ</p>
-              </CardContent>
-            </Card>
+            <InteractiveRatingCard
+              initialRating={service.rating || 0}
+              initialReviewCount={service.reviewCount || 0}
+              serviceId={service.id}
+              serviceType="service"
+            />
 
             {/* Contact Card */}
             <Card>

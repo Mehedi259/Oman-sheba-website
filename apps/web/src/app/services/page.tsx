@@ -136,7 +136,7 @@ const allCategories = [
   { 
     nameBn: 'হ্যালো ওমান', 
     href: 'https://www.facebook.com/helloomanbangla/', 
-    image: '/images/categories/hello_oman.jpg',
+    image: '/images/categories/hellowoman.png',
     color: 'bg-gradient-to-br from-violet-100 to-purple-100',
     description: 'আমাদের Facebook পেজ'
   },
