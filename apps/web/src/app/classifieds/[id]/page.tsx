@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ArrowLeft, MapPin, Tag, Calendar, Shield, Phone, MessageSquare, Info, CheckCircle } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { ImageGallery } from '@/components/classifieds/image-gallery'
 
 export const dynamic = 'force-dynamic'
 
@@ -21,8 +22,6 @@ export default async function ClassifiedDetailPage({ params }: { params: Promise
   if (!item) {
     notFound()
   }
-
-  const primaryImage = item.images?.[0];
   const conditionMap: Record<string, string> = {
     'NEW': 'নতুন',
     'LIKE_NEW': 'তুলাদণ্ডে নতুন',
@@ -68,36 +67,7 @@ export default async function ClassifiedDetailPage({ params }: { params: Promise
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Image Gallery */}
-            <Card className="overflow-hidden border-0 shadow-md">
-              <div className="aspect-video bg-slate-100 relative group flex items-center justify-center">
-                {primaryImage ? (
-                  <img 
-                    src={getMediaUrl(primaryImage)} 
-                    alt={item.title_bn || item.title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="text-slate-400 flex flex-col items-center">
-                    <Tag className="h-16 w-16 mb-2 opacity-50" />
-                    <span>কোনো ছবি নেই</span>
-                  </div>
-                )}
-              </div>
-              {/* Thumbnail Gallery */}
-              {item.images && item.images.length > 1 && (
-                <div className="p-4 flex gap-4 overflow-x-auto bg-slate-50 border-t">
-                  {item.images.map((imgUrl: string, idx: number) => (
-                    <div key={idx} className={`w-20 h-20 rounded-md overflow-hidden shrink-0 border-2 cursor-pointer transition-all ${idx === 0 ? 'border-purple-600' : 'border-transparent hover:border-purple-300'}`}>
-                      <img 
-                        src={getMediaUrl(imgUrl)} 
-                        alt={`Thumbnail ${idx + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </Card>
+            <ImageGallery images={item.images || []} title={item.title_bn || item.title || 'বিজ্ঞাপন'} />
 
             {/* Description */}
             <Card>
