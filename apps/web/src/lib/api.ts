@@ -77,7 +77,7 @@ async function fetchApi<T>(
     };
 
     if (!fetchOptions.cache && !fetchOptions.next) {
-      fetchOptions.next = { revalidate: 60 }; // Cache for 60 seconds by default
+      fetchOptions.cache = 'no-store'; // Don't cache by default to avoid high Vercel ISR Write costs
     }
 
     const response = await fetch(url.toString(), fetchOptions);
