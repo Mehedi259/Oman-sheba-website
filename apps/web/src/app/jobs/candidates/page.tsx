@@ -97,9 +97,9 @@ export default async function CandidatesPage(props: { searchParams: Promise<{ [k
                       <div className="flex flex-col md:flex-row items-start justify-between gap-4">
                         <div className="flex gap-4 flex-1">
                           <div className="w-20 h-20 rounded-full bg-muted/50 flex items-center justify-center overflow-hidden shrink-0 border-2 border-blue-100">
-                            {candidate.profile_picture ? (
+                            {candidate.user_avatar ? (
                               // eslint-disable-next-line @next/next/no-img-element
-                              <img src={getMediaUrl(candidate.profile_picture)} alt="" className="h-full w-full object-cover" />
+                              <img src={getMediaUrl(candidate.user_avatar)} alt="" className="h-full w-full object-cover" />
                             ) : (
                               <User className="text-3xl text-gray-400" />
                             )}
@@ -108,7 +108,7 @@ export default async function CandidatesPage(props: { searchParams: Promise<{ [k
                             <div className="flex items-start justify-between mb-2">
                               <div>
                                 <h2 className="text-xl font-bold mb-1">{candidate.professional_title}</h2>
-                                <p className="text-muted-foreground">{candidate.user_name}</p>
+                                <p className="text-muted-foreground">{candidate.user_full_name || candidate.user_name}</p>
                               </div>
                             </div>
                             <p className="text-sm text-gray-700 mt-2 mb-3 line-clamp-2">
