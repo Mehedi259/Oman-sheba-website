@@ -24,7 +24,7 @@ export async function FeaturedJobs() {
       <div className="container">
         <div className="flex items-start sm:items-center justify-between mb-5 sm:mb-8">
           <div>
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">সর্বশেষ চাকরি</h2>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">চাকরি খুঁজুন</h2>
             <p className="text-xs sm:text-sm text-muted-foreground">আপনার স্বপ্নের চাকরি খুঁজুন</p>
           </div>
           <Link href="/jobs" className="shrink-0 mt-1 sm:mt-0">

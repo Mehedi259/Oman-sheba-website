@@ -1,6 +1,7 @@
 import { HeroSlider } from '@/components/home/hero'
 import { CategoryGrid } from '@/components/home/category-grid'
 import { FeaturedJobs } from '@/components/home/featured-jobs'
+import { FeaturedCandidates } from '@/components/home/featured-candidates'
 import { FeaturedProperties } from '@/components/home/featured-properties'
 import { FeaturedVehicles } from '@/components/home/featured-vehicles'
 
@@ -26,6 +27,7 @@ export default async function HomePage() {
       <HeroSlider sliders={sliders} />
       <CategoryGrid />
       <FeaturedJobs />
+      <FeaturedCandidates />
       <FeaturedProperties />
       <FeaturedVehicles />
 
