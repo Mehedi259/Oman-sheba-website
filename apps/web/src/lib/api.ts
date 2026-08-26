@@ -133,6 +133,21 @@ export async function getFeaturedJobs(limit = 6) {
   return fetchApi<any[]>('/jobs/', { page_size: limit.toString() }, { cache: 'no-store' });
 }
 
+export async function getJobSeekers(filters?: { search?: string; sort?: string; page?: string }) {
+  const params: Record<string, string> = {};
+  if (filters?.search) params.search = filters.search;
+  if (filters?.sort) params.ordering = filters.sort;
+  if (filters?.page) params.page = filters.page;
+  return fetchApi<any>('/job-seekers/', params, { cache: 'no-store' });
+}
+
+export async function createJobSeekerProfile(data: any) {
+  return fetchApi<any>('/job-seekers/', {}, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
 // Properties API
 export async function getProperties(filters?: { city?: string; purpose?: string; limit?: number; search?: string; sort?: string; page?: string }) {
   const params: Record<string, string> = {};

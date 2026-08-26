@@ -35,7 +35,10 @@ export default async function JobsPage(props: { searchParams: Promise<{ [key: st
       {/* Search Header */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-12">
         <div className="container">
-          <h1 className="text-4xl font-bold mb-6">চাকরি খুঁজুন</h1>
+          <div className="flex gap-6 mb-6 border-b border-blue-400/30">
+            <Link href="/jobs" className="text-2xl md:text-3xl font-bold border-b-4 border-white pb-2 px-2">চাকরি খুঁজুন</Link>
+            <Link href="/jobs/candidates" className="text-2xl md:text-3xl font-bold text-blue-200 hover:text-white pb-2 px-2 transition-colors border-b-4 border-transparent">কর্মী খুঁজুন</Link>
+          </div>
           <form action="/jobs" method="GET" className="flex gap-3">
             <div className="flex-1 bg-white rounded-lg p-2 flex flex-col md:flex-row gap-2">
               <Input
