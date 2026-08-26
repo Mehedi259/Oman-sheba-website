@@ -56,7 +56,7 @@ export async function FeaturedCandidates() {
               </CardContent>
               <CardFooter className="p-3 sm:p-6 pt-0 mt-auto">
                 <Link href="/jobs/candidates" className="w-full">
-                  <Button variant="outline" className="w-full text-xs sm:text-sm h-8 sm:h-10 text-blue-600 border-blue-200 hover:bg-blue-50">প্রোফাইল দেখুন</Button>
+                  <Button className="w-full text-xs sm:text-sm h-8 sm:h-10 bg-blue-600 text-white hover:bg-blue-700">প্রোফাইল দেখুন</Button>
                 </Link>
               </CardFooter>
             </Card>

@@ -22,10 +22,10 @@ import { ClassifiedPostForm } from '@/components/forms/classified-post-form';
 import { DiscussionPostForm } from '@/components/forms/discussion-post-form';
 import { ServicePostForm } from '@/components/forms/service-post-form';
 import { Wrench } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 const categories = [
-  { id: 'job', name: 'চাকরি পোস্ট', icon: Briefcase, color: 'bg-blue-500' },
-  { id: 'job-seeker', name: 'চাকরিপ্রার্থী প্রোফাইল', icon: UserPlus, color: 'bg-indigo-500', isLink: true, href: '/jobs/create-profile' },
+  { id: 'job_selection', name: 'চাকরি', icon: Briefcase, color: 'bg-blue-500', isModal: true },
   { id: 'property', name: 'প্রপার্টি', icon: Home, color: 'bg-green-500' },
   { id: 'vehicle', name: 'গাড়ি', icon: Car, color: 'bg-purple-500' },
   { id: 'classified', name: 'মার্কেট', icon: Tag, color: 'bg-orange-500' },
@@ -37,6 +37,7 @@ export default function CreatePostPage() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const { isAuthenticated, isLoading } = useAuth();
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [jobModalOpen, setJobModalOpen] = useState(false);
   const router = useRouter();
 
   if (!isLoading && !isAuthenticated) {
@@ -58,6 +59,38 @@ export default function CreatePostPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      <Dialog open={jobModalOpen} onOpenChange={setJobModalOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-center text-xl">আপনি কী করতে চান?</DialogTitle>
+          </DialogHeader>
+          <div className="grid grid-cols-2 gap-4 mt-4">
+            <Button 
+              className="h-24 flex flex-col items-center justify-center gap-2 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200" 
+              variant="outline"
+              onClick={() => {
+                setJobModalOpen(false);
+                setSelectedCategory('job');
+              }}
+            >
+              <Briefcase className="h-8 w-8" />
+              <span className="font-semibold text-lg">চাকরি দিচ্ছি</span>
+            </Button>
+            <Button 
+              className="h-24 flex flex-col items-center justify-center gap-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200" 
+              variant="outline"
+              onClick={() => {
+                setJobModalOpen(false);
+                router.push('/jobs/create-profile');
+              }}
+            >
+              <UserPlus className="h-8 w-8" />
+              <span className="font-semibold text-lg">চাকরি খুঁজছি</span>
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Header */}
       <section className="bg-gradient-to-r from-violet-600 to-purple-600 text-white py-12">
         <div className="container">
@@ -81,8 +114,8 @@ export default function CreatePostPage() {
                       key={category.id}
                       className="cursor-pointer hover:shadow-lg transition-all hover:scale-105"
                       onClick={() => {
-                        if (category.isLink && category.href) {
-                          router.push(category.href);
+                        if (category.isModal) {
+                          setJobModalOpen(true);
                         } else {
                           setSelectedCategory(category.id);
                         }
