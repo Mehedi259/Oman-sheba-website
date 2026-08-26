@@ -149,12 +149,14 @@ export default async function CandidatesPage(props: { searchParams: Promise<{ [k
                                 )}
                               </div>
                               <div className="flex gap-2 w-full md:w-auto">
-                                <Button variant="outline" className="w-full">প্রোফাইল দেখুন</Button>
-                                {candidate.user_phone && (
-                                  <a href={`tel:${candidate.user_phone}`} className="w-full">
+                                <Link href={`/jobs/candidates/${candidate.id}`} className="w-full">
+                                  <Button variant="outline" className="w-full text-blue-600 border-blue-200 hover:bg-blue-50">প্রোফাইল দেখুন</Button>
+                                </Link>
+                                {candidate.user_phone || candidate.phone ? (
+                                  <a href={`tel:${candidate.user_phone || candidate.phone}`} className="w-full">
                                     <Button className="w-full bg-green-600 hover:bg-green-700">কল করুন</Button>
                                   </a>
-                                )}
+                                ) : null}
                               </div>
                             </div>
                           </div>

@@ -133,6 +133,10 @@ export async function getFeaturedJobs(limit = 6) {
   return fetchApi<any[]>('/jobs/', { page_size: limit.toString() }, { cache: 'no-store' });
 }
 
+export async function getJobSeeker(id: string) {
+  return fetchApi<any>(`/job-seekers/${id}/`, {}, { cache: 'no-store' });
+}
+
 export async function getJobSeekers(filters?: { search?: string; sort?: string; page?: string }) {
   const params: Record<string, string> = {};
   if (filters?.search) params.search = filters.search;

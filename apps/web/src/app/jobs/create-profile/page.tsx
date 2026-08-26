@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { createJobSeekerProfile } from '@/lib/api';
+import { createJobSeekerProfile, uploadClassifiedImage } from '@/lib/api';
 
 export default function CreateProfilePage() {
   const router = useRouter();
@@ -19,8 +19,12 @@ export default function CreateProfilePage() {
     education_level: '',
     summary: '',
     expected_salary: '',
-    skillsStr: ''
+    skillsStr: '',
+    phone: '',
+    city: '',
+    area: ''
   });
+  const [files, setFiles] = useState<File[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -41,9 +45,21 @@ export default function CreateProfilePage() {
         summary: formData.summary,
         expected_salary: formData.expected_salary ? Number(formData.expected_salary) : null,
         skills,
+        phone: formData.phone,
+        city: formData.city,
+        area: formData.area
       };
       
-      await createJobSeekerProfile(dataToSubmit);
+      const response = await createJobSeekerProfile(dataToSubmit);
+      
+      if (files.length > 0 && response.id) {
+        await Promise.all(
+          files.map((file, index) => 
+            uploadClassifiedImage(file, 'others', response.id, index === 0)
+          )
+        );
+      }
+      
       alert('আপনার প্রোফাইল সফলভাবে তৈরি হয়েছে!');
       router.push('/jobs/candidates');
       router.refresh();
@@ -64,6 +80,56 @@ export default function CreateProfilePage() {
           {error && <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-md">{error}</div>}
           
           <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">ফোন নম্বর</label>
+                <Input 
+                  name="phone" 
+                  type="tel"
+                  placeholder="আপনার ফোন নম্বর"
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">লোকেশন (শহর)</label>
+                <Input 
+                  name="city" 
+                  placeholder="যেমন: মাস্কাট"
+                  value={formData.city}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">লোকেশন (এলাকা/Area)</label>
+              <Input 
+                name="area" 
+                placeholder="যেমন: রুই, সিব"
+                value={formData.area}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">সার্টিফিকেট / আইডি / কাজের ছবি</label>
+              <Input
+                type="file"
+                accept="image/*,application/pdf"
+                multiple
+                onChange={(e) => {
+                  if (e.target.files) {
+                    setFiles(Array.from(e.target.files));
+                  }
+                }}
+                className="cursor-pointer file:text-blue-700"
+              />
+              {files.length > 0 && (
+                <p className="text-sm text-muted-foreground mt-1">{files.length} টি ফাইল নির্বাচন করা হয়েছে</p>
+              )}
+            </div>
+
             <div className="space-y-2">
               <label className="text-sm font-medium">পেশা বা টাইটেল <span className="text-red-500">*</span></label>
               <Input 
