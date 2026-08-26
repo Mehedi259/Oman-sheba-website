@@ -9,7 +9,8 @@ import {
   Car, 
   Tag, 
   MessageSquare,
-  ArrowLeft
+  ArrowLeft,
+  UserPlus
 } from 'lucide-react';
 import { useAuth } from '@/components/auth/auth-provider';
 import { AuthModal } from '@/components/auth/auth-modal';
@@ -24,6 +25,7 @@ import { Wrench } from 'lucide-react';
 
 const categories = [
   { id: 'job', name: 'চাকরি পোস্ট', icon: Briefcase, color: 'bg-blue-500' },
+  { id: 'job-seeker', name: 'চাকরিপ্রার্থী প্রোফাইল', icon: UserPlus, color: 'bg-indigo-500', isLink: true, href: '/jobs/create-profile' },
   { id: 'property', name: 'প্রপার্টি', icon: Home, color: 'bg-green-500' },
   { id: 'vehicle', name: 'গাড়ি', icon: Car, color: 'bg-purple-500' },
   { id: 'classified', name: 'মার্কেট', icon: Tag, color: 'bg-orange-500' },
@@ -78,7 +80,13 @@ export default function CreatePostPage() {
                     <Card
                       key={category.id}
                       className="cursor-pointer hover:shadow-lg transition-all hover:scale-105"
-                      onClick={() => setSelectedCategory(category.id)}
+                      onClick={() => {
+                        if (category.isLink && category.href) {
+                          router.push(category.href);
+                        } else {
+                          setSelectedCategory(category.id);
+                        }
+                      }}
                     >
                       <CardContent className="p-8 text-center">
                         <div className={`w-16 h-16 ${category.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
