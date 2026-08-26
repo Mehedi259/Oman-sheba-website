@@ -64,7 +64,9 @@ export default function ProfilePage() {
     area: '',
     date_of_birth: '',
     language: 'bn',
-    created_at: ''
+    created_at: '',
+    avatar: '',
+    avatar_url: ''
   });
 
   // Data lists
@@ -102,7 +104,9 @@ export default function ProfilePage() {
           area: p.area || '',
           date_of_birth: p.date_of_birth || '',
           language: p.language || 'bn',
-          created_at: p.created_at || ''
+          created_at: p.created_at || '',
+          avatar: p.avatar || '',
+          avatar_url: p.avatar_url || ''
         });
       }
 
@@ -260,8 +264,23 @@ export default function ProfilePage() {
       <section className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-12">
         <div className="container">
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
-            <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center text-purple-600 text-3xl font-bold shadow-md shrink-0">
-              {getInitials(profileData.name || authUser?.name || authUser?.email)}
+            <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center overflow-hidden shadow-md shrink-0 border-4 border-white/20">
+              {(profileData.avatar || profileData.avatar_url || authUser?.avatar || authUser?.avatar_url) ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img 
+                  src={
+                    profileData.avatar 
+                      ? (profileData.avatar.startsWith('http') ? profileData.avatar : `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://188.245.212.240'}${profileData.avatar}`) 
+                      : (profileData.avatar_url || authUser?.avatar_url || authUser?.avatar)
+                  } 
+                  alt="Profile" 
+                  className="w-full h-full object-cover" 
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-white text-purple-600 text-3xl font-bold">
+                  {getInitials(profileData.name || authUser?.name || authUser?.email)}
+                </div>
+              )}
             </div>
             <div>
               <h1 className="text-3xl font-bold">{profileData.name_bn || profileData.name || authUser?.name || 'ব্যবহারকারী'}</h1>
