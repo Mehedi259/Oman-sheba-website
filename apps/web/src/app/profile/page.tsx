@@ -271,7 +271,7 @@ export default function ProfilePage() {
                   src={
                     profileData.avatar 
                       ? (profileData.avatar.startsWith('http') ? profileData.avatar : `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://188.245.212.240'}${profileData.avatar}`) 
-                      : (profileData.avatar_url || authUser?.avatar_url || authUser?.avatar)
+                      : (profileData.avatar_url || authUser?.avatar_url || authUser?.avatar || undefined)
                   } 
                   alt="Profile" 
                   className="w-full h-full object-cover" 
