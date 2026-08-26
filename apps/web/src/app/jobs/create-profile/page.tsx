@@ -80,56 +80,6 @@ export default function CreateProfilePage() {
           {error && <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-md">{error}</div>}
           
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">ফোন নম্বর</label>
-                <Input 
-                  name="phone" 
-                  type="tel"
-                  placeholder="আপনার ফোন নম্বর"
-                  value={formData.phone}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">লোকেশন (শহর)</label>
-                <Input 
-                  name="city" 
-                  placeholder="যেমন: মাস্কাট"
-                  value={formData.city}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium">লোকেশন (এলাকা/Area)</label>
-              <Input 
-                name="area" 
-                placeholder="যেমন: রুই, সিব"
-                value={formData.area}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium">সার্টিফিকেট / আইডি / কাজের ছবি</label>
-              <Input
-                type="file"
-                accept="image/*,application/pdf"
-                multiple
-                onChange={(e) => {
-                  if (e.target.files) {
-                    setFiles(Array.from(e.target.files));
-                  }
-                }}
-                className="cursor-pointer file:text-blue-700"
-              />
-              {files.length > 0 && (
-                <p className="text-sm text-muted-foreground mt-1">{files.length} টি ফাইল নির্বাচন করা হয়েছে</p>
-              )}
-            </div>
-
             <div className="space-y-2">
               <label className="text-sm font-medium">পেশা বা টাইটেল <span className="text-red-500">*</span></label>
               <Input 
@@ -197,6 +147,56 @@ export default function CreateProfilePage() {
                 value={formData.expected_salary}
                 onChange={handleChange}
               />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">ফোন নম্বর</label>
+                <Input 
+                  name="phone" 
+                  type="tel"
+                  placeholder="আপনার ফোন নম্বর"
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">লোকেশন (শহর)</label>
+                <Input 
+                  name="city" 
+                  placeholder="যেমন: মাস্কাট"
+                  value={formData.city}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">লোকেশন (এলাকা/Area)</label>
+              <Input 
+                name="area" 
+                placeholder="যেমন: রুই, সিব"
+                value={formData.area}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">সার্টিফিকেট / আইডি / কাজের ছবি</label>
+              <Input
+                type="file"
+                accept="image/*,application/pdf"
+                multiple
+                onChange={(e) => {
+                  if (e.target.files) {
+                    setFiles(Array.from(e.target.files));
+                  }
+                }}
+                className="cursor-pointer file:text-blue-700"
+              />
+              {files.length > 0 && (
+                <p className="text-sm text-muted-foreground mt-1">{files.length} টি ফাইল নির্বাচন করা হয়েছে</p>
+              )}
             </div>
 
             <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={loading}>
