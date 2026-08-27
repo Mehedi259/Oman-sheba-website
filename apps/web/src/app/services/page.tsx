@@ -135,10 +135,10 @@ const allCategories = [
   },
   { 
     nameBn: 'হ্যালো ওমান', 
-    href: 'https://www.facebook.com/helloomanbangla/', 
+    href: 'https://helloomanbangla.com/', 
     image: '/images/categories/hellowoman.png',
     color: 'bg-gradient-to-br from-violet-100 to-purple-100',
-    description: 'আমাদের Facebook পেজ'
+    description: 'হ্যালো ওমান বাংলা ওয়েবসাইট'
   },
   {
     nameBn: 'সালতানাত ওমান',
