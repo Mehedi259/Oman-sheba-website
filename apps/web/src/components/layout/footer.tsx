@@ -5,7 +5,7 @@ export function Footer() {
   return (
     <footer className="border-t bg-muted/50 pb-20 lg:pb-0">
       <div className="container py-12">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-8">
           {/* About */}
           <div className="col-span-2 lg:col-span-1">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -70,6 +70,16 @@ export function Footer() {
               <li><Link href="/services/legal" className="text-muted-foreground hover:text-primary">আইনগত সহায়তা</Link></li>
               <li><Link href="/services/healthcare" className="text-muted-foreground hover:text-primary">স্বাস্থ্যসেবা</Link></li>
               <li><Link href="/emergency" className="text-muted-foreground hover:text-primary">জরুরী নম্বর</Link></li>
+            </ul>
+          </div>
+
+          {/* Policies & Help */}
+          <div className="col-span-1">
+            <h3 className="font-bold text-lg mb-4">নীতিমালা ও সাহায্য</h3>
+            <ul className="space-y-2 text-sm">
+              <li><Link href="/privacy-policy" className="text-muted-foreground hover:text-primary">গোপনীয়তা নীতি</Link></li>
+              <li><Link href="/terms-conditions" className="text-muted-foreground hover:text-primary">শর্তাবলী</Link></li>
+              <li><Link href="/faq" className="text-muted-foreground hover:text-primary">সাধারণ জিজ্ঞাসা (FAQ)</Link></li>
             </ul>
           </div>
 
