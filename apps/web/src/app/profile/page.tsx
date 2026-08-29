@@ -527,18 +527,49 @@ export default function ProfilePage() {
                       <p className="font-semibold">পছন্দের তালিকায় কোনো আইটেম নেই</p>
                     </div>
                   ) : (
-                    <div className="space-y-3">
-                      {favorites.map((fav: any) => (
-                        <div key={fav.id} className="flex items-center justify-between p-4 rounded-lg border bg-card hover:bg-accent/50 transition-colors">
-                          <div>
-                            <p className="font-semibold capitalize">{fav.favorite_type || fav.content_type} #{fav.favorite_id || fav.content_id}</p>
-                            <p className="text-xs text-muted-foreground">সংরক্ষণ সময়: {formatRelativeTime(fav.created_at)}</p>
+                    <div className="space-y-4">
+                      {favorites.map((fav: any) => {
+                        const typeMap: Record<string, { label: string; route: string }> = {
+                          'job': { label: 'চাকরি', route: 'jobs' },
+                          'property': { label: 'প্রপার্টি', route: 'properties' },
+                          'vehicle': { label: 'গাড়ি', route: 'vehicles' },
+                          'service': { label: 'সেবা', route: 'services' },
+                          'classified': { label: 'মার্কেট', route: 'classifieds' }
+                        };
+                        const typeInfo = typeMap[fav.favorite_type || fav.content_type] || { label: fav.favorite_type || fav.content_type, route: `${fav.favorite_type || fav.content_type}s` };
+                        
+                        return (
+                          <div key={fav.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-lg border bg-card hover:shadow-md transition-shadow">
+                            <div className="flex-1 space-y-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="text-xs font-semibold px-2 py-0.5 rounded bg-pink-100 text-pink-700">
+                                  {typeInfo.label}
+                                </span>
+                                <span className="text-xs text-muted-foreground flex items-center">
+                                  <Clock className="h-3 w-3 mr-1" />
+                                  সংরক্ষণ সময়: {formatRelativeTime(fav.created_at)}
+                                </span>
+                              </div>
+                              <h4 className="font-bold text-base line-clamp-1">
+                                {fav.item_details?.title_bn || fav.item_details?.title || `${typeInfo.label} #${fav.favorite_id || fav.content_id}`}
+                              </h4>
+                              {fav.item_details?.location && (
+                                <p className="text-sm text-muted-foreground flex items-center">
+                                  <MapPin className="h-3 w-3 mr-1" /> {fav.item_details.location}
+                                </p>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-border">
+                              <Link href={`/${typeInfo.route}/${fav.favorite_id || fav.content_id}`}>
+                                <Button variant="outline" size="sm" className="w-full sm:w-auto border-primary/20 hover:bg-primary/5">বিস্তারিত</Button>
+                              </Link>
+                              <Button variant="ghost" size="sm" onClick={() => handleRemoveFavorite(fav.id)} className="w-full sm:w-auto text-red-500 hover:text-red-700 hover:bg-red-50">
+                                <Trash2 className="h-4 w-4 mr-1" /> মুছুন
+                              </Button>
+                            </div>
                           </div>
-                          <Button variant="ghost" size="sm" onClick={() => handleRemoveFavorite(fav.id)} className="text-red-500 hover:bg-red-50">
-                            <Trash2 className="h-4 w-4 mr-1" /> মুছুন
-                          </Button>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </CardContent>
