@@ -118,7 +118,9 @@ export function Footer() {
 
         <div className="mt-8 pt-8 border-t text-center text-sm text-muted-foreground">
           <p>&copy; 2026 Hello Oman Sheba. সর্বস্বত্ব সংরক্ষিত।</p>
-          <p className="mt-2 text-xs font-medium text-muted-foreground/80">Developed by Hello Oman Tech</p>
+          <p className="mt-2 text-xs font-medium text-muted-foreground/80">
+            Developed by <a href="https://helloomantech.com/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors hover:underline">Hello Oman Tech</a>
+          </p>
         </div>
       </div>
     </footer>
