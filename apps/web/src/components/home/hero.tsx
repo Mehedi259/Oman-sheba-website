@@ -50,16 +50,19 @@ export function HeroSlider({ sliders }: { sliders: SliderItem[] }) {
 
   // Helper to get the image source — use backend URL or local path
   const getImageSrc = (banner: SliderItem) => {
-    if (banner.image) return banner.image
+    if (banner.image) {
+      // If the backend returns an absolute HTTP URL, make it relative so Vercel rewrites can securely proxy it
+      return banner.image.replace(/^http:\/\/[^\/]+/, '');
+    }
     return '/hero/slide-platform.jpg'
   }
 
   return (
     <section className="mx-auto w-full max-w-7xl px-3 pt-4 sm:px-4 md:px-6">
-      <div className="relative h-48 sm:h-64 md:h-80 lg:h-[400px] overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5 md:rounded-3xl">
+      <div className="relative w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5 md:rounded-3xl bg-gray-50/50">
         {/* Sliding track */}
         <div
-          className="flex h-full transition-transform duration-700 ease-out"
+          className="flex transition-transform duration-700 ease-out items-center"
           style={{ transform: `translateX(-${current * 100}%)` }}
         >
           {banners.map((banner) => {
@@ -69,25 +72,9 @@ export function HeroSlider({ sliders }: { sliders: SliderItem[] }) {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={getImageSrc(banner)}
-                  alt=""
-                  className="absolute inset-0 h-full w-full object-cover"
+                  alt={banner.title || ''}
+                  className="w-full h-auto object-cover block"
                 />
-                {/* Readability gradient */}
-                <div className={`absolute inset-0 bg-gradient-to-r ${banner.overlay_gradient}`} />
-
-                {/* Ad copy */}
-                <div className="absolute inset-0 flex flex-col justify-center px-5 sm:px-8 md:px-12">
-                  <h2 className="max-w-[80%] text-base font-bold leading-snug text-white drop-shadow sm:max-w-[70%] sm:text-xl md:text-2xl">
-                    {banner.title_bn || banner.title}
-                  </h2>
-                  <p className="mt-1 max-w-[80%] text-[11px] text-white/90 sm:text-sm">
-                    {banner.subtitle_bn || banner.subtitle}
-                  </p>
-                  <span className="mt-2.5 inline-flex w-fit items-center gap-1 rounded-full bg-white px-3 py-1 text-[11px] font-semibold text-gray-900 shadow-sm sm:text-xs">
-                    {banner.cta_text}
-                    <ArrowRight className="h-3 w-3" />
-                  </span>
-                </div>
               </>
             )
 
@@ -97,7 +84,7 @@ export function HeroSlider({ sliders }: { sliders: SliderItem[] }) {
                 href={banner.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative block h-full w-full shrink-0"
+                className="relative block w-full shrink-0"
               >
                 {content}
               </a>
@@ -105,7 +92,7 @@ export function HeroSlider({ sliders }: { sliders: SliderItem[] }) {
               <Link
                 key={banner.id}
                 href={banner.link}
-                className="relative block h-full w-full shrink-0"
+                className="relative block w-full shrink-0"
               >
                 {content}
               </Link>
