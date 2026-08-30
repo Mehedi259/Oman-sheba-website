@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 interface SliderItem {
   id: number;
@@ -34,6 +34,42 @@ const fallbackBanners: SliderItem[] = [
 ]
 
 const AUTOPLAY_MS = 4000
+
+function SliderImage({ src, alt }: { src: string; alt: string }) {
+  const [status, setStatus] = useState<'loading' | 'loaded' | 'error'>('loading')
+  const imgRef = useRef<HTMLImageElement>(null)
+
+  useEffect(() => {
+    // If the image is already loaded from cache, trigger loaded state immediately
+    if (imgRef.current?.complete) {
+      if (imgRef.current.naturalWidth === 0) setStatus('error')
+      else setStatus('loaded')
+    }
+  }, [src])
+
+  return (
+    <div className="relative w-full min-h-[150px] sm:min-h-[250px] md:min-h-[350px]">
+      {status !== 'loaded' && (
+        <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
+          {status === 'error' && (
+            <svg className="w-12 h-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          )}
+        </div>
+      )}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        ref={imgRef}
+        src={src}
+        alt={alt}
+        className={`relative w-full h-auto object-cover block transition-opacity duration-500 ${status === 'loaded' ? 'opacity-100' : 'opacity-0'}`}
+        onLoad={() => setStatus('loaded')}
+        onError={() => setStatus('error')}
+      />
+    </div>
+  )
+}
 
 export function HeroSlider({ sliders }: { sliders: SliderItem[] }) {
   const banners = sliders.length > 0 ? sliders : fallbackBanners
@@ -68,13 +104,7 @@ export function HeroSlider({ sliders }: { sliders: SliderItem[] }) {
           {banners.map((banner) => {
             const content = (
               <>
-                {/* Background photo */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={getImageSrc(banner)}
-                  alt={banner.title || ''}
-                  className="w-full h-auto object-cover block"
-                />
+                <SliderImage src={getImageSrc(banner)} alt={banner.title || ''} />
               </>
             )
 
