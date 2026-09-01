@@ -272,14 +272,47 @@ export function PropertyPostForm() {
           accept="image/*"
           multiple
           onChange={(e) => {
-            if (e.target.files) {
-              setFiles(Array.from(e.target.files));
+            if (e.target.files && e.target.files.length > 0) {
+              const newFiles = Array.from(e.target.files);
+              setFiles(prev => [...prev, ...newFiles]);
+              e.target.value = '';
             }
           }}
           className="cursor-pointer file:text-violet-700"
         />
         {files.length > 0 && (
-          <p className="text-sm text-muted-foreground">{files.length} টি ছবি নির্বাচন করা হয়েছে</p>
+          <div className="mt-4 space-y-2">
+            <p className="text-sm font-medium text-muted-foreground">
+              {files.length} টি ছবি নির্বাচন করা হয়েছে
+            </p>
+            <div className="flex flex-wrap gap-3">
+              {files.map((file, i) => (
+                <div key={i} className="relative w-24 h-24 group rounded-md border shadow-sm">
+                  <img 
+                    src={URL.createObjectURL(file)} 
+                    alt={`Preview ${i}`} 
+                    className="w-full h-full object-cover rounded-md" 
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setFiles(prev => prev.filter((_, index) => index !== i))}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-md"
+                    title="ছবি মুছে ফেলুন"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M18 6 6 18"/>
+                      <path d="m6 6 12 12"/>
+                    </svg>
+                  </button>
+                  {i === 0 && (
+                    <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[10px] text-center py-1 rounded-b-md">
+                      প্রধান ছবি
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
 
